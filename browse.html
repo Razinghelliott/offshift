@@ -169,106 +169,98 @@ nav.scrolled {
 .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
 .nav-toggle span { width: 24px; height: 1.5px; background: var(--white); transition: all 0.3s; }
 
-/* ===== PAGE HEADER ===== */
-.page-header {
+/* ===== TOOLBAR (compact top bar below nav) ===== */
+.toolbar {
   position: relative;
   z-index: 1;
-  padding: 140px 48px 0;
-  text-align: center;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 92px 48px 0;
 }
-.page-header .badge {
+.toolbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.toolbar-title {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.toolbar-title em { font-style: italic; color: var(--red); }
+.toolbar-stats {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.toolbar-stat {
+  font-size: 0.78rem;
+  color: var(--gray);
+  font-weight: 500;
+}
+.toolbar-stat strong { color: var(--white); font-weight: 700; }
+.toolbar-stat .red { color: var(--red); }
+
+/* ===== CATEGORY CHIPS ===== */
+.category-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.category-chip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(200,16,46,0.1);
-  border: 1px solid rgba(200,16,46,0.2);
-  padding: 7px 18px;
+  gap: 6px;
+  padding: 8px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 100px;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--gray-light);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.category-chip:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  color: var(--white);
+}
+.category-chip.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white-pure);
+  box-shadow: 0 4px 16px rgba(200,16,46,0.3);
+}
+.category-chip .chip-count {
+  background: rgba(255,255,255,0.12);
+  padding: 1px 7px;
   border-radius: 100px;
   font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--red);
-  margin-bottom: 24px;
-  opacity: 0;
-  animation: fadeUp 0.7s ease 0.2s forwards;
 }
-.page-header .badge::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--red);
-  animation: pulse 2s ease infinite;
-}
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-.page-header h1 {
-  font-family: var(--serif);
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: 16px;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 0.35s forwards;
-}
-.page-header h1 em { font-style: italic; color: var(--red); }
-.page-header p {
-  font-size: 1.05rem;
-  font-weight: 300;
-  color: var(--gray-light);
-  line-height: 1.7;
-  max-width: 550px;
-  margin: 0 auto;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 0.5s forwards;
+.category-chip.active .chip-count {
+  background: rgba(255,255,255,0.2);
 }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-/* ===== STATS BAR ===== */
-.stats-bar {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  gap: 48px;
-  padding: 40px 48px 0;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 0.65s forwards;
-}
-.stat {
-  text-align: center;
-}
-.stat-value {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.02em;
-}
-.stat-value .red { color: var(--red); }
-.stat-label {
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gray);
-  margin-top: 4px;
-}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 /* ===== FILTER BAR ===== */
 .filter-section {
   position: relative;
   z-index: 1;
   max-width: 1200px;
-  margin: 48px auto 0;
+  margin: 0 auto;
   padding: 0 48px;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 0.8s forwards;
 }
 .filter-bar {
   display: flex;
@@ -417,7 +409,7 @@ nav.scrolled {
   position: relative;
   z-index: 1;
   max-width: 1200px;
-  margin: 32px auto 0;
+  margin: 20px auto 0;
   padding: 0 48px 100px;
 }
 .pros-grid {
@@ -725,16 +717,17 @@ nav.scrolled {
     z-index: 999;
   }
   .nav-links.open { right: 0; }
-  .page-header { padding: 120px 24px 0; }
-  .stats-bar { gap: 24px; padding: 32px 24px 0; }
+  .toolbar { padding: 84px 24px 0; }
+  .toolbar-top { flex-direction: column; align-items: flex-start; gap: 8px; }
   .filter-section { padding: 0 24px; }
   .pros-section { padding: 0 24px 80px; }
   .pros-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
-  .page-header h1 { font-size: 2rem; }
-  .stats-bar { flex-wrap: wrap; }
+  .toolbar-title { font-size: 1.3rem; }
+  .toolbar-stats { gap: 12px; }
+  .category-bar { gap: 6px; }
   .filter-bar { flex-direction: column; align-items: stretch; }
   .filter-divider { display: none; }
   .filter-bar .search-wrap { min-width: unset; }
@@ -924,26 +917,23 @@ nav.scrolled {
   </div>
 </nav>
 
-<!-- Header -->
-<header class="page-header">
-  <div class="badge">Charleston's Finest</div>
-  <h1>Discover <em>Extraordinary</em> Talent</h1>
-  <p>Handpicked professionals ready to bring their craft to your next project</p>
-</header>
-
-<!-- Stats -->
-<div class="stats-bar" id="statsBar">
-  <div class="stat">
-    <div class="stat-value" id="statPros">0</div>
-    <div class="stat-label">Active Pros</div>
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="toolbar-top">
+    <h1 class="toolbar-title">Browse <em>Pros</em></h1>
+    <div class="toolbar-stats">
+      <span class="toolbar-stat"><strong id="statPros">0</strong> Pros</span>
+      <span class="toolbar-stat"><strong id="statCrafts">0</strong> Crafts</span>
+      <span class="toolbar-stat">Avg <strong><span class="red" id="statAvg">$0</span>/hr</strong></span>
+    </div>
   </div>
-  <div class="stat">
-    <div class="stat-value" id="statCrafts">0</div>
-    <div class="stat-label">Unique Crafts</div>
-  </div>
-  <div class="stat">
-    <div class="stat-value"><span class="red" id="statAvg">$0</span>/hr</div>
-    <div class="stat-label">Avg Rate</div>
+  <div class="category-bar" id="categoryBar">
+    <button class="category-chip active" onclick="setCategory(null)">All</button>
+    <button class="category-chip" onclick="setCategory('food')">Food & Drink</button>
+    <button class="category-chip" onclick="setCategory('photo')">Photo & Film</button>
+    <button class="category-chip" onclick="setCategory('music')">Music & Entertainment</button>
+    <button class="category-chip" onclick="setCategory('beauty')">Beauty & Style</button>
+    <button class="category-chip" onclick="setCategory('events')">Events & Design</button>
   </div>
 </div>
 
@@ -1031,6 +1021,16 @@ const db = firebase.firestore();
 let allPros = [];
 let filteredPros = [];
 let activeFilters = { craft: null, availability: null, rate: null };
+let activeCategory = null;
+
+// Category groupings
+const categoryMap = {
+  'food': ['Chef', 'Bartender', 'Caterer', 'Baker'],
+  'photo': ['Photographer', 'Videographer'],
+  'music': ['DJ', 'Musician'],
+  'beauty': ['Makeup Artist', 'Hair Stylist'],
+  'events': ['Event Planner', 'Florist']
+};
 
 // Placeholder photos for pros without one
 const placeholderPhotos = [
@@ -1342,10 +1342,32 @@ function setRateFilter(val) {
   closeAllDropdowns();
 }
 
+function setCategory(cat) {
+  activeCategory = cat;
+  // Update chip UI
+  document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+  event.target.closest('.category-chip').classList.add('active');
+  // Reset craft dropdown filter when using categories
+  activeFilters.craft = null;
+  applyFilters();
+  updateCategoryCounts();
+}
+
+function updateCategoryCounts() {
+  document.querySelectorAll('.category-chip').forEach(chip => {
+    const existingCount = chip.querySelector('.chip-count');
+    if (existingCount) existingCount.remove();
+  });
+}
+
 function applyFilters() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
 
   filteredPros = allPros.filter(p => {
+    // Category
+    if (activeCategory && categoryMap[activeCategory]) {
+      if (!categoryMap[activeCategory].includes(p.craft)) return false;
+    }
     // Search
     if (q) {
       const searchStr = `${p.name} ${p.craft} ${p.specialties.join(' ')} ${p.bio}`.toLowerCase();
