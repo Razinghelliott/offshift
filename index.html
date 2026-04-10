@@ -953,14 +953,13 @@ footer {
   border-bottom: 1px solid var(--dark-border);
 }
 .footer-logo {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 1.1rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
   margin-bottom: 12px;
 }
-.footer-logo span { color: var(--red); }
+.footer-logo img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+}
 .footer-tagline { font-size: 0.85rem; color: var(--gray); max-width: 280px; line-height: 1.6; }
 .footer-links { display: flex; gap: 60px; }
 .footer-col h4 {
@@ -1065,7 +1064,7 @@ footer {
 
 <!-- Navigation -->
 <nav id="nav">
-  <a href="#" class="nav-logo"><img src="logo.png" alt="OffShift">OFFSHIFT</a>
+  <a href="#" class="nav-logo">OFFSHIFT</a>
   <div class="nav-links" id="navLinks">
     <a href="#how">How It Works</a>
     <a href="browse.html">Browse Pros</a>
@@ -1496,7 +1495,7 @@ footer {
 <footer>
   <div class="footer-top">
     <div>
-      <div class="footer-logo">OFF<span>SHIFT</span></div>
+      <div class="footer-logo"><img src="logo.png" alt="OffShift"></div>
       <p class="footer-tagline">Charleston's modern marketplace for exceptional local talent. Professional craft, on your terms.</p>
     </div>
     <div class="footer-links">
