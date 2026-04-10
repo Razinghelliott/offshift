@@ -86,6 +86,9 @@ nav {
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-sans);
   font-size: 1.3rem;
   font-weight: 700;
@@ -93,6 +96,11 @@ nav {
   text-transform: uppercase;
   color: var(--white);
   text-decoration: none;
+}
+.logo img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
 }
 .logo span { color: var(--red); }
 .nav-link {
@@ -444,7 +452,7 @@ nav {
 
 <!-- Nav -->
 <nav>
-  <a href="index.html" class="logo">OFF<span>SHIFT</span></a>
+  <a href="index.html" class="logo"><img src="logo.png" alt="OffShift">OFF<span>SHIFT</span></a>
   <a href="index.html" class="nav-link">← Back to Home</a>
 </nav>
 

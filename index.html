@@ -68,6 +68,10 @@ body:hover .cursor-glow { opacity: 1; }
 }
 .loader.hidden { opacity: 0; visibility: hidden; }
 .loader-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   font-family: var(--sans);
   font-weight: 700;
   font-size: 2.4rem;
@@ -76,6 +80,11 @@ body:hover .cursor-glow { opacity: 1; }
   color: var(--white);
   opacity: 0;
   animation: loaderFadeIn 0.8s ease forwards;
+}
+.loader-logo img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
 }
 .loader-logo span { color: var(--red); }
 .loader-bar {
@@ -119,11 +128,19 @@ nav.scrolled {
   border-bottom-color: rgba(255,255,255,0.08);
 }
 .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--sans);
   font-weight: 700;
   font-size: 1.15rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
+}
+.nav-logo img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
 }
 .nav-logo span { color: var(--red); }
 .nav-links { display: flex; gap: 36px; align-items: center; }
@@ -1042,13 +1059,13 @@ footer {
 
 <!-- Loading Screen -->
 <div class="loader" id="loader">
-  <div class="loader-logo">OFF<span>SHIFT</span></div>
+  <div class="loader-logo"><img src="logo.png" alt="OffShift">OFF<span>SHIFT</span></div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>
 
 <!-- Navigation -->
 <nav id="nav">
-  <a href="#" class="nav-logo">OFF<span>SHIFT</span></a>
+  <a href="#" class="nav-logo"><img src="logo.png" alt="OffShift">OFF<span>SHIFT</span></a>
   <div class="nav-links" id="navLinks">
     <a href="#how">How It Works</a>
     <a href="browse.html">Browse Pros</a>
