@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFFSHIFT — My Bookings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --black: #0a0a0a; --dark: #111; --dark-card: #141414; --dark-border: #222;
+  --white: #f5f5f5; --white-pure: #fff;
+  --red: #c8102e; --red-hover: #a00d24; --red-glow: rgba(200,16,46,0.3); --red-subtle: rgba(200,16,46,0.06);
+  --green: #34C759; --green-subtle: rgba(52,199,89,0.1); --green-border: rgba(52,199,89,0.25);
+  --orange: #FF9500; --orange-subtle: rgba(255,149,0,0.1); --orange-border: rgba(255,149,0,0.25);
+  --gray: #888; --gray-light: #aaa; --gray-dark: #333; --gray-muted: #666;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --radius: 16px; --radius-sm: 10px;
+  --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--black); color: var(--white); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+
+.ambient { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.ambient .orb { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.08; animation: orbFloat 25s ease-in-out infinite alternate; }
+.ambient .orb:nth-child(1) { width: 700px; height: 700px; background: var(--red); top: -300px; left: -200px; }
+.ambient .orb:nth-child(2) { width: 500px; height: 500px; background: var(--red); bottom: -200px; right: -150px; animation-delay: -8s; }
+@keyframes orbFloat { 0%{transform:translate(0,0)scale(1)}50%{transform:translate(50px,-40px)scale(1.1)}100%{transform:translate(-30px,25px)scale(0.95)} }
+
+nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 48px; height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.92); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.nav-logo { font-family: var(--sans); font-weight: 700; font-size: 1.15rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-light); transition: color 0.3s; position: relative; }
+.nav-links a::after { content:''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--red); transition: width 0.3s; }
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--white); }
+.nav-links a.active::after { width: 100%; }
+.nav-user { display: flex; align-items: center; gap: 12px; }
+.nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gray-dark); border: 2px solid var(--red); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; overflow: hidden; }
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.nav-signout { font-size: 0.75rem; color: var(--gray); cursor: pointer; transition: color 0.3s; background: none; border: none; font-family: var(--sans); }
+.nav-signout:hover { color: var(--red); }
+
+.page { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 92px 48px 100px; }
+.page-header { margin-bottom: 36px; }
+.page-header h1 { font-family: var(--serif); font-size: 2rem; font-weight: 400; margin-bottom: 8px; }
+.page-header h1 em { font-style: italic; color: var(--red); }
+.page-header p { color: var(--gray); font-size: 0.9rem; font-weight: 300; }
+
+.bookings-list { display: flex; flex-direction: column; gap: 16px; }
+
+.booking-card {
+  background: var(--dark-card); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px; padding: 24px 28px; transition: var(--transition);
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.booking-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.booking-pro { display: flex; align-items: center; gap: 14px; }
+.booking-pro-photo { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: var(--gray-dark); flex-shrink: 0; }
+.booking-pro-photo img { width: 100%; height: 100%; object-fit: cover; }
+.booking-pro-name { font-family: var(--serif); font-weight: 400; font-size: 1.1rem; }
+.booking-pro-craft { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); }
+
+.booking-status { padding: 5px 14px; border-radius: 100px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.status-pending { background: var(--orange-subtle); border: 1px solid var(--orange-border); color: var(--orange); }
+.status-confirmed { background: var(--green-subtle); border: 1px solid var(--green-border); color: var(--green); }
+.status-declined { background: var(--red-subtle); border: 1px solid rgba(200,16,46,0.2); color: var(--red); }
+.status-completed { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--gray); }
+
+.booking-details { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.booking-detail { padding: 12px; background: rgba(255,255,255,0.03); border-radius: 10px; }
+.booking-detail-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-muted); margin-bottom: 4px; }
+.booking-detail-value { font-size: 0.9rem; font-weight: 600; }
+
+.empty-state { text-align: center; padding: 80px 20px; }
+.empty-state .icon { font-size: 3rem; opacity: 0.3; margin-bottom: 16px; }
+.empty-state h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 8px; }
+.empty-state p { color: var(--gray); font-size: 0.9rem; margin-bottom: 24px; }
+.empty-state a.cta { display: inline-flex; padding: 12px 28px; background: var(--red); color: var(--white-pure); border-radius: 8px; font-weight: 600; font-size: 0.85rem; transition: var(--transition); box-shadow: 0 4px 20px var(--red-glow); }
+.empty-state a.cta:hover { background: var(--red-hover); transform: translateY(-2px); }
+
+.loading-overlay { position: fixed; inset: 0; z-index: 9999; background: var(--black); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; transition: opacity 0.5s ease; }
+.loading-overlay.hidden { opacity: 0; pointer-events: none; }
+.loading-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--red); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.toast { position: fixed; top: 88px; right: 24px; padding: 14px 24px; background: var(--dark-card); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; font-size: 0.85rem; font-weight: 500; color: var(--white); z-index: 2000; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.toast.show { transform: translateX(0); }
+
+@media (max-width: 700px) {
+  .page { padding: 92px 20px 100px; }
+  nav { padding: 0 20px; }
+  .booking-details { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
+<div class="toast" id="toast"></div>
+<div class="ambient"><div class="orb"></div><div class="orb"></div></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">OFFSHIFT</a>
+  <div class="nav-links">
+    <a href="browse.html">Browse</a>
+    <a href="client-bookings.html" class="active">My Bookings</a>
+  </div>
+  <div class="nav-user">
+    <div class="nav-avatar" id="navAvatar"><span id="navInitials">?</span></div>
+    <button class="nav-signout" id="signOutBtn">Sign Out</button>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <h1>My <em>Bookings</em></h1>
+    <p>Track your booking requests and confirmed reservations.</p>
+  </div>
+
+  <div class="bookings-list" id="bookingsList">
+    <div class="empty-state">
+      <div class="icon">&#128197;</div>
+      <h3>No bookings yet</h3>
+      <p>Browse pros and send your first booking request.</p>
+      <a href="browse.html" class="cta">Browse Pros</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDNOD676C2uh87ggzmSZFNldI2eyI-ECOQ",
+  authDomain: "offshift-charleston.firebaseapp.com",
+  projectId: "offshift-charleston",
+  storageBucket: "offshift-charleston.firebasestorage.app",
+  messagingSenderId: "168641222703",
+  appId: "1:168641222703:web:63c86ca2ce807272a8ceda"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const $ = id => document.getElementById(id);
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+auth.onAuthStateChanged(user => {
+  if (!user) { window.location.href = 'login.html'; return; }
+  const initials = user.displayName ? user.displayName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2) : user.email[0].toUpperCase();
+  $('navInitials').textContent = initials;
+  if (user.photoURL) $('navAvatar').innerHTML = `<img src="${user.photoURL}" alt="">`;
+
+  db.collection('bookings')
+    .where('clientId', '==', user.uid)
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snap => {
+      const bookings = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderBookings(bookings);
+    });
+
+  $('loadingOverlay').classList.add('hidden');
+});
+
+function renderBookings(bookings) {
+  const list = $('bookingsList');
+  if (bookings.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="icon">&#128197;</div><h3>No bookings yet</h3><p>Browse pros and send your first booking request.</p><a href="browse.html" class="cta">Browse Pros</a></div>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  bookings.forEach(b => {
+    const card = document.createElement('div');
+    card.className = 'booking-card';
+    const dateDisplay = formatDate(b.date);
+    const timeDisplay = formatTime(b.time);
+    const durStr = b.duration === 8 ? 'Full day' : `${b.duration} hr${b.duration > 1 ? 's' : ''}`;
+
+    card.innerHTML = `
+      <div class="booking-top">
+        <div class="booking-pro">
+          <div class="booking-pro-photo">${b.proPhoto ? `<img src="${b.proPhoto}" alt="">` : ''}</div>
+          <div>
+            <div class="booking-pro-name">${b.proName || 'Pro'}</div>
+            <div class="booking-pro-craft">${b.proCraft || ''}</div>
+          </div>
+        </div>
+        <div class="booking-status status-${b.status}">${b.status}</div>
+      </div>
+      <div class="booking-details">
+        <div class="booking-detail"><div class="booking-detail-label">Date</div><div class="booking-detail-value">${dateDisplay}</div></div>
+        <div class="booking-detail"><div class="booking-detail-label">Time</div><div class="booking-detail-value">${timeDisplay}</div></div>
+        <div class="booking-detail"><div class="booking-detail-label">Duration</div><div class="booking-detail-value">${durStr}</div></div>
+        <div class="booking-detail"><div class="booking-detail-label">Total</div><div class="booking-detail-value">$${(b.estimatedTotal||0).toLocaleString()}</div></div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function formatDate(d) { if(!d) return '—'; const [y,m,day]=d.split('-'); const dt=new Date(y,m-1,day); return `${DAYS[dt.getDay()]}, ${MONTHS[dt.getMonth()]} ${parseInt(day)}`; }
+function formatTime(t) { if(!t) return '—'; const [h,m]=t.split(':').map(Number); return `${h===0?12:h>12?h-12:h}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`; }
+
+$('signOutBtn').onclick = async () => { await auth.signOut(); window.location.href = 'login.html'; };
+</script>
+</body>
+</html>

@@ -1547,7 +1547,7 @@ function openModal(proId) {
       <div class="modal-specialties">
         ${pro.specialties.map(s => `<span class="modal-spec-tag">${s}</span>`).join('')}
       </div>` : ''}
-    <button class="modal-book-btn" onclick="contactPro('${pro.id}')">Get in Touch</button>
+    <button class="modal-book-btn" onclick="contactPro('${pro.id}')">Request Booking</button>
   `;
 
   const overlay = document.getElementById('modalOverlay');
@@ -1564,13 +1564,12 @@ function closeModal() {
 }
 
 function contactPro(proId) {
-  // For now, prompt sign in or show coming soon
   const user = auth.currentUser;
   if (!user) {
     window.location.href = 'login.html';
     return;
   }
-  alert('Messaging coming soon! We\'ll notify you when it\'s ready.');
+  window.location.href = `book.html?pro=${proId}`;
 }
 
 // ─── Dropdown Logic ───

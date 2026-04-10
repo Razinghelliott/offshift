@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFFSHIFT — Book a Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #0a0a0a;
+  --dark: #111111;
+  --dark-card: #141414;
+  --dark-border: #222222;
+  --white: #f5f5f5;
+  --white-pure: #ffffff;
+  --red: #c8102e;
+  --red-hover: #a00d24;
+  --red-glow: rgba(200, 16, 46, 0.3);
+  --red-subtle: rgba(200, 16, 46, 0.06);
+  --green: #34C759;
+  --green-subtle: rgba(52, 199, 89, 0.1);
+  --green-border: rgba(52, 199, 89, 0.25);
+  --orange: #FF9500;
+  --gray: #888888;
+  --gray-light: #aaaaaa;
+  --gray-dark: #333333;
+  --gray-muted: #666666;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--black); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+
+/* Ambient */
+.ambient { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.ambient .orb { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.08; animation: orbFloat 25s ease-in-out infinite alternate; }
+.ambient .orb:nth-child(1) { width: 700px; height: 700px; background: var(--red); top: -300px; left: -200px; }
+.ambient .orb:nth-child(2) { width: 500px; height: 500px; background: var(--red); bottom: -200px; right: -150px; animation-delay: -8s; }
+@keyframes orbFloat { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(50px,-40px) scale(1.1); } 100% { transform: translate(-30px,25px) scale(0.95); } }
+
+/* Nav */
+nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 48px; height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.nav-logo { font-family: var(--sans); font-weight: 700; font-size: 1.15rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-light); transition: color 0.3s; position: relative; }
+.nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--red); transition: width 0.3s ease; }
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+.nav-user { display: flex; align-items: center; gap: 12px; }
+.nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gray-dark); border: 2px solid var(--red); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--white); overflow: hidden; }
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.nav-signout { font-size: 0.75rem; color: var(--gray); cursor: pointer; transition: color 0.3s; background: none; border: none; font-family: var(--sans); }
+.nav-signout:hover { color: var(--red); }
+
+/* Page */
+.page { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 92px 48px 100px; }
+
+/* Back link */
+.back-link { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--gray); margin-bottom: 32px; transition: color 0.3s; }
+.back-link:hover { color: var(--white); }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Booking layout */
+.book-layout { display: grid; grid-template-columns: 1fr 360px; gap: 40px; align-items: start; }
+
+/* Pro summary card */
+.pro-summary {
+  background: var(--dark-card); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px; padding: 24px; display: flex; gap: 20px; align-items: center; margin-bottom: 28px;
+}
+.pro-summary-photo { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--dark); }
+.pro-summary-photo img { width: 100%; height: 100%; object-fit: cover; }
+.pro-summary-info h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 400; margin-bottom: 4px; }
+.pro-summary-craft { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+.pro-summary-rate { font-size: 0.85rem; color: var(--gray-light); }
+.pro-summary-rate strong { color: var(--white); }
+
+/* Section card */
+.section-card { background: var(--dark-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 28px 32px; margin-bottom: 24px; }
+.section-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+.section-title svg { width: 16px; height: 16px; opacity: 0.8; }
+
+/* Mini calendar */
+.mini-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.mini-cal-month { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; }
+.mini-cal-nav { display: flex; gap: 6px; }
+.mini-cal-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: var(--gray-light); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+.mini-cal-btn:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+.mini-cal-btn svg { width: 14px; height: 14px; }
+
+.mini-cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 2px; text-align: center; }
+.mini-cal-wd { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-muted); padding: 6px 0; }
+.mini-cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.mini-day {
+  aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: var(--transition);
+  border: 1px solid transparent; background: rgba(255,255,255,0.02);
+}
+.mini-day:hover { background: rgba(255,255,255,0.06); }
+.mini-day.empty { cursor: default; background: none; }
+.mini-day.past { opacity: 0.2; cursor: default; }
+.mini-day.today { border-color: var(--red); }
+.mini-day.available { color: var(--green); }
+.mini-day.unavailable { opacity: 0.25; cursor: not-allowed; }
+.mini-day.selected { background: var(--red); color: var(--white-pure); border-color: var(--red); box-shadow: 0 4px 16px var(--red-glow); }
+
+/* Time slots */
+.time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+.time-slot {
+  padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03); text-align: center; cursor: pointer;
+  transition: var(--transition); font-size: 0.82rem; font-weight: 500; color: var(--gray-light);
+}
+.time-slot:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); color: var(--white); }
+.time-slot.selected { background: var(--red-subtle); border-color: rgba(200,16,46,0.3); color: var(--red); }
+.time-slot.unavailable { opacity: 0.3; cursor: not-allowed; }
+.no-slots { text-align: center; padding: 24px; color: var(--gray-muted); font-size: 0.85rem; }
+
+/* Duration selector */
+.duration-options { display: flex; gap: 8px; flex-wrap: wrap; }
+.duration-opt {
+  padding: 10px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03); color: var(--gray-light); font-size: 0.82rem;
+  font-weight: 500; cursor: pointer; transition: var(--transition);
+}
+.duration-opt:hover { background: rgba(255,255,255,0.06); color: var(--white); }
+.duration-opt.selected { background: var(--red-subtle); border-color: rgba(200,16,46,0.3); color: var(--red); }
+
+/* Message textarea */
+.message-input {
+  width: 100%; padding: 14px 16px; min-height: 100px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; color: var(--white); font-family: var(--sans); font-size: 0.9rem;
+  font-weight: 400; outline: none; resize: vertical; line-height: 1.6; transition: var(--transition);
+}
+.message-input::placeholder { color: var(--gray-dark); }
+.message-input:focus { border-color: var(--red); background: rgba(255,255,255,0.06); }
+
+/* Booking summary sidebar */
+.booking-summary {
+  position: sticky; top: 92px;
+  background: var(--dark-card); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px; padding: 28px; overflow: hidden;
+}
+.summary-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
+.summary-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
+.summary-row:last-child { border-bottom: none; }
+.summary-label { color: var(--gray); font-weight: 400; }
+.summary-value { color: var(--white); font-weight: 600; }
+.summary-value.empty { color: var(--gray-muted); font-weight: 400; font-style: italic; }
+
+.summary-total { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; margin-top: 8px; border-top: 2px solid rgba(255,255,255,0.1); }
+.summary-total .label { font-size: 0.9rem; font-weight: 500; color: var(--gray-light); }
+.summary-total .amount { font-size: 1.4rem; font-weight: 700; color: var(--white); }
+.summary-total .amount .dollar { color: var(--red); }
+
+.submit-btn {
+  width: 100%; padding: 16px; margin-top: 20px;
+  background: var(--red); color: var(--white-pure); border: none; border-radius: 12px;
+  font-family: var(--sans); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; cursor: pointer; transition: var(--transition);
+  box-shadow: 0 6px 24px var(--red-glow);
+}
+.submit-btn:hover { background: var(--red-hover); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,16,46,0.4); }
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.submit-note { text-align: center; margin-top: 12px; font-size: 0.72rem; color: var(--gray-muted); line-height: 1.5; }
+
+/* Confirmation overlay */
+.confirmation {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(10,10,10,0.95); backdrop-filter: blur(30px);
+  flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px;
+}
+.confirmation.visible { display: flex; }
+.confirm-icon { font-size: 4rem; margin-bottom: 24px; }
+.confirm-title { font-family: var(--serif); font-size: 2rem; margin-bottom: 12px; }
+.confirm-title em { color: var(--red); font-style: italic; }
+.confirm-text { color: var(--gray-light); font-size: 0.95rem; max-width: 440px; line-height: 1.7; margin-bottom: 32px; }
+.confirm-actions { display: flex; gap: 12px; }
+.confirm-btn {
+  padding: 14px 32px; border-radius: 10px; font-family: var(--sans); font-size: 0.85rem;
+  font-weight: 600; cursor: pointer; transition: var(--transition); border: none;
+}
+.confirm-btn.primary { background: var(--red); color: var(--white-pure); box-shadow: 0 4px 20px var(--red-glow); }
+.confirm-btn.primary:hover { background: var(--red-hover); }
+.confirm-btn.secondary { background: rgba(255,255,255,0.06); color: var(--gray-light); border: 1px solid rgba(255,255,255,0.1); }
+.confirm-btn.secondary:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+
+/* Toast */
+.toast { position: fixed; top: 88px; right: 24px; padding: 14px 24px; background: var(--dark-card); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; font-size: 0.85rem; font-weight: 500; color: var(--white); z-index: 2000; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.toast.success { border-color: rgba(52,199,89,0.3); }
+.toast.error { border-color: rgba(200,16,46,0.3); }
+.toast.show { transform: translateX(0); }
+
+/* Loading */
+.loading-overlay { position: fixed; inset: 0; z-index: 9999; background: var(--black); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; transition: opacity 0.5s ease; }
+.loading-overlay.hidden { opacity: 0; pointer-events: none; }
+.loading-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--red); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 0.85rem; color: var(--gray); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .book-layout { grid-template-columns: 1fr; }
+  .booking-summary { position: static; }
+  .page { padding: 92px 20px 100px; }
+  nav { padding: 0 20px; }
+  .time-slots { grid-template-columns: repeat(2, 1fr); }
+  .pro-summary { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Loading pro details...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="ambient"><div class="orb"></div><div class="orb"></div></div>
+
+<!-- Confirmation -->
+<div class="confirmation" id="confirmation">
+  <div class="confirm-icon">&#10003;</div>
+  <div class="confirm-title">Request <em>Sent</em></div>
+  <div class="confirm-text" id="confirmText">Your booking request has been sent. The pro will review and respond shortly. You'll get a notification once they accept or suggest changes.</div>
+  <div class="confirm-actions">
+    <a href="browse.html" class="confirm-btn secondary">Browse More</a>
+    <a href="client-bookings.html" class="confirm-btn primary">View My Bookings</a>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a href="index.html" class="nav-logo">OFFSHIFT</a>
+  <div class="nav-links">
+    <a href="browse.html">Browse</a>
+  </div>
+  <div class="nav-user">
+    <div class="nav-avatar" id="navAvatar"><span id="navInitials">?</span></div>
+    <button class="nav-signout" id="signOutBtn">Sign Out</button>
+  </div>
+</nav>
+
+<div class="page">
+  <a href="browse.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Browse
+  </a>
+
+  <!-- Pro Summary -->
+  <div class="pro-summary" id="proSummary">
+    <div class="pro-summary-photo" id="proPhoto"></div>
+    <div class="pro-summary-info">
+      <h2 id="proName">Loading...</h2>
+      <div class="pro-summary-craft" id="proCraft"></div>
+      <div class="pro-summary-rate"><strong id="proRate">$0</strong>/hr</div>
+    </div>
+  </div>
+
+  <div class="book-layout">
+    <!-- Left: Booking form -->
+    <div>
+      <!-- Date picker -->
+      <div class="section-card">
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Select a Date
+        </div>
+
+        <div class="mini-cal-header">
+          <div class="mini-cal-month" id="calMonth"></div>
+          <div class="mini-cal-nav">
+            <button class="mini-cal-btn" id="calPrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="mini-cal-btn" id="calNext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="mini-cal-weekdays">
+          <div class="mini-cal-wd">Sun</div><div class="mini-cal-wd">Mon</div><div class="mini-cal-wd">Tue</div>
+          <div class="mini-cal-wd">Wed</div><div class="mini-cal-wd">Thu</div><div class="mini-cal-wd">Fri</div><div class="mini-cal-wd">Sat</div>
+        </div>
+        <div class="mini-cal-days" id="calDays"></div>
+
+        <div id="timeSlotsWrap" style="display:none;">
+          <div class="section-title" style="margin-top: 24px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Select a Time
+          </div>
+          <div class="time-slots" id="timeSlots"></div>
+        </div>
+      </div>
+
+      <!-- Duration -->
+      <div class="section-card">
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Duration
+        </div>
+        <div class="duration-options" id="durationOptions">
+          <button class="duration-opt" data-hrs="1">1 hour</button>
+          <button class="duration-opt selected" data-hrs="2">2 hours</button>
+          <button class="duration-opt" data-hrs="3">3 hours</button>
+          <button class="duration-opt" data-hrs="4">4 hours</button>
+          <button class="duration-opt" data-hrs="5">5 hours</button>
+          <button class="duration-opt" data-hrs="8">Full day</button>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="section-card">
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Message to Pro
+        </div>
+        <textarea class="message-input" id="bookingMessage" placeholder="Tell them about your event, guest count, special requests, dietary needs, etc."></textarea>
+      </div>
+    </div>
+
+    <!-- Right: Summary -->
+    <div class="booking-summary">
+      <div class="summary-title">Booking Summary</div>
+      <div class="summary-row">
+        <span class="summary-label">Pro</span>
+        <span class="summary-value" id="sumPro">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Craft</span>
+        <span class="summary-value" id="sumCraft">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Date</span>
+        <span class="summary-value empty" id="sumDate">Select a date</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Time</span>
+        <span class="summary-value empty" id="sumTime">Select a time</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Duration</span>
+        <span class="summary-value" id="sumDuration">2 hours</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Rate</span>
+        <span class="summary-value" id="sumRate">—</span>
+      </div>
+
+      <div class="summary-total">
+        <span class="label">Estimated Total</span>
+        <span class="amount"><span class="dollar">$</span><span id="sumTotal">0</span></span>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" disabled>Send Booking Request</button>
+      <div class="submit-note">The pro will review your request and confirm. You won't be charged until they accept.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDNOD676C2uh87ggzmSZFNldI2eyI-ECOQ",
+  authDomain: "offshift-charleston.firebaseapp.com",
+  projectId: "offshift-charleston",
+  storageBucket: "offshift-charleston.firebasestorage.app",
+  messagingSenderId: "168641222703",
+  appId: "1:168641222703:web:63c86ca2ce807272a8ceda"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const $ = id => document.getElementById(id);
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+// ─── State ───
+let currentUser = null;
+let proId = null;
+let proData = null;
+let proAvailability = { recurring: [], dateOverrides: {} };
+let calYear, calMonth;
+let selectedDate = null;
+let selectedTime = null;
+let selectedDuration = 2;
+
+// Get pro ID from URL
+const params = new URLSearchParams(window.location.search);
+proId = params.get('pro');
+
+if (!proId) {
+  window.location.href = 'browse.html';
+}
+
+// ─── Auth ───
+auth.onAuthStateChanged(async user => {
+  if (!user) { window.location.href = 'login.html'; return; }
+  currentUser = user;
+
+  const initials = user.displayName ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2) : user.email[0].toUpperCase();
+  $('navInitials').textContent = initials;
+  if (user.photoURL) $('navAvatar').innerHTML = `<img src="${user.photoURL}" alt="">`;
+
+  // Load pro data
+  try {
+    const doc = await db.collection('users').doc(proId).get();
+    if (!doc.exists) {
+      showToast('Pro not found', 'error');
+      setTimeout(() => window.location.href = 'browse.html', 1500);
+      return;
+    }
+    proData = doc.data();
+
+    // Fill pro summary
+    const name = `${proData.name || 'Pro'}${proData.lastInitial ? ' ' + proData.lastInitial + '.' : ''}`;
+    $('proName').textContent = name;
+    $('proCraft').textContent = proData.craft || '';
+    $('proRate').textContent = `$${proData.rate || 0}`;
+    $('sumPro').textContent = name;
+    $('sumCraft').textContent = proData.craft || '—';
+    $('sumRate').textContent = `$${proData.rate || 0}/hr`;
+
+    // Photo
+    const photo = (proData.portfolioPhotos && proData.portfolioPhotos[0] && proData.portfolioPhotos[0].url) || proData.photoURL;
+    if (photo) {
+      $('proPhoto').innerHTML = `<img src="${photo}" alt="">`;
+    }
+
+    // Availability
+    if (proData.availabilityTemplate) {
+      proAvailability.recurring = proData.availabilityTemplate.recurring || [];
+    }
+    if (proData.dateOverrides) {
+      proAvailability.dateOverrides = proData.dateOverrides;
+    }
+
+    updateTotal();
+
+  } catch (err) {
+    console.error('Error loading pro:', err);
+    showToast('Error loading pro details', 'error');
+  }
+
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  renderCalendar();
+  $('loadingOverlay').classList.add('hidden');
+});
+
+// ─── Calendar ───
+function renderCalendar() {
+  $('calMonth').textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  const grid = $('calDays');
+  grid.innerHTML = '';
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'mini-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(calYear, calMonth, d);
+    const dateStr = formatDate(date);
+    const dayOfWeek = date.getDay();
+    const isPast = date < today;
+
+    const el = document.createElement('div');
+    let cls = 'mini-day';
+    if (isPast) { cls += ' past'; }
+    else if (date.getTime() === today.getTime()) { cls += ' today'; }
+
+    if (!isPast) {
+      const avail = isDateAvailable(dateStr, dayOfWeek);
+      if (avail) { cls += ' available'; }
+      else { cls += ' unavailable'; }
+    }
+
+    if (dateStr === selectedDate) cls += ' selected';
+
+    el.className = cls;
+    el.textContent = d;
+
+    if (!isPast && isDateAvailable(dateStr, dayOfWeek)) {
+      el.onclick = () => selectDate(dateStr, dayOfWeek);
+    }
+
+    grid.appendChild(el);
+  }
+}
+
+function isDateAvailable(dateStr, dayOfWeek) {
+  const override = proAvailability.dateOverrides[dateStr];
+  if (override) {
+    return override.type === 'available';
+  }
+  return proAvailability.recurring.some(r => r.dayOfWeek === dayOfWeek);
+}
+
+function getTimeSlots(dateStr, dayOfWeek) {
+  const override = proAvailability.dateOverrides[dateStr];
+  if (override && override.type === 'available') {
+    return [{ start: override.start || '10:00', end: override.end || '18:00' }];
+  }
+  return proAvailability.recurring
+    .filter(r => r.dayOfWeek === dayOfWeek)
+    .map(r => ({ start: r.startTime, end: r.endTime }));
+}
+
+function selectDate(dateStr, dayOfWeek) {
+  selectedDate = dateStr;
+  selectedTime = null;
+  renderCalendar();
+
+  // Generate time slots in 30-min increments
+  const slots = getTimeSlots(dateStr, dayOfWeek);
+  const timeSlotsContainer = $('timeSlots');
+  timeSlotsContainer.innerHTML = '';
+
+  if (slots.length === 0) {
+    timeSlotsContainer.innerHTML = '<div class="no-slots">No availability for this date.</div>';
+  } else {
+    const times = [];
+    slots.forEach(slot => {
+      const [sh, sm] = slot.start.split(':').map(Number);
+      const [eh, em] = slot.end.split(':').map(Number);
+      let current = sh * 60 + sm;
+      const end = eh * 60 + em;
+      while (current < end) {
+        const h = Math.floor(current / 60);
+        const m = current % 60;
+        times.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
+        current += 30;
+      }
+    });
+
+    times.forEach(t => {
+      const btn = document.createElement('div');
+      btn.className = 'time-slot';
+      btn.textContent = formatTime12(t);
+      btn.onclick = () => {
+        selectedTime = t;
+        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+        btn.classList.add('selected');
+        updateSummary();
+      };
+      timeSlotsContainer.appendChild(btn);
+    });
+  }
+
+  $('timeSlotsWrap').style.display = 'block';
+  updateSummary();
+}
+
+function formatDate(date) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+
+function formatDateDisplay(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const date = new Date(y, m - 1, d);
+  return `${DAY_NAMES[date.getDay()]}, ${MONTH_NAMES[date.getMonth()]} ${parseInt(d)}`;
+}
+
+function formatTime12(t) {
+  const [h, m] = t.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+  return `${h12}:${String(m).padStart(2, '0')} ${ampm}`;
+}
+
+$('calPrev').onclick = () => { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); };
+$('calNext').onclick = () => { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); };
+
+// ─── Duration ───
+document.querySelectorAll('.duration-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.duration-opt').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedDuration = parseInt(btn.dataset.hrs);
+    updateSummary();
+  });
+});
+
+// ─── Summary ───
+function updateSummary() {
+  $('sumDate').textContent = selectedDate ? formatDateDisplay(selectedDate) : 'Select a date';
+  $('sumDate').className = 'summary-value' + (selectedDate ? '' : ' empty');
+
+  $('sumTime').textContent = selectedTime ? formatTime12(selectedTime) : 'Select a time';
+  $('sumTime').className = 'summary-value' + (selectedTime ? '' : ' empty');
+
+  $('sumDuration').textContent = selectedDuration === 8 ? 'Full day (8 hrs)' : `${selectedDuration} hour${selectedDuration > 1 ? 's' : ''}`;
+
+  updateTotal();
+
+  // Enable/disable submit
+  $('submitBtn').disabled = !(selectedDate && selectedTime);
+}
+
+function updateTotal() {
+  const rate = proData ? (proData.rate || 0) : 0;
+  const total = rate * selectedDuration;
+  $('sumTotal').textContent = total.toLocaleString();
+}
+
+// ─── Submit Booking ───
+$('submitBtn').addEventListener('click', async () => {
+  if (!selectedDate || !selectedTime || !currentUser || !proId) return;
+
+  $('submitBtn').disabled = true;
+  $('submitBtn').textContent = 'Sending...';
+
+  try {
+    const booking = {
+      clientId: currentUser.uid,
+      clientName: currentUser.displayName || currentUser.email,
+      clientEmail: currentUser.email,
+      clientPhoto: currentUser.photoURL || '',
+      proId: proId,
+      proName: `${proData.name || ''}${proData.lastInitial ? ' ' + proData.lastInitial + '.' : ''}`,
+      proCraft: proData.craft || '',
+      proRate: proData.rate || 0,
+      date: selectedDate,
+      time: selectedTime,
+      duration: selectedDuration,
+      estimatedTotal: (proData.rate || 0) * selectedDuration,
+      message: $('bookingMessage').value.trim(),
+      status: 'pending',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    const ref = await db.collection('bookings').add(booking);
+
+    // Also add a notification for the pro
+    await db.collection('notifications').add({
+      userId: proId,
+      type: 'booking_request',
+      bookingId: ref.id,
+      fromName: currentUser.displayName || currentUser.email,
+      message: `New booking request for ${formatDateDisplay(selectedDate)} at ${formatTime12(selectedTime)}`,
+      read: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    // Show confirmation
+    $('confirmation').classList.add('visible');
+
+  } catch (err) {
+    console.error('Booking error:', err);
+    showToast('Failed to send request — try again', 'error');
+    $('submitBtn').disabled = false;
+    $('submitBtn').textContent = 'Send Booking Request';
+  }
+});
+
+// ─── Sign Out ───
+$('signOutBtn').onclick = async () => { await auth.signOut(); window.location.href = 'login.html'; };
+
+// ─── Toast ───
+function showToast(msg, type) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type ? ' ' + type : '') + ' show';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
