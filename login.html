@@ -749,8 +749,7 @@ function redirectByRole(role, profileComplete) {
   if (!profileComplete) {
     window.location.href = role === 'pro' ? 'pro-profile.html' : 'client-profile.html';
   } else {
-    // For now redirect back to home — replace with dashboard later
-    window.location.href = 'index.html';
+    window.location.href = 'browse.html';
   }
 }
 
@@ -761,8 +760,7 @@ auth.onAuthStateChanged(user => {
       if (doc.exists) {
         const data = doc.data();
         if (data.profileComplete) {
-          // Already has a complete profile — skip to home/dashboard
-          // Uncomment to auto-redirect: window.location.href = 'index.html';
+          window.location.href = 'browse.html';
         }
       }
     });

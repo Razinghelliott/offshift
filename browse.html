@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFFSHIFT — Browse Pros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #0a0a0a;
+  --dark: #111111;
+  --dark-card: #141414;
+  --dark-card-hover: #1a1a1a;
+  --dark-border: #222222;
+  --white: #f5f5f5;
+  --white-pure: #ffffff;
+  --red: #c8102e;
+  --red-hover: #a00d24;
+  --red-glow: rgba(200, 16, 46, 0.3);
+  --red-subtle: rgba(200, 16, 46, 0.06);
+  --gray: #888888;
+  --gray-light: #aaaaaa;
+  --gray-dark: #333333;
+  --gray-muted: #666666;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ===== AMBIENT BACKGROUND ===== */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.08;
+  animation: orbFloat 25s ease-in-out infinite alternate;
+}
+.ambient .orb:nth-child(1) {
+  width: 700px; height: 700px;
+  background: var(--red);
+  top: -300px; left: -200px;
+}
+.ambient .orb:nth-child(2) {
+  width: 500px; height: 500px;
+  background: var(--red);
+  bottom: -200px; right: -150px;
+  animation-delay: -8s;
+}
+.ambient .orb:nth-child(3) {
+  width: 350px; height: 350px;
+  background: #fff;
+  top: 40%; left: 55%;
+  opacity: 0.03;
+  animation-delay: -15s;
+}
+@keyframes orbFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, -40px) scale(1.1); }
+  100% { transform: translate(-30px, 25px) scale(0.95); }
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; width: 100%;
+  z-index: 1000;
+  padding: 0 48px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10,10,10,0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: var(--transition);
+}
+nav.scrolled {
+  background: rgba(10,10,10,0.95);
+  border-bottom-color: rgba(255,255,255,0.08);
+}
+.nav-logo {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+.nav-logo span { color: var(--red); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--red);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--white); }
+.nav-links a.active::after { width: 100%; }
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--gray-dark);
+  border: 2px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--white);
+  overflow: hidden;
+}
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.nav-signout {
+  font-size: 0.75rem;
+  color: var(--gray);
+  cursor: pointer;
+  transition: color 0.3s;
+  background: none;
+  border: none;
+  font-family: var(--sans);
+}
+.nav-signout:hover { color: var(--red); }
+
+/* Mobile nav */
+.nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+.nav-toggle span { width: 24px; height: 1.5px; background: var(--white); transition: all 0.3s; }
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  position: relative;
+  z-index: 1;
+  padding: 140px 48px 0;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.page-header .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(200,16,46,0.1);
+  border: 1px solid rgba(200,16,46,0.2);
+  padding: 7px 18px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.2s forwards;
+}
+.page-header .badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.page-header h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.35s forwards;
+}
+.page-header h1 em { font-style: italic; color: var(--red); }
+.page-header p {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--gray-light);
+  line-height: 1.7;
+  max-width: 550px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.5s forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== STATS BAR ===== */
+.stats-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  padding: 40px 48px 0;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.65s forwards;
+}
+.stat {
+  text-align: center;
+}
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+.stat-value .red { color: var(--red); }
+.stat-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-top: 4px;
+}
+
+/* ===== FILTER BAR ===== */
+.filter-section {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 48px auto 0;
+  padding: 0 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.8s forwards;
+}
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: rgba(20,20,20,0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  flex-wrap: wrap;
+}
+.filter-bar .search-wrap {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.filter-bar .search-icon {
+  color: var(--gray);
+  flex-shrink: 0;
+}
+.filter-bar .search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  outline: none;
+}
+.filter-bar .search-input::placeholder { color: var(--gray-dark); }
+.filter-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,0.08);
+}
+.filter-dropdown {
+  position: relative;
+}
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  color: var(--gray-light);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.filter-btn:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  color: var(--white);
+}
+.filter-btn.active {
+  background: var(--red-subtle);
+  border-color: rgba(200,16,46,0.3);
+  color: var(--red);
+}
+.filter-btn svg {
+  width: 14px; height: 14px;
+  opacity: 0.6;
+}
+.filter-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  display: none;
+  z-index: 100;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.filter-dropdown-menu.open { display: block; }
+.filter-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  color: var(--gray-light);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.filter-dropdown-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--white);
+}
+.filter-dropdown-item.selected {
+  color: var(--red);
+  background: var(--red-subtle);
+}
+
+.active-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  min-height: 0;
+}
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--red-subtle);
+  border: 1px solid rgba(200,16,46,0.2);
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--red);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.filter-tag:hover {
+  background: rgba(200,16,46,0.12);
+}
+.filter-tag svg { width: 12px; height: 12px; }
+
+.results-count {
+  margin-top: 16px;
+  font-size: 0.82rem;
+  color: var(--gray);
+  font-weight: 400;
+}
+.results-count strong { color: var(--white); font-weight: 600; }
+
+/* ===== PRO CARDS GRID ===== */
+.pros-section {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 0 48px 100px;
+}
+.pros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+/* ===== PRO CARD ===== */
+.pro-card {
+  position: relative;
+  background: var(--dark-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+  opacity: 0;
+  animation: cardIn 0.6s ease forwards;
+}
+.pro-card:nth-child(1) { animation-delay: 0.1s; }
+.pro-card:nth-child(2) { animation-delay: 0.2s; }
+.pro-card:nth-child(3) { animation-delay: 0.3s; }
+.pro-card:nth-child(4) { animation-delay: 0.4s; }
+.pro-card:nth-child(5) { animation-delay: 0.5s; }
+.pro-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.pro-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(200,16,46,0.12) 0%, transparent 40%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.pro-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(200,16,46,0.2);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.3),
+    0 0 40px rgba(200,16,46,0.06);
+}
+.pro-card:hover::before { opacity: 1; }
+
+.pro-card-image {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+.pro-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.pro-card:hover .pro-card-image img {
+  transform: scale(1.05);
+}
+.pro-card-image .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(10,10,10,0.9) 100%);
+}
+.pro-card-image .craft-badge {
+  position: absolute;
+  top: 16px; left: 16px;
+  background: rgba(10,10,10,0.75);
+  backdrop-filter: blur(12px);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.1);
+  z-index: 2;
+}
+.pro-card-image .rate-badge {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: var(--red);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--white-pure);
+  z-index: 2;
+  box-shadow: 0 4px 16px rgba(200,16,46,0.4);
+}
+
+.pro-card-body {
+  padding: 20px 24px 24px;
+  position: relative;
+  z-index: 2;
+}
+.pro-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.pro-card-name {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.pro-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.pro-card-rating .stars {
+  display: flex;
+  gap: 2px;
+}
+.pro-card-rating .star {
+  width: 14px; height: 14px;
+  color: #FFB800;
+}
+.pro-card-rating .star.empty { color: var(--gray-dark); }
+.pro-card-rating .rating-text {
+  font-size: 0.78rem;
+  color: var(--gray);
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+.pro-card-bio {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--gray-light);
+  font-weight: 300;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pro-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.pro-card-tag {
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--gray);
+  letter-spacing: 0.03em;
+}
+
+.pro-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.pro-card-availability {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+.pro-card-availability .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #34C759;
+  box-shadow: 0 0 8px rgba(52,199,89,0.4);
+}
+.pro-card-availability .dot.busy {
+  background: #FF9500;
+  box-shadow: 0 0 8px rgba(255,149,0,0.4);
+}
+
+.book-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  background: var(--red);
+  color: var(--white-pure);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 20px rgba(200,16,46,0.25);
+}
+.book-btn:hover {
+  background: var(--red-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(200,16,46,0.4);
+}
+.book-btn svg { width: 14px; height: 14px; }
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+}
+.empty-state .empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+.empty-state h3 {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+  color: var(--gray-light);
+}
+.empty-state p {
+  font-size: 0.9rem;
+  color: var(--gray);
+  font-weight: 300;
+}
+
+/* ===== LOADING SKELETON ===== */
+.skeleton-card {
+  background: var(--dark-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.skeleton-image {
+  width: 100%; height: 220px;
+  background: linear-gradient(110deg, #1a1a1a 25%, #222 37%, #1a1a1a 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease infinite;
+}
+.skeleton-body { padding: 20px 24px 24px; }
+.skeleton-line {
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(110deg, #1a1a1a 25%, #222 37%, #1a1a1a 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease infinite;
+  margin-bottom: 12px;
+}
+.skeleton-line.short { width: 60%; }
+.skeleton-line.medium { width: 80%; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ===== SCROLL TO TOP ===== */
+.scroll-top {
+  position: fixed;
+  bottom: 32px; right: 32px;
+  width: 48px; height: 48px;
+  background: var(--red);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white-pure);
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: var(--transition);
+  box-shadow: 0 4px 24px rgba(200,16,46,0.35);
+}
+.scroll-top.visible { opacity: 1; transform: translateY(0); }
+.scroll-top:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,16,46,0.5); }
+.scroll-top svg { width: 20px; height: 20px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  nav { padding: 0 24px; height: 64px; }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    position: fixed;
+    top: 0; right: -100%;
+    width: 100%; height: 100vh;
+    background: var(--black);
+    flex-direction: column;
+    justify-content: center;
+    gap: 32px;
+    transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 999;
+  }
+  .nav-links.open { right: 0; }
+  .page-header { padding: 120px 24px 0; }
+  .stats-bar { gap: 24px; padding: 32px 24px 0; }
+  .filter-section { padding: 0 24px; }
+  .pros-section { padding: 0 24px 80px; }
+  .pros-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .page-header h1 { font-size: 2rem; }
+  .stats-bar { flex-wrap: wrap; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+  .filter-divider { display: none; }
+  .filter-bar .search-wrap { min-width: unset; }
+}
+
+/* ===== MODAL (Pro Detail) ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.modal-overlay.open { display: flex; opacity: 1; }
+
+.modal {
+  background: #151515;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+.modal-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.06);
+  border: none;
+  border-radius: 50%;
+  color: var(--gray);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+
+.modal-hero {
+  width: 100%; height: 260px;
+  position: relative;
+  overflow: hidden;
+}
+.modal-hero img { width: 100%; height: 100%; object-fit: cover; }
+.modal-hero .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 30%, #151515 100%);
+}
+.modal-body { padding: 0 32px 32px; margin-top: -40px; position: relative; z-index: 1; }
+
+.modal-name {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.modal-craft {
+  font-size: 0.85rem;
+  color: var(--red);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.modal-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.modal-rating .stars { display: flex; gap: 2px; }
+.modal-rating .star { width: 16px; height: 16px; color: #FFB800; }
+.modal-rating .star.empty { color: var(--gray-dark); }
+.modal-rating span { font-size: 0.85rem; color: var(--gray); }
+
+.modal-bio {
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--gray-light);
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+
+.modal-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.modal-detail {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 16px;
+}
+.modal-detail-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 8px;
+}
+.modal-detail-value {
+  font-size: 0.9rem;
+  color: var(--white);
+  font-weight: 500;
+}
+
+.modal-specialties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.modal-spec-tag {
+  padding: 6px 14px;
+  background: var(--red-subtle);
+  border: 1px solid rgba(200,16,46,0.15);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.modal-book-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--red);
+  color: var(--white-pure);
+  border: none;
+  border-radius: 12px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 24px rgba(200,16,46,0.3);
+}
+.modal-book-btn:hover {
+  background: var(--red-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 36px rgba(200,16,46,0.45);
+}
+</style>
+</head>
+<body>
+
+<!-- Ambient -->
+<div class="ambient">
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+</div>
+
+<!-- Nav -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">OFF<span>SHIFT</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="browse.html" class="active">Browse Pros</a>
+    <div class="nav-user" id="navUser" style="display:none;">
+      <div class="nav-avatar" id="navAvatar"></div>
+      <button class="nav-signout" onclick="signOut()">Sign Out</button>
+    </div>
+    <a href="login.html" id="navSignIn" class="nav-cta-link" style="display:none;">Sign In</a>
+  </div>
+  <div class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Header -->
+<header class="page-header">
+  <div class="badge">Charleston's Finest</div>
+  <h1>Discover <em>Extraordinary</em> Talent</h1>
+  <p>Handpicked professionals ready to bring their craft to your next project</p>
+</header>
+
+<!-- Stats -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat">
+    <div class="stat-value" id="statPros">0</div>
+    <div class="stat-label">Active Pros</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value" id="statCrafts">0</div>
+    <div class="stat-label">Unique Crafts</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value"><span class="red" id="statAvg">$0</span>/hr</div>
+    <div class="stat-label">Avg Rate</div>
+  </div>
+</div>
+
+<!-- Filters -->
+<section class="filter-section">
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by name, craft, or specialty...">
+    </div>
+    <div class="filter-divider"></div>
+    <div class="filter-dropdown" id="craftFilter">
+      <button class="filter-btn" onclick="toggleDropdown('craftFilter')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        Craft
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="filter-dropdown-menu" id="craftMenu"></div>
+    </div>
+    <div class="filter-dropdown" id="availFilter">
+      <button class="filter-btn" onclick="toggleDropdown('availFilter')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Availability
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="filter-dropdown-menu" id="availMenu"></div>
+    </div>
+    <div class="filter-dropdown" id="rateFilter">
+      <button class="filter-btn" onclick="toggleDropdown('rateFilter')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Rate
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="filter-dropdown-menu" id="rateMenu"></div>
+    </div>
+  </div>
+  <div class="active-filters" id="activeFilters"></div>
+  <div class="results-count" id="resultsCount"></div>
+</section>
+
+<!-- Pro Cards -->
+<section class="pros-section">
+  <div class="pros-grid" id="prosGrid">
+    <!-- Skeleton loaders -->
+    <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-body"><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div></div>
+    <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-body"><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div></div>
+    <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-body"><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div></div>
+  </div>
+</section>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="proModal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-hero" id="modalHero"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- Scroll to top -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ─── Firebase ───
+const firebaseConfig = {
+  apiKey: "AIzaSyDNOD676C2uh87ggzmSZFNldI2eyI-ECOQ",
+  authDomain: "offshift-charleston.firebaseapp.com",
+  projectId: "offshift-charleston",
+  storageBucket: "offshift-charleston.firebasestorage.app",
+  messagingSenderId: "168641222703",
+  appId: "1:168641222703:web:63c86ca2ce807272a8ceda"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// ─── State ───
+let allPros = [];
+let filteredPros = [];
+let activeFilters = { craft: null, availability: null, rate: null };
+
+// Placeholder photos for pros without one
+const placeholderPhotos = [
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face',
+];
+
+const craftPhotos = {
+  'Chef': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop',
+  'Bartender': 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&h=400&fit=crop',
+  'Photographer': 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=600&h=400&fit=crop',
+  'DJ': 'https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=600&h=400&fit=crop',
+  'Florist': 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=600&h=400&fit=crop',
+  'Musician': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&h=400&fit=crop',
+  'Caterer': 'https://images.unsplash.com/photo-1555244162-803834f70033?w=600&h=400&fit=crop',
+  'Makeup Artist': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=400&fit=crop',
+  'Hair Stylist': 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop',
+  'Event Planner': 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop',
+  'Videographer': 'https://images.unsplash.com/photo-1579566346927-c68383817a25?w=600&h=400&fit=crop',
+  'Baker': 'https://images.unsplash.com/photo-1486427944544-d2c246c4df14?w=600&h=400&fit=crop',
+};
+
+const defaultCraftPhoto = 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop';
+
+// ─── Auth State ───
+auth.onAuthStateChanged(user => {
+  const navUser = document.getElementById('navUser');
+  const navSignIn = document.getElementById('navSignIn');
+  if (user) {
+    navUser.style.display = 'flex';
+    navSignIn.style.display = 'none';
+    const avatar = document.getElementById('navAvatar');
+    if (user.photoURL) {
+      avatar.innerHTML = `<img src="${user.photoURL}" alt="">`;
+    } else {
+      avatar.textContent = (user.displayName || user.email || '?')[0].toUpperCase();
+    }
+  } else {
+    navUser.style.display = 'none';
+    navSignIn.style.display = 'block';
+  }
+});
+
+function signOut() {
+  auth.signOut().then(() => { window.location.href = 'login.html'; });
+}
+
+// ─── Load Pros ───
+async function loadPros() {
+  try {
+    const snapshot = await db.collection('users')
+      .where('role', '==', 'pro')
+      .get();
+
+    allPros = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      // Generate simulated rating for now
+      const rating = (3.5 + Math.random() * 1.5);
+      const reviews = Math.floor(5 + Math.random() * 45);
+      allPros.push({
+        id: doc.id,
+        name: data.displayName || data.firstName || 'Pro',
+        firstName: data.firstName || '',
+        lastInitial: data.lastInitial || '',
+        craft: data.craft || 'Creative',
+        specialties: data.specialties || [],
+        bio: data.bio || 'Passionate professional bringing excellence to every project.',
+        rate: data.rate || 75,
+        photoURL: data.photoURL || null,
+        days: data.days || [],
+        times: data.times || [],
+        rating: Math.round(rating * 10) / 10,
+        reviews: reviews,
+        profileComplete: data.profileComplete
+      });
+    });
+
+    buildFilterMenus();
+    applyFilters();
+    updateStats();
+  } catch (err) {
+    console.error('Error loading pros:', err);
+    document.getElementById('prosGrid').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <h3>Something went wrong</h3>
+        <p>We couldn't load the pros right now. Please try again in a moment.</p>
+      </div>`;
+  }
+}
+
+// ─── Build Filter Menus ───
+function buildFilterMenus() {
+  // Craft filter
+  const crafts = [...new Set(allPros.map(p => p.craft))].sort();
+  const craftMenu = document.getElementById('craftMenu');
+  craftMenu.innerHTML = `<button class="filter-dropdown-item ${!activeFilters.craft ? 'selected' : ''}" onclick="setCraftFilter(null)">All Crafts</button>`;
+  crafts.forEach(c => {
+    craftMenu.innerHTML += `<button class="filter-dropdown-item ${activeFilters.craft === c ? 'selected' : ''}" onclick="setCraftFilter('${c}')">${c}</button>`;
+  });
+
+  // Availability filter
+  const availMenu = document.getElementById('availMenu');
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  availMenu.innerHTML = `<button class="filter-dropdown-item ${!activeFilters.availability ? 'selected' : ''}" onclick="setAvailFilter(null)">Any Day</button>`;
+  days.forEach(d => {
+    availMenu.innerHTML += `<button class="filter-dropdown-item ${activeFilters.availability === d ? 'selected' : ''}" onclick="setAvailFilter('${d}')">${d}</button>`;
+  });
+
+  // Rate filter
+  const rateMenu = document.getElementById('rateMenu');
+  const ranges = [
+    { label: 'Any Rate', value: null },
+    { label: 'Under $50/hr', value: '0-50' },
+    { label: '$50–$100/hr', value: '50-100' },
+    { label: '$100–$200/hr', value: '100-200' },
+    { label: '$200+/hr', value: '200-999' },
+  ];
+  rateMenu.innerHTML = '';
+  ranges.forEach(r => {
+    rateMenu.innerHTML += `<button class="filter-dropdown-item ${activeFilters.rate === r.value ? 'selected' : ''}" onclick="setRateFilter(${r.value ? `'${r.value}'` : 'null'})">${r.label}</button>`;
+  });
+}
+
+// ─── Filter Logic ───
+function setCraftFilter(val) {
+  activeFilters.craft = val;
+  applyFilters();
+  closeAllDropdowns();
+}
+function setAvailFilter(val) {
+  activeFilters.availability = val;
+  applyFilters();
+  closeAllDropdowns();
+}
+function setRateFilter(val) {
+  activeFilters.rate = val;
+  applyFilters();
+  closeAllDropdowns();
+}
+
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+
+  filteredPros = allPros.filter(p => {
+    // Search
+    if (q) {
+      const searchStr = `${p.name} ${p.craft} ${p.specialties.join(' ')} ${p.bio}`.toLowerCase();
+      if (!searchStr.includes(q)) return false;
+    }
+    // Craft
+    if (activeFilters.craft && p.craft !== activeFilters.craft) return false;
+    // Availability
+    if (activeFilters.availability && !p.days.includes(activeFilters.availability)) return false;
+    // Rate
+    if (activeFilters.rate) {
+      const [min, max] = activeFilters.rate.split('-').map(Number);
+      if (p.rate < min || p.rate > max) return false;
+    }
+    return true;
+  });
+
+  renderPros();
+  renderActiveFilters();
+  buildFilterMenus();
+  updateResultsCount();
+}
+
+function renderActiveFilters() {
+  const container = document.getElementById('activeFilters');
+  let html = '';
+  if (activeFilters.craft) {
+    html += `<span class="filter-tag" onclick="setCraftFilter(null)">${activeFilters.craft} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></span>`;
+  }
+  if (activeFilters.availability) {
+    html += `<span class="filter-tag" onclick="setAvailFilter(null)">${activeFilters.availability} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></span>`;
+  }
+  if (activeFilters.rate) {
+    const [min, max] = activeFilters.rate.split('-').map(Number);
+    const label = max >= 999 ? `$${min}+/hr` : `$${min}–$${max}/hr`;
+    html += `<span class="filter-tag" onclick="setRateFilter(null)">${label} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></span>`;
+  }
+  container.innerHTML = html;
+}
+
+function updateResultsCount() {
+  const el = document.getElementById('resultsCount');
+  if (filteredPros.length === allPros.length) {
+    el.innerHTML = `Showing all <strong>${allPros.length}</strong> pros`;
+  } else {
+    el.innerHTML = `<strong>${filteredPros.length}</strong> of ${allPros.length} pros`;
+  }
+}
+
+function updateStats() {
+  document.getElementById('statPros').textContent = allPros.length;
+  const crafts = new Set(allPros.map(p => p.craft));
+  document.getElementById('statCrafts').textContent = crafts.size;
+  if (allPros.length > 0) {
+    const avg = Math.round(allPros.reduce((s, p) => s + p.rate, 0) / allPros.length);
+    document.getElementById('statAvg').textContent = `$${avg}`;
+  }
+}
+
+// ─── Render Cards ───
+function renderPros() {
+  const grid = document.getElementById('prosGrid');
+
+  if (filteredPros.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h3>No pros found</h3>
+        <p>Try adjusting your filters or search terms</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filteredPros.map((pro, i) => {
+    const photo = pro.photoURL || craftPhotos[pro.craft] || defaultCraftPhoto;
+    const stars = renderStars(pro.rating);
+    const availDots = pro.days.length >= 4 ? '' : ' busy';
+    const availText = pro.days.length >= 4 ? 'Available' : pro.days.length > 0 ? `${pro.days.length} days/wk` : 'Limited';
+    const tags = pro.specialties.slice(0, 3).map(s => `<span class="pro-card-tag">${s}</span>`).join('');
+
+    return `
+      <div class="pro-card" onclick="openModal('${pro.id}')" style="animation-delay:${0.1 + i * 0.08}s">
+        <div class="pro-card-image">
+          <img src="${photo}" alt="${pro.name}" loading="lazy" onerror="this.src='${defaultCraftPhoto}'">
+          <div class="overlay"></div>
+          <div class="craft-badge">${pro.craft}</div>
+          <div class="rate-badge">$${pro.rate}/hr</div>
+        </div>
+        <div class="pro-card-body">
+          <div class="pro-card-header">
+            <div class="pro-card-name">${pro.name}</div>
+            <div class="pro-card-rating">
+              <div class="stars">${stars}</div>
+              <span class="rating-text">(${pro.reviews})</span>
+            </div>
+          </div>
+          <div class="pro-card-bio">${pro.bio}</div>
+          ${tags ? `<div class="pro-card-tags">${tags}</div>` : ''}
+          <div class="pro-card-footer">
+            <div class="pro-card-availability">
+              <div class="dot${availDots}"></div>
+              ${availText}
+            </div>
+            <button class="book-btn" onclick="event.stopPropagation(); openModal('${pro.id}')">
+              View Profile
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderStars(rating) {
+  let html = '';
+  for (let i = 1; i <= 5; i++) {
+    if (i <= Math.floor(rating)) {
+      html += '<svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+    } else if (i - 0.5 <= rating) {
+      html += '<svg class="star" viewBox="0 0 24 24"><defs><linearGradient id="half"><stop offset="50%" stop-color="#FFB800"/><stop offset="50%" stop-color="#333"/></linearGradient></defs><polygon fill="url(#half)" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+    } else {
+      html += '<svg class="star empty" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+    }
+  }
+  return html;
+}
+
+// ─── Modal ───
+function openModal(proId) {
+  const pro = allPros.find(p => p.id === proId);
+  if (!pro) return;
+
+  const photo = pro.photoURL || craftPhotos[pro.craft] || defaultCraftPhoto;
+  const stars = renderStars(pro.rating);
+
+  document.getElementById('modalHero').innerHTML = `<img src="${photo}" alt="${pro.name}"><div class="overlay"></div>`;
+  document.getElementById('modalBody').innerHTML = `
+    <h2 class="modal-name">${pro.name}</h2>
+    <div class="modal-craft">${pro.craft}</div>
+    <div class="modal-rating">
+      <div class="stars">${stars}</div>
+      <span>${pro.rating} (${pro.reviews} reviews)</span>
+    </div>
+    <p class="modal-bio">${pro.bio}</p>
+    <div class="modal-details">
+      <div class="modal-detail">
+        <div class="modal-detail-label">Rate</div>
+        <div class="modal-detail-value">$${pro.rate}/hr</div>
+      </div>
+      <div class="modal-detail">
+        <div class="modal-detail-label">Availability</div>
+        <div class="modal-detail-value">${pro.days.length > 0 ? pro.days.join(', ') : 'Contact for availability'}</div>
+      </div>
+      <div class="modal-detail">
+        <div class="modal-detail-label">Preferred Times</div>
+        <div class="modal-detail-value">${pro.times.length > 0 ? pro.times.join(', ') : 'Flexible'}</div>
+      </div>
+      <div class="modal-detail">
+        <div class="modal-detail-label">Reviews</div>
+        <div class="modal-detail-value">${pro.reviews} reviews</div>
+      </div>
+    </div>
+    ${pro.specialties.length > 0 ? `
+      <div class="modal-specialties">
+        ${pro.specialties.map(s => `<span class="modal-spec-tag">${s}</span>`).join('')}
+      </div>` : ''}
+    <button class="modal-book-btn" onclick="contactPro('${pro.id}')">Get in Touch</button>
+  `;
+
+  const overlay = document.getElementById('modalOverlay');
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => overlay.classList.add('open'));
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.remove('open');
+  setTimeout(() => { overlay.style.display = 'none'; }, 300);
+  document.body.style.overflow = '';
+}
+
+function contactPro(proId) {
+  // For now, prompt sign in or show coming soon
+  const user = auth.currentUser;
+  if (!user) {
+    window.location.href = 'login.html';
+    return;
+  }
+  alert('Messaging coming soon! We\'ll notify you when it\'s ready.');
+}
+
+// ─── Dropdown Logic ───
+function toggleDropdown(id) {
+  const menu = document.querySelector(`#${id} .filter-dropdown-menu`);
+  const wasOpen = menu.classList.contains('open');
+  closeAllDropdowns();
+  if (!wasOpen) menu.classList.add('open');
+}
+
+function closeAllDropdowns() {
+  document.querySelectorAll('.filter-dropdown-menu').forEach(m => m.classList.remove('open'));
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.filter-dropdown')) closeAllDropdowns();
+});
+
+// ─── Search debounce ───
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(applyFilters, 250);
+});
+
+// ─── Nav scroll ───
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+  document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 500);
+});
+
+// ─── Keyboard shortcuts ───
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === '/' && !e.target.closest('input')) {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+// ─── Init ───
+loadPros();
+</script>
+</body>
+</html>

@@ -1049,10 +1049,10 @@ function saveProgress() {
       availableDays: profile.days,
       preferredTimes: profile.times,
       profileComplete: false
-    }).then(() => { window.location.href = 'index.html'; })
-      .catch(() => { window.location.href = 'index.html'; });
+    }).then(() => { window.location.href = 'browse.html'; })
+      .catch(() => { window.location.href = 'browse.html'; });
   } else {
-    window.location.href = 'index.html';
+    window.location.href = 'browse.html';
   }
 }
 
