@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFFSHIFT — Pro Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #0a0a0a;
+  --dark: #111111;
+  --dark-card: #141414;
+  --dark-card-hover: #1a1a1a;
+  --dark-border: #222222;
+  --white: #f5f5f5;
+  --white-pure: #ffffff;
+  --red: #c8102e;
+  --red-hover: #a00d24;
+  --red-glow: rgba(200, 16, 46, 0.3);
+  --red-subtle: rgba(200, 16, 46, 0.06);
+  --gray: #888888;
+  --gray-light: #aaaaaa;
+  --gray-dark: #333333;
+  --gray-muted: #666666;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ===== AMBIENT BACKGROUND ===== */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.08;
+  animation: orbFloat 25s ease-in-out infinite alternate;
+}
+.ambient .orb:nth-child(1) {
+  width: 700px; height: 700px;
+  background: var(--red);
+  top: -300px; left: -200px;
+}
+.ambient .orb:nth-child(2) {
+  width: 500px; height: 500px;
+  background: var(--red);
+  bottom: -200px; right: -150px;
+  animation-delay: -8s;
+}
+@keyframes orbFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, -40px) scale(1.1); }
+  100% { transform: translate(-30px, 25px) scale(0.95); }
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; width: 100%;
+  z-index: 1000;
+  padding: 0 48px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: var(--transition);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--red);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--white); }
+.nav-links a.active::after { width: 100%; }
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--gray-dark);
+  border: 2px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--white);
+  overflow: hidden;
+}
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.nav-signout {
+  font-size: 0.75rem;
+  color: var(--gray);
+  cursor: pointer;
+  transition: color 0.3s;
+  background: none;
+  border: none;
+  font-family: var(--sans);
+}
+.nav-signout:hover { color: var(--red); }
+
+/* ===== DASHBOARD LAYOUT ===== */
+.dashboard {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 92px 48px 80px;
+}
+
+.dash-header {
+  margin-bottom: 40px;
+}
+.dash-header h1 {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.dash-header h1 em { font-style: italic; color: var(--red); }
+.dash-header p {
+  color: var(--gray);
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+/* Tab navigation */
+.dash-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding-bottom: 0;
+}
+.dash-tab {
+  padding: 12px 24px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--gray);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--sans);
+  margin-bottom: -1px;
+}
+.dash-tab:hover { color: var(--white); }
+.dash-tab.active {
+  color: var(--white);
+  border-bottom-color: var(--red);
+}
+
+/* Tab panels */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== PROFILE EDITOR LAYOUT ===== */
+.editor-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ===== FORM SECTIONS ===== */
+.form-section {
+  background: var(--dark-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.form-section-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-section-title svg { width: 16px; height: 16px; opacity: 0.8; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group:last-child { margin-bottom: 0; }
+
+.form-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 400;
+  outline: none;
+  transition: var(--transition);
+}
+.form-input::placeholder { color: var(--gray-dark); }
+.form-input:focus {
+  border-color: var(--red);
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
+}
+
+textarea.form-input {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+select.form-input {
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+select.form-input option {
+  background: #1a1a1a;
+  color: var(--white);
+}
+
+/* ===== SPECIALTIES TAGS ===== */
+.specialties-input-wrap {
+  position: relative;
+}
+.specialties-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-height: 36px;
+}
+.specialty-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--red-subtle);
+  border: 1px solid rgba(200,16,46,0.2);
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--white);
+  cursor: default;
+  transition: var(--transition);
+}
+.specialty-tag .remove {
+  width: 14px; height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 0.65rem;
+  line-height: 1;
+}
+.specialty-tag .remove:hover { background: var(--red); }
+
+/* ===== RATE EDITOR ===== */
+.rate-editor {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.rate-display-lg {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  min-width: 120px;
+}
+.rate-display-lg .dollar {
+  color: var(--red);
+  font-weight: 400;
+  font-size: 1.5rem;
+  vertical-align: top;
+  margin-right: 2px;
+}
+.rate-display-lg .per {
+  color: var(--gray);
+  font-size: 0.85rem;
+  font-weight: 400;
+  margin-left: 4px;
+}
+.rate-slider-wrap {
+  flex: 1;
+}
+.rate-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--red), var(--red) var(--val, 50%), rgba(255,255,255,0.1) var(--val, 50%));
+  outline: none;
+}
+.rate-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5), 0 0 0 3px var(--red);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.rate-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.rate-range-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--gray-muted);
+  font-size: 0.72rem;
+  margin-top: 6px;
+}
+
+/* ===== PROFILE PHOTO ===== */
+.profile-photo-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.profile-photo-preview {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.03);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+.profile-photo-preview:hover { border-color: var(--red); }
+.profile-photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+.profile-photo-preview .placeholder {
+  font-size: 2.2rem;
+  opacity: 0.25;
+}
+.profile-photo-preview .overlay-edit {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: 50%;
+}
+.profile-photo-preview:hover .overlay-edit { opacity: 1; }
+.overlay-edit svg { width: 24px; height: 24px; color: var(--white); }
+
+.photo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.photo-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+.photo-btn.primary {
+  background: var(--red);
+  color: var(--white-pure);
+  box-shadow: 0 4px 16px rgba(200,16,46,0.25);
+}
+.photo-btn.primary:hover {
+  background: var(--red-hover);
+  transform: translateY(-1px);
+}
+.photo-btn.secondary {
+  background: rgba(255,255,255,0.06);
+  color: var(--gray-light);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.photo-btn.secondary:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--white);
+}
+.photo-hint {
+  font-size: 0.72rem;
+  color: var(--gray-muted);
+  margin-top: 4px;
+}
+
+/* ===== PORTFOLIO PHOTOS ===== */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.portfolio-slot {
+  position: relative;
+  aspect-ratio: 3/4;
+  border-radius: 14px;
+  border: 2px dashed rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  overflow: hidden;
+}
+.portfolio-slot:hover {
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.04);
+}
+.portfolio-slot.filled {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-style: solid;
+}
+.portfolio-slot.filled:hover {
+  border-color: rgba(200,16,46,0.3);
+}
+.portfolio-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.portfolio-slot .add-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--gray-muted);
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+.portfolio-slot .add-icon svg { width: 24px; height: 24px; opacity: 0.4; }
+.portfolio-slot .slot-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: 14px;
+}
+.portfolio-slot.filled:hover .slot-overlay { opacity: 1; }
+.slot-action {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.slot-action:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
+.slot-action svg { width: 16px; height: 16px; color: var(--white); }
+
+/* ===== LIVE CARD PREVIEW ===== */
+.preview-sticky {
+  position: sticky;
+  top: 92px;
+}
+.preview-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Reuse exact card styles from browse.html */
+.preview-card {
+  background: var(--dark-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: var(--transition);
+}
+.preview-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(200,16,46,0.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(200,16,46,0.06);
+}
+
+.preview-card-image {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: var(--dark);
+}
+.preview-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.preview-card-image .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(10,10,10,0.9) 100%);
+}
+.preview-card-image .craft-badge {
+  position: absolute;
+  top: 16px; left: 16px;
+  background: rgba(10,10,10,0.75);
+  backdrop-filter: blur(12px);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.1);
+  z-index: 2;
+}
+.preview-card-image .rate-badge {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: var(--red);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--white-pure);
+  z-index: 2;
+  box-shadow: 0 4px 16px rgba(200,16,46,0.4);
+}
+.preview-card-image .empty-photo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-muted);
+  gap: 8px;
+}
+.preview-card-image .empty-photo svg { width: 40px; height: 40px; opacity: 0.3; }
+.preview-card-image .empty-photo span { font-size: 0.75rem; }
+
+.preview-card-body {
+  padding: 20px 24px 24px;
+}
+.preview-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.preview-card-name {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.preview-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.preview-card-rating .stars { display: flex; gap: 2px; }
+.preview-card-rating .star { width: 14px; height: 14px; color: #FFB800; }
+.preview-card-rating .rating-text {
+  font-size: 0.78rem;
+  color: var(--gray);
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+.preview-card-bio {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--gray-light);
+  font-weight: 300;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.preview-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.preview-card-tag {
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--gray);
+  letter-spacing: 0.03em;
+}
+
+.preview-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.preview-card-availability {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+.preview-card-availability .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #34C759;
+  box-shadow: 0 0 8px rgba(52,199,89,0.4);
+}
+
+.preview-book-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  background: var(--red);
+  color: var(--white-pure);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: default;
+  box-shadow: 0 4px 20px rgba(200,16,46,0.25);
+}
+
+/* ===== SAVE BAR ===== */
+.save-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 999;
+  padding: 16px 48px;
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+.save-bar.visible { transform: translateY(0); }
+.save-status {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-right: auto;
+}
+.save-status.saving { color: var(--red); }
+.save-status.saved { color: #34C759; }
+
+.btn-save {
+  padding: 12px 32px;
+  background: var(--red);
+  color: var(--white-pure);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 20px rgba(200,16,46,0.3);
+}
+.btn-save:hover {
+  background: var(--red-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(200,16,46,0.4);
+}
+.btn-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-discard {
+  padding: 12px 24px;
+  background: rgba(255,255,255,0.06);
+  color: var(--gray-light);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-discard:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--white);
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  top: 88px; right: 24px;
+  padding: 14px 24px;
+  background: var(--dark-card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--white);
+  z-index: 2000;
+  transform: translateX(120%);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.toast.success { border-color: rgba(52,199,89,0.3); }
+.toast.error { border-color: rgba(200,16,46,0.3); }
+.toast.show { transform: translateX(0); }
+
+/* ===== LOADING STATE ===== */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  transition: opacity 0.5s ease;
+}
+.loading-overlay.hidden { opacity: 0; pointer-events: none; }
+.loading-spinner {
+  width: 40px; height: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-size: 0.85rem;
+  color: var(--gray);
+  font-weight: 400;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .editor-grid { grid-template-columns: 1fr; }
+  .preview-sticky { position: static; }
+  .dashboard { padding: 92px 20px 80px; }
+  nav { padding: 0 20px; }
+  .form-row { grid-template-columns: 1fr; }
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .profile-photo-section { flex-direction: column; text-align: center; }
+  .rate-editor { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Loading your dashboard...</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Ambient -->
+<div class="ambient">
+  <div class="orb"></div>
+  <div class="orb"></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a href="index.html" class="nav-logo">OFFSHIFT</a>
+  <div class="nav-links">
+    <a href="browse.html">Browse</a>
+    <a href="pro-dashboard.html" class="active">Dashboard</a>
+  </div>
+  <div class="nav-user">
+    <div class="nav-avatar" id="navAvatar">
+      <span id="navInitials">?</span>
+    </div>
+    <button class="nav-signout" id="signOutBtn">Sign Out</button>
+  </div>
+</nav>
+
+<!-- Dashboard -->
+<div class="dashboard">
+  <div class="dash-header">
+    <h1>Your <em>Dashboard</em></h1>
+    <p>Edit your profile, manage photos, and see how clients see you.</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="dash-tabs">
+    <button class="dash-tab active" data-tab="profile">Profile</button>
+    <button class="dash-tab" data-tab="photos">Photos</button>
+    <button class="dash-tab" data-tab="preview">Preview</button>
+  </div>
+
+  <!-- ========== PROFILE TAB ========== -->
+  <div class="tab-panel active" id="tab-profile">
+    <div class="editor-grid">
+      <div class="editor-forms">
+
+        <!-- Profile Photo -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+            Profile Photo
+          </div>
+          <div class="profile-photo-section">
+            <div class="profile-photo-preview" id="profilePhotoPreview" onclick="document.getElementById('profilePhotoInput').click()">
+              <span class="placeholder" id="profilePhotoPlaceholder">&#128247;</span>
+              <img id="profilePhotoImg" style="display:none;" alt="Profile">
+              <div class="overlay-edit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </div>
+            </div>
+            <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
+            <div class="photo-actions">
+              <button class="photo-btn primary" onclick="document.getElementById('profilePhotoInput').click()">Upload Photo</button>
+              <button class="photo-btn secondary" id="removeProfilePhoto" style="display:none;">Remove</button>
+              <div class="photo-hint">JPG or PNG. Max 5MB.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Basic Info -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Basic Info
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-input" id="inputName" placeholder="Your first name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Initial</label>
+              <input type="text" class="form-input" id="inputLastInitial" placeholder="e.g. S" maxlength="1">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Craft</label>
+            <select class="form-input" id="inputCraft">
+              <option value="">Select your craft</option>
+              <option value="Private Chef">Private Chef</option>
+              <option value="Bartender">Bartender</option>
+              <option value="Live Music">Live Music</option>
+              <option value="Photographer">Photographer</option>
+              <option value="Florist">Florist</option>
+              <option value="DJ">DJ</option>
+              <option value="Event Planner">Event Planner</option>
+              <option value="Massage Therapist">Massage Therapist</option>
+              <option value="Stylist">Stylist</option>
+              <option value="Makeup Artist">Makeup Artist</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bio</label>
+            <textarea class="form-input" id="inputBio" placeholder="Tell clients about your craft, experience, and what makes you unique..." maxlength="300"></textarea>
+            <div style="text-align: right; margin-top: 6px; font-size: 0.7rem; color: var(--gray-muted);">
+              <span id="bioCount">0</span>/300
+            </div>
+          </div>
+        </div>
+
+        <!-- Specialties -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Specialties
+          </div>
+          <div class="specialties-list" id="specialtiesList"></div>
+          <div class="specialties-input-wrap">
+            <input type="text" class="form-input" id="inputSpecialty" placeholder="Type a specialty and press Enter (e.g. Italian, Cocktails)">
+          </div>
+          <div style="margin-top: 8px; font-size: 0.7rem; color: var(--gray-muted);">
+            Press Enter to add. Up to 6 specialties.
+          </div>
+        </div>
+
+        <!-- Rate -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Hourly Rate
+          </div>
+          <div class="rate-editor">
+            <div class="rate-display-lg">
+              <span class="dollar">$</span><span id="rateValue">75</span><span class="per">/hr</span>
+            </div>
+            <div class="rate-slider-wrap">
+              <input type="range" class="rate-slider" id="rateSlider" min="25" max="500" value="75" step="5">
+              <div class="rate-range-labels">
+                <span>$25</span>
+                <span>$500</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Live Preview -->
+      <div class="preview-sticky">
+        <div class="preview-label">LIVE PREVIEW</div>
+        <div class="preview-card" id="previewCard">
+          <div class="preview-card-image">
+            <div class="empty-photo" id="previewEmptyPhoto">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>Add a photo</span>
+            </div>
+            <img id="previewImg" style="display:none;" alt="Preview">
+            <div class="overlay"></div>
+            <div class="craft-badge" id="previewCraft">YOUR CRAFT</div>
+            <div class="rate-badge" id="previewRate">$75/hr</div>
+          </div>
+          <div class="preview-card-body">
+            <div class="preview-card-header">
+              <div class="preview-card-name" id="previewName">Your Name</div>
+              <div class="preview-card-rating">
+                <div class="stars">
+                  <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <span class="rating-text">New</span>
+              </div>
+            </div>
+            <div class="preview-card-bio" id="previewBio">Your bio will appear here...</div>
+            <div class="preview-card-tags" id="previewTags"></div>
+            <div class="preview-card-footer">
+              <div class="preview-card-availability">
+                <div class="dot"></div>
+                Available
+              </div>
+              <div class="preview-book-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Request
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PHOTOS TAB ========== -->
+  <div class="tab-panel" id="tab-photos">
+    <div class="editor-grid">
+      <div class="editor-forms">
+        <div class="form-section">
+          <div class="form-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Portfolio Photos
+          </div>
+          <p style="color: var(--gray); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.6;">
+            Upload up to 6 photos that showcase your work. The first photo will be your card cover image on the browse page.
+          </p>
+          <div class="portfolio-grid" id="portfolioGrid">
+            <!-- 6 slots rendered by JS -->
+          </div>
+          <input type="file" id="portfolioInput" accept="image/*" style="display:none;">
+        </div>
+      </div>
+
+      <!-- Preview in photos tab too -->
+      <div class="preview-sticky">
+        <div class="preview-label">CARD PREVIEW</div>
+        <div id="previewCardPhotos"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PREVIEW TAB ========== -->
+  <div class="tab-panel" id="tab-preview">
+    <div style="max-width: 400px; margin: 0 auto;">
+      <div class="preview-label">HOW CLIENTS SEE YOU</div>
+      <div id="previewCardFull"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Save Bar -->
+<div class="save-bar" id="saveBar">
+  <div class="save-status" id="saveStatus"></div>
+  <button class="btn-discard" id="discardBtn">Discard Changes</button>
+  <button class="btn-save" id="saveBtn">Save Changes</button>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+<script>
+// ─── Firebase Config ───
+const firebaseConfig = {
+  apiKey: "AIzaSyDNOD676C2uh87ggzmSZFNldI2eyI-ECOQ",
+  authDomain: "offshift-charleston.firebaseapp.com",
+  projectId: "offshift-charleston",
+  storageBucket: "offshift-charleston.firebasestorage.app",
+  messagingSenderId: "168641222703",
+  appId: "1:168641222703:web:63c86ca2ce807272a8ceda"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+// ─── State ───
+let currentUser = null;
+let originalProfile = {};
+let profile = {
+  name: '',
+  lastInitial: '',
+  craft: '',
+  specialties: [],
+  bio: '',
+  rate: 75,
+  photoURL: '',
+  portfolioPhotos: []
+};
+let hasChanges = false;
+let uploadingSlot = -1;
+
+// ─── DOM Refs ───
+const $ = id => document.getElementById(id);
+const loadingOverlay = $('loadingOverlay');
+const toast = $('toast');
+const saveBar = $('saveBar');
+const saveBtn = $('saveBtn');
+const discardBtn = $('discardBtn');
+const saveStatus = $('saveStatus');
+
+// ─── Auth Gate ───
+auth.onAuthStateChanged(async user => {
+  if (!user) {
+    window.location.href = 'login.html';
+    return;
+  }
+  currentUser = user;
+
+  // Set nav avatar
+  const initials = user.displayName
+    ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2)
+    : user.email[0].toUpperCase();
+  $('navInitials').textContent = initials;
+  if (user.photoURL) {
+    $('navAvatar').innerHTML = `<img src="${user.photoURL}" alt="Avatar">`;
+  }
+
+  // Load profile from Firestore
+  try {
+    const doc = await db.collection('users').doc(user.uid).get();
+    if (doc.exists) {
+      const data = doc.data();
+      profile = {
+        name: data.name || data.displayName || '',
+        lastInitial: data.lastInitial || '',
+        craft: data.craft || '',
+        specialties: data.specialties || [],
+        bio: data.bio || '',
+        rate: data.rate || 75,
+        photoURL: data.photoURL || user.photoURL || '',
+        portfolioPhotos: data.portfolioPhotos || []
+      };
+    } else {
+      // New user — seed from auth
+      profile.name = user.displayName ? user.displayName.split(' ')[0] : '';
+      profile.lastInitial = user.displayName ? user.displayName.split(' ').pop()[0] : '';
+      profile.photoURL = user.photoURL || '';
+    }
+    originalProfile = JSON.parse(JSON.stringify(profile));
+    populateForm();
+    updatePreview();
+    renderPortfolioGrid();
+  } catch (err) {
+    console.error('Error loading profile:', err);
+    showToast('Failed to load profile', 'error');
+  }
+
+  loadingOverlay.classList.add('hidden');
+});
+
+// ─── Populate Form ───
+function populateForm() {
+  $('inputName').value = profile.name;
+  $('inputLastInitial').value = profile.lastInitial;
+  $('inputCraft').value = profile.craft;
+  $('inputBio').value = profile.bio;
+  $('bioCount').textContent = profile.bio.length;
+  $('rateSlider').value = profile.rate;
+  $('rateValue').textContent = profile.rate;
+  updateSliderFill();
+
+  // Profile photo
+  if (profile.photoURL) {
+    $('profilePhotoImg').src = profile.photoURL;
+    $('profilePhotoImg').style.display = 'block';
+    $('profilePhotoPlaceholder').style.display = 'none';
+    $('removeProfilePhoto').style.display = 'block';
+  }
+
+  // Specialties
+  renderSpecialties();
+}
+
+// ─── Specialties ───
+function renderSpecialties() {
+  const list = $('specialtiesList');
+  list.innerHTML = '';
+  profile.specialties.forEach((s, i) => {
+    const tag = document.createElement('div');
+    tag.className = 'specialty-tag';
+    tag.innerHTML = `${s}<span class="remove" onclick="removeSpecialty(${i})">✕</span>`;
+    list.appendChild(tag);
+  });
+}
+
+function removeSpecialty(index) {
+  profile.specialties.splice(index, 1);
+  renderSpecialties();
+  updatePreview();
+  markChanged();
+}
+
+$('inputSpecialty').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const val = e.target.value.trim();
+    if (val && profile.specialties.length < 6 && !profile.specialties.includes(val)) {
+      profile.specialties.push(val);
+      renderSpecialties();
+      updatePreview();
+      markChanged();
+    }
+    e.target.value = '';
+  }
+});
+
+// ─── Form Input Listeners ───
+$('inputName').addEventListener('input', e => {
+  profile.name = e.target.value;
+  updatePreview();
+  markChanged();
+});
+$('inputLastInitial').addEventListener('input', e => {
+  profile.lastInitial = e.target.value.toUpperCase().slice(0, 1);
+  e.target.value = profile.lastInitial;
+  updatePreview();
+  markChanged();
+});
+$('inputCraft').addEventListener('change', e => {
+  profile.craft = e.target.value;
+  updatePreview();
+  markChanged();
+});
+$('inputBio').addEventListener('input', e => {
+  profile.bio = e.target.value;
+  $('bioCount').textContent = e.target.value.length;
+  updatePreview();
+  markChanged();
+});
+
+// ─── Rate Slider ───
+const rateSlider = $('rateSlider');
+rateSlider.addEventListener('input', e => {
+  profile.rate = parseInt(e.target.value);
+  $('rateValue').textContent = profile.rate;
+  updateSliderFill();
+  updatePreview();
+  markChanged();
+});
+
+function updateSliderFill() {
+  const pct = ((profile.rate - 25) / (500 - 25)) * 100;
+  rateSlider.style.setProperty('--val', pct + '%');
+}
+updateSliderFill();
+
+// ─── Profile Photo Upload ───
+$('profilePhotoInput').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('Image must be under 5MB', 'error');
+    return;
+  }
+
+  // Show instant preview
+  const reader = new FileReader();
+  reader.onload = ev => {
+    $('profilePhotoImg').src = ev.target.result;
+    $('profilePhotoImg').style.display = 'block';
+    $('profilePhotoPlaceholder').style.display = 'none';
+    $('removeProfilePhoto').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+
+  // Upload to Firebase Storage
+  try {
+    showToast('Uploading photo...', '');
+    const ref = storage.ref(`users/${currentUser.uid}/profile.${file.name.split('.').pop()}`);
+    await ref.put(file);
+    const url = await ref.getDownloadURL();
+    profile.photoURL = url;
+    updatePreview();
+    markChanged();
+    showToast('Photo uploaded', 'success');
+  } catch (err) {
+    console.error('Upload error:', err);
+    showToast('Upload failed — try again', 'error');
+  }
+});
+
+$('removeProfilePhoto').addEventListener('click', () => {
+  profile.photoURL = '';
+  $('profilePhotoImg').style.display = 'none';
+  $('profilePhotoPlaceholder').style.display = 'block';
+  $('removeProfilePhoto').style.display = 'none';
+  updatePreview();
+  markChanged();
+});
+
+// ─── Portfolio Photos ───
+function renderPortfolioGrid() {
+  const grid = $('portfolioGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    const photo = profile.portfolioPhotos[i];
+    const slot = document.createElement('div');
+    slot.className = 'portfolio-slot' + (photo ? ' filled' : '');
+
+    if (photo) {
+      slot.innerHTML = `
+        <img src="${photo.url}" alt="Portfolio ${i+1}">
+        <div class="slot-overlay">
+          <div class="slot-action" onclick="event.stopPropagation(); removePortfolioPhoto(${i})" title="Remove">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </div>
+        </div>
+      `;
+      // Enable drag reordering later
+    } else {
+      slot.innerHTML = `
+        <div class="add-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Photo
+        </div>
+      `;
+      slot.onclick = () => {
+        uploadingSlot = i;
+        $('portfolioInput').click();
+      };
+    }
+    grid.appendChild(slot);
+  }
+}
+
+$('portfolioInput').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('Image must be under 5MB', 'error');
+    return;
+  }
+
+  try {
+    showToast('Uploading...', '');
+    const ts = Date.now();
+    const ref = storage.ref(`users/${currentUser.uid}/portfolio/${ts}_${file.name}`);
+    await ref.put(file);
+    const url = await ref.getDownloadURL();
+
+    const photoObj = { url, uploadedAt: ts, order: uploadingSlot };
+
+    // Insert or append
+    if (uploadingSlot < profile.portfolioPhotos.length) {
+      profile.portfolioPhotos.splice(uploadingSlot, 0, photoObj);
+      if (profile.portfolioPhotos.length > 6) profile.portfolioPhotos = profile.portfolioPhotos.slice(0, 6);
+    } else {
+      profile.portfolioPhotos.push(photoObj);
+    }
+
+    renderPortfolioGrid();
+    updatePreview();
+    markChanged();
+    showToast('Photo added', 'success');
+  } catch (err) {
+    console.error('Portfolio upload error:', err);
+    showToast('Upload failed', 'error');
+  }
+  e.target.value = '';
+});
+
+function removePortfolioPhoto(index) {
+  profile.portfolioPhotos.splice(index, 1);
+  renderPortfolioGrid();
+  updatePreview();
+  markChanged();
+}
+
+// ─── Live Preview Update ───
+function updatePreview() {
+  // Name
+  const displayName = profile.name
+    ? `${profile.name}${profile.lastInitial ? ' ' + profile.lastInitial + '.' : ''}`
+    : 'Your Name';
+  $('previewName').textContent = displayName;
+
+  // Craft badge
+  $('previewCraft').textContent = profile.craft || 'YOUR CRAFT';
+
+  // Rate
+  $('previewRate').textContent = `$${profile.rate}/hr`;
+
+  // Bio
+  $('previewBio').textContent = profile.bio || 'Your bio will appear here...';
+
+  // Tags
+  const tagsContainer = $('previewTags');
+  tagsContainer.innerHTML = '';
+  profile.specialties.forEach(s => {
+    const tag = document.createElement('div');
+    tag.className = 'preview-card-tag';
+    tag.textContent = s;
+    tagsContainer.appendChild(tag);
+  });
+
+  // Card image — use first portfolio photo, then profile photo
+  const cardPhoto = (profile.portfolioPhotos[0] && profile.portfolioPhotos[0].url) || profile.photoURL;
+  if (cardPhoto) {
+    $('previewImg').src = cardPhoto;
+    $('previewImg').style.display = 'block';
+    $('previewEmptyPhoto').style.display = 'none';
+  } else {
+    $('previewImg').style.display = 'none';
+    $('previewEmptyPhoto').style.display = 'flex';
+  }
+
+  // Mirror into secondary preview containers
+  clonePreview('previewCardPhotos');
+  clonePreview('previewCardFull');
+}
+
+function clonePreview(targetId) {
+  const target = document.getElementById(targetId);
+  if (target) {
+    target.innerHTML = $('previewCard').outerHTML;
+    // Remove duplicate IDs to avoid conflicts
+    target.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  }
+}
+
+// ─── Tab Navigation ───
+document.querySelectorAll('.dash-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    // Refresh previews when switching to those tabs
+    updatePreview();
+  });
+});
+
+// ─── Change Tracking ───
+function markChanged() {
+  hasChanges = true;
+  saveBar.classList.add('visible');
+  saveStatus.textContent = 'Unsaved changes';
+  saveStatus.className = 'save-status';
+}
+
+// ─── Save ───
+saveBtn.addEventListener('click', async () => {
+  if (!currentUser) return;
+  saveBtn.disabled = true;
+  saveStatus.textContent = 'Saving...';
+  saveStatus.className = 'save-status saving';
+
+  try {
+    await db.collection('users').doc(currentUser.uid).set({
+      name: profile.name,
+      lastInitial: profile.lastInitial,
+      craft: profile.craft,
+      specialties: profile.specialties,
+      bio: profile.bio,
+      rate: profile.rate,
+      photoURL: profile.photoURL,
+      portfolioPhotos: profile.portfolioPhotos.map(p => ({ url: p.url, uploadedAt: p.uploadedAt, order: p.order })),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    originalProfile = JSON.parse(JSON.stringify(profile));
+    hasChanges = false;
+    saveStatus.textContent = 'All changes saved';
+    saveStatus.className = 'save-status saved';
+    showToast('Profile saved', 'success');
+
+    setTimeout(() => {
+      if (!hasChanges) saveBar.classList.remove('visible');
+    }, 2000);
+  } catch (err) {
+    console.error('Save error:', err);
+    showToast('Failed to save — try again', 'error');
+    saveStatus.textContent = 'Save failed';
+    saveStatus.className = 'save-status error';
+  }
+  saveBtn.disabled = false;
+});
+
+// ─── Discard ───
+discardBtn.addEventListener('click', () => {
+  profile = JSON.parse(JSON.stringify(originalProfile));
+  populateForm();
+  updatePreview();
+  renderPortfolioGrid();
+  hasChanges = false;
+  saveBar.classList.remove('visible');
+  showToast('Changes discarded', '');
+});
+
+// ─── Sign Out ───
+$('signOutBtn').addEventListener('click', async () => {
+  if (hasChanges && !confirm('You have unsaved changes. Leave anyway?')) return;
+  await auth.signOut();
+  window.location.href = 'login.html';
+});
+
+// ─── Toast ───
+function showToast(message, type) {
+  toast.textContent = message;
+  toast.className = 'toast' + (type ? ' ' + type : '') + ' show';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ─── Warn on leave ───
+window.addEventListener('beforeunload', e => {
+  if (hasChanges) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+</script>
+</body>
+</html>
