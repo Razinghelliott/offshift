@@ -208,17 +208,83 @@ nav.scrolled {
   justify-content: center;
   overflow: hidden;
 }
-.hero-bg {
+.hero-carousel {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background:
-    linear-gradient(180deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.1) 40%, rgba(10,10,10,0.7) 80%, var(--black) 100%),
-    url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80') center/cover no-repeat;
-  transform: scale(1.1);
-  animation: heroZoom 20s ease-in-out infinite alternate;
 }
-@keyframes heroZoom { from { transform: scale(1.1); } to { transform: scale(1.0); } }
+.hero-slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+.hero-slide.active {
+  opacity: 1;
+  animation: kenBurns 8s ease-in-out forwards;
+}
+.hero-slide.prev {
+  opacity: 0;
+}
+@keyframes kenBurns {
+  0% { transform: scale(1.0); }
+  100% { transform: scale(1.12); }
+}
+.hero-gradient {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(180deg, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.1) 30%, rgba(10,10,10,0.65) 75%, var(--black) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+/* Carousel indicators */
+.hero-indicators {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 3.2s forwards;
+}
+.hero-dot {
+  width: 32px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: all 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+.hero-dot::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%; width: 0%;
+  background: var(--red);
+  border-radius: 2px;
+  transition: none;
+}
+.hero-dot.active::after {
+  width: 100%;
+  transition: width 7s linear;
+}
+.hero-dot:hover {
+  background: rgba(255,255,255,0.35);
+}
+@media (max-width: 600px) {
+  .hero-indicators { bottom: 70px; gap: 8px; }
+  .hero-dot { width: 24px; }
+}
 
 .hero-overlay {
   position: absolute;
@@ -325,6 +391,7 @@ nav.scrolled {
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1079,7 +1146,14 @@ footer {
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-carousel" id="heroCarousel">
+    <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1920&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=1920&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1920&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=1920&q=80')"></div>
+  </div>
+  <div class="hero-gradient"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-badge">Now in Beta &mdash; Charleston, SC</div>
@@ -1089,6 +1163,13 @@ footer {
       <a href="browse.html" class="btn btn-primary">Browse Pros</a>
       <a href="login.html" class="btn btn-secondary">Sign In</a>
     </div>
+  </div>
+  <div class="hero-indicators" id="heroIndicators">
+    <div class="hero-dot active" data-slide="0"></div>
+    <div class="hero-dot" data-slide="1"></div>
+    <div class="hero-dot" data-slide="2"></div>
+    <div class="hero-dot" data-slide="3"></div>
+    <div class="hero-dot" data-slide="4"></div>
   </div>
   <div class="hero-scroll">
     <span>Scroll</span>
@@ -1571,6 +1652,64 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+// ─── Hero Carousel ───
+(function() {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  if (slides.length === 0) return;
+
+  let current = 0;
+  let timer = null;
+  const INTERVAL = 7000; // 7s per slide
+
+  function goTo(index) {
+    // Remove active from current
+    slides[current].classList.remove('active');
+    slides[current].classList.add('prev');
+    dots[current].classList.remove('active');
+
+    // Clear prev class after fade
+    const prevIndex = current;
+    setTimeout(() => slides[prevIndex].classList.remove('prev'), 1800);
+
+    // Activate new slide
+    current = index;
+    slides[current].style.transform = 'scale(1.0)'; // reset for Ken Burns restart
+    void slides[current].offsetWidth; // force reflow
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  function next() {
+    goTo((current + 1) % slides.length);
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, INTERVAL);
+  }
+
+  // Dot clicks
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const target = parseInt(dot.dataset.slide);
+      if (target === current) return;
+      goTo(target);
+      startTimer(); // reset timer on manual navigation
+    });
+  });
+
+  // Preload all images
+  slides.forEach(slide => {
+    const url = slide.style.backgroundImage.replace(/url\(['"]?(.+?)['"]?\)/, '$1');
+    const img = new Image();
+    img.src = url;
+  });
+
+  // Start auto-advance after loader finishes
+  setTimeout(startTimer, 3000);
+})();
 </script>
 </body>
 </html>
