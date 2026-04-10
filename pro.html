@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFFSHIFT — Pro Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --black: #0a0a0a; --dark: #111; --dark-card: #141414; --dark-border: #222;
+  --white: #f5f5f5; --white-pure: #fff;
+  --red: #c8102e; --red-hover: #a00d24; --red-glow: rgba(200,16,46,0.3); --red-subtle: rgba(200,16,46,0.06);
+  --green: #34C759; --green-subtle: rgba(52,199,89,0.1);
+  --gray: #888; --gray-light: #aaa; --gray-dark: #333; --gray-muted: #666;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --radius: 16px; --radius-sm: 10px;
+  --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--black); color: var(--white); -webkit-font-smoothing: antialiased; min-height: 100vh; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+.ambient { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.ambient .orb { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.08; animation: orbFloat 25s ease-in-out infinite alternate; }
+.ambient .orb:nth-child(1) { width: 700px; height: 700px; background: var(--red); top: -300px; left: -200px; }
+.ambient .orb:nth-child(2) { width: 500px; height: 500px; background: var(--red); bottom: -200px; right: -150px; animation-delay: -8s; }
+@keyframes orbFloat { 0%{transform:translate(0,0)scale(1)}50%{transform:translate(50px,-40px)scale(1.1)}100%{transform:translate(-30px,25px)scale(0.95)} }
+
+nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 48px; height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.92); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.nav-logo { font-family: var(--sans); font-weight: 700; font-size: 1.15rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-light); transition: color 0.3s; }
+.nav-links a:hover { color: var(--white); }
+.nav-user { display: flex; align-items: center; gap: 12px; }
+.nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gray-dark); border: 2px solid var(--red); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; overflow: hidden; }
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.nav-signout { font-size: 0.75rem; color: var(--gray); cursor: pointer; transition: color 0.3s; background: none; border: none; font-family: var(--sans); }
+.nav-signout:hover { color: var(--red); }
+.nav-signin { font-size: 0.8rem; font-weight: 600; color: var(--red); }
+
+/* Hero / cover photo */
+.pro-hero {
+  position: relative; z-index: 1; width: 100%; height: 380px; overflow: hidden;
+  margin-top: 72px; background: var(--dark);
+}
+.pro-hero img { width: 100%; height: 100%; object-fit: cover; }
+.pro-hero .hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.95) 100%);
+}
+
+/* Profile content */
+.pro-content {
+  position: relative; z-index: 2; max-width: 900px; margin: -100px auto 0; padding: 0 48px 100px;
+}
+
+.pro-header { display: flex; gap: 28px; align-items: flex-end; margin-bottom: 36px; }
+.pro-avatar {
+  width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--black);
+  overflow: hidden; flex-shrink: 0; background: var(--dark-card);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.pro-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.pro-avatar .placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--gray-muted); }
+
+.pro-info { flex: 1; padding-bottom: 8px; }
+.pro-name { font-family: var(--serif); font-size: 2.2rem; font-weight: 400; margin-bottom: 6px; }
+.pro-craft-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px; border-radius: 100px; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--red-subtle); border: 1px solid rgba(200,16,46,0.2); color: var(--red);
+  margin-bottom: 12px;
+}
+.pro-meta { display: flex; gap: 24px; align-items: center; }
+.pro-meta-item { font-size: 0.85rem; color: var(--gray-light); display: flex; align-items: center; gap: 6px; }
+.pro-meta-item svg { width: 16px; height: 16px; opacity: 0.6; }
+.pro-meta-item strong { color: var(--white); font-weight: 600; }
+.pro-meta-item .red { color: var(--red); }
+
+.pro-book-btn {
+  padding: 14px 36px; background: var(--red); color: var(--white-pure); border: none;
+  border-radius: 10px; font-family: var(--sans); font-size: 0.88rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: var(--transition);
+  box-shadow: 0 6px 24px var(--red-glow); flex-shrink: 0; margin-left: auto;
+}
+.pro-book-btn:hover { background: var(--red-hover); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,16,46,0.4); }
+
+/* Sections */
+.pro-section { margin-bottom: 32px; }
+.pro-section-title {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.pro-section-title svg { width: 16px; height: 16px; opacity: 0.8; }
+
+.pro-bio {
+  font-size: 1rem; line-height: 1.8; color: var(--gray-light); font-weight: 300;
+  max-width: 640px;
+}
+
+.pro-specialties { display: flex; flex-wrap: wrap; gap: 8px; }
+.pro-spec-tag {
+  padding: 8px 18px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04); font-size: 0.82rem; font-weight: 500; color: var(--gray-light);
+}
+
+/* Portfolio gallery */
+.pro-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.gallery-item {
+  aspect-ratio: 4/3; border-radius: 14px; overflow: hidden; cursor: pointer;
+  transition: var(--transition); border: 1px solid rgba(255,255,255,0.05);
+}
+.gallery-item:hover { transform: scale(1.02); border-color: rgba(200,16,46,0.2); }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Availability preview */
+.avail-week { display: flex; gap: 8px; flex-wrap: wrap; }
+.avail-day-chip {
+  padding: 10px 16px; border-radius: 10px; font-size: 0.8rem; font-weight: 500; text-align: center;
+  border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); color: var(--gray-muted);
+  min-width: 60px;
+}
+.avail-day-chip.on {
+  background: var(--green-subtle); border-color: rgba(52,199,89,0.25); color: var(--green);
+}
+.avail-day-chip .day-name { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 2px; }
+.avail-day-chip .day-time { font-size: 0.7rem; }
+
+/* Lightbox */
+.lightbox {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.95); align-items: center; justify-content: center; padding: 40px;
+  cursor: pointer;
+}
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 12px; object-fit: contain; }
+
+/* Loading */
+.loading-overlay { position: fixed; inset: 0; z-index: 9999; background: var(--black); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; transition: opacity 0.5s; }
+.loading-overlay.hidden { opacity: 0; pointer-events: none; }
+.loading-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--red); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 700px) {
+  nav { padding: 0 20px; }
+  .pro-content { padding: 0 20px 80px; }
+  .pro-hero { height: 260px; }
+  .pro-header { flex-direction: column; align-items: center; text-align: center; }
+  .pro-avatar { width: 110px; height: 110px; margin-top: -60px; }
+  .pro-book-btn { margin: 16px auto 0; }
+  .pro-meta { justify-content: center; flex-wrap: wrap; }
+  .pro-gallery { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
+<div class="ambient"><div class="orb"></div><div class="orb"></div></div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+  <img id="lightboxImg" src="" alt="Portfolio">
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">OFFSHIFT</a>
+  <div class="nav-links">
+    <a href="browse.html">Browse</a>
+  </div>
+  <div class="nav-user" id="navUser" style="display:none;">
+    <div class="nav-avatar" id="navAvatar"><span id="navInitials">?</span></div>
+    <button class="nav-signout" id="signOutBtn">Sign Out</button>
+  </div>
+  <a href="login.html" class="nav-signin" id="navSignIn">Sign In</a>
+</nav>
+
+<!-- Hero cover -->
+<div class="pro-hero" id="proHero">
+  <div class="hero-overlay"></div>
+</div>
+
+<div class="pro-content">
+  <!-- Header -->
+  <div class="pro-header">
+    <div class="pro-avatar" id="proAvatar">
+      <div class="placeholder">?</div>
+    </div>
+    <div class="pro-info">
+      <h1 class="pro-name" id="proName">Loading...</h1>
+      <div class="pro-craft-badge" id="proCraft"></div>
+      <div class="pro-meta">
+        <div class="pro-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <strong class="red" id="proRate">$0</strong>/hr
+        </div>
+        <div class="pro-meta-item">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#FFB800"/></svg>
+          <strong id="proRating">New</strong>
+        </div>
+        <div class="pro-meta-item" id="proAvailStatus">
+          <div style="width:8px;height:8px;border-radius:50%;background:#34C759;box-shadow:0 0 8px rgba(52,199,89,0.4);"></div>
+          Available
+        </div>
+      </div>
+    </div>
+    <button class="pro-book-btn" id="bookBtn" onclick="bookPro()">Request Booking</button>
+  </div>
+
+  <!-- Bio -->
+  <div class="pro-section" id="bioSection" style="display:none;">
+    <div class="pro-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      About
+    </div>
+    <div class="pro-bio" id="proBio"></div>
+  </div>
+
+  <!-- Specialties -->
+  <div class="pro-section" id="specSection" style="display:none;">
+    <div class="pro-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Specialties
+    </div>
+    <div class="pro-specialties" id="proSpecs"></div>
+  </div>
+
+  <!-- Portfolio -->
+  <div class="pro-section" id="gallerySection" style="display:none;">
+    <div class="pro-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Portfolio
+    </div>
+    <div class="pro-gallery" id="proGallery"></div>
+  </div>
+
+  <!-- Availability -->
+  <div class="pro-section" id="availSection" style="display:none;">
+    <div class="pro-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Typical Availability
+    </div>
+    <div class="avail-week" id="proAvailWeek"></div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="notifications.js"></script>
+<script src="mobile-nav.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDNOD676C2uh87ggzmSZFNldI2eyI-ECOQ",
+  authDomain: "offshift-charleston.firebaseapp.com",
+  projectId: "offshift-charleston",
+  storageBucket: "offshift-charleston.firebasestorage.app",
+  messagingSenderId: "168641222703",
+  appId: "1:168641222703:web:63c86ca2ce807272a8ceda"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const $ = id => document.getElementById(id);
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+const params = new URLSearchParams(window.location.search);
+const proId = params.get('id');
+if (!proId) window.location.href = 'browse.html';
+
+let proData = null;
+
+// Auth (optional — page works for logged-out users too)
+auth.onAuthStateChanged(user => {
+  if (user) {
+    $('navUser').style.display = 'flex';
+    $('navSignIn').style.display = 'none';
+    initNotifications(user.uid);
+    const initials = user.displayName ? user.displayName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2) : user.email[0].toUpperCase();
+    $('navInitials').textContent = initials;
+    if (user.photoURL) $('navAvatar').innerHTML = `<img src="${user.photoURL}" alt="">`;
+  }
+});
+
+// Load pro
+async function loadPro() {
+  try {
+    const doc = await db.collection('users').doc(proId).get();
+    if (!doc.exists) {
+      document.title = 'OFFSHIFT — Not Found';
+      $('proName').textContent = 'Pro not found';
+      $('loadingOverlay').classList.add('hidden');
+      return;
+    }
+    proData = doc.data();
+    render();
+  } catch(err) {
+    console.error(err);
+    $('proName').textContent = 'Error loading profile';
+  }
+  $('loadingOverlay').classList.add('hidden');
+}
+
+function render() {
+  const d = proData;
+  const name = `${d.name || 'Pro'}${d.lastInitial ? ' ' + d.lastInitial + '.' : ''}`;
+  document.title = `OFFSHIFT — ${name}`;
+  $('proName').textContent = name;
+  $('proCraft').textContent = d.craft || 'Professional';
+  $('proRate').textContent = `$${d.rate || 0}`;
+
+  // Avatar
+  if (d.photoURL) {
+    $('proAvatar').innerHTML = `<img src="${d.photoURL}" alt="${name}">`;
+  }
+
+  // Cover photo — use first portfolio photo
+  const coverPhoto = (d.portfolioPhotos && d.portfolioPhotos[0]) ? d.portfolioPhotos[0].url : d.photoURL;
+  if (coverPhoto) {
+    $('proHero').innerHTML = `<img src="${coverPhoto}" alt=""><div class="hero-overlay"></div>`;
+  }
+
+  // Bio
+  if (d.bio) {
+    $('proBio').textContent = d.bio;
+    $('bioSection').style.display = 'block';
+  }
+
+  // Specialties
+  if (d.specialties && d.specialties.length) {
+    $('proSpecs').innerHTML = d.specialties.map(s => `<div class="pro-spec-tag">${escapeHtml(s)}</div>`).join('');
+    $('specSection').style.display = 'block';
+  }
+
+  // Portfolio gallery
+  if (d.portfolioPhotos && d.portfolioPhotos.length) {
+    const gallery = $('proGallery');
+    d.portfolioPhotos.forEach(p => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.innerHTML = `<img src="${p.url}" alt="Portfolio">`;
+      item.onclick = () => {
+        $('lightboxImg').src = p.url;
+        $('lightbox').classList.add('open');
+      };
+      gallery.appendChild(item);
+    });
+    $('gallerySection').style.display = 'block';
+  }
+
+  // Availability
+  if (d.availabilityTemplate && d.availabilityTemplate.recurring && d.availabilityTemplate.recurring.length) {
+    const week = $('proAvailWeek');
+    for (let i = 0; i < 7; i++) {
+      const slots = d.availabilityTemplate.recurring.filter(r => r.dayOfWeek === i);
+      const chip = document.createElement('div');
+      chip.className = 'avail-day-chip' + (slots.length ? ' on' : '');
+      if (slots.length) {
+        const timeStr = slots.map(s => `${formatTime(s.startTime)}–${formatTime(s.endTime)}`).join(', ');
+        chip.innerHTML = `<span class="day-name">${DAYS[i]}</span><span class="day-time">${timeStr}</span>`;
+      } else {
+        chip.innerHTML = `<span class="day-name">${DAYS[i]}</span><span class="day-time">Off</span>`;
+      }
+      week.appendChild(chip);
+    }
+    $('availSection').style.display = 'block';
+  }
+}
+
+function formatTime(t) {
+  if (!t) return '';
+  const [h, m] = t.split(':').map(Number);
+  const ampm = h >= 12 ? 'p' : 'a';
+  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+  return `${h12}${m > 0 ? ':' + String(m).padStart(2,'0') : ''}${ampm}`;
+}
+
+function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function bookPro() {
+  if (!auth.currentUser) { window.location.href = 'login.html'; return; }
+  window.location.href = `book.html?pro=${proId}`;
+}
+
+$('signOutBtn').onclick = async () => { await auth.signOut(); window.location.href = 'login.html'; };
+
+loadPro();
+</script>
+</body>
+</html>

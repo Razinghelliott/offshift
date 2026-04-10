@@ -1125,6 +1125,8 @@ select.form-input option {
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+<script src="notifications.js"></script>
+<script src="mobile-nav.js"></script>
 
 <script>
 // ─── Firebase Config ───
@@ -1173,6 +1175,7 @@ auth.onAuthStateChanged(async user => {
     return;
   }
   currentUser = user;
+  initNotifications(user.uid);
 
   // Set nav avatar
   const initials = user.displayName

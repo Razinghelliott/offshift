@@ -197,6 +197,8 @@ nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 4
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="notifications.js"></script>
+<script src="mobile-nav.js"></script>
 
 <script>
 const firebaseConfig = {
@@ -222,6 +224,7 @@ let currentFilter = 'all';
 auth.onAuthStateChanged(async user => {
   if (!user) { window.location.href = 'login.html'; return; }
   currentUser = user;
+  initNotifications(user.uid);
 
   const initials = user.displayName ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2) : user.email[0].toUpperCase();
   $('navInitials').textContent = initials;

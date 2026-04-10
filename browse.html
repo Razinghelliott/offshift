@@ -1011,6 +1011,7 @@ nav.scrolled {
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="notifications.js"></script>
 
 <script>
 // ─── Firebase ───
@@ -1075,6 +1076,7 @@ auth.onAuthStateChanged(user => {
   if (user) {
     navUser.style.display = 'flex';
     navSignIn.style.display = 'none';
+    initNotifications(user.uid);
     const dashLink = document.getElementById('dashLink');
     if (dashLink) dashLink.style.display = 'block';
     const avatar = document.getElementById('navAvatar');
@@ -1271,16 +1273,22 @@ async function loadPros() {
       const data = doc.data();
       const rating = (3.5 + Math.random() * 1.5);
       const reviews = Math.floor(5 + Math.random() * 45);
+      // Use first portfolio photo as card image, fall back to profile photo
+      const cardPhoto = (data.portfolioPhotos && data.portfolioPhotos[0] && data.portfolioPhotos[0].url)
+        || data.photoURL || null;
+      const displayName = data.name
+        ? `${data.name}${data.lastInitial ? ' ' + data.lastInitial + '.' : ''}`
+        : data.displayName || data.firstName || 'Pro';
       allPros.push({
         id: doc.id,
-        name: data.displayName || data.firstName || 'Pro',
-        firstName: data.firstName || '',
+        name: displayName,
+        firstName: data.name || data.firstName || '',
         lastInitial: data.lastInitial || '',
         craft: data.craft || 'Creative',
         specialties: data.specialties || [],
         bio: data.bio || 'Passionate professional bringing excellence to every project.',
         rate: data.rate || 75,
-        photoURL: data.photoURL || null,
+        photoURL: cardPhoto,
         days: data.days || [],
         times: data.times || [],
         rating: Math.round(rating * 10) / 10,
@@ -1462,7 +1470,7 @@ function renderPros() {
     const tags = pro.specialties.slice(0, 3).map(s => `<span class="pro-card-tag">${s}</span>`).join('');
 
     return `
-      <div class="pro-card" onclick="openModal('${pro.id}')" style="animation-delay:${0.1 + i * 0.08}s">
+      <div class="pro-card" onclick="window.location.href='pro.html?id=${pro.id}'" style="animation-delay:${0.1 + i * 0.08}s">
         <div class="pro-card-image">
           <img src="${photo}" alt="${pro.name}" loading="lazy" onerror="this.src='${defaultCraftPhoto}'">
           <div class="overlay"></div>
