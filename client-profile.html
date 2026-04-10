@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFFSHIFT — Set Up Your Account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --red: #C8102E;
+  --red-hover: #a00d24;
+  --red-glow: rgba(200,16,46,0.3);
+  --gray-100: #f5f5f5;
+  --gray-200: #e0e0e0;
+  --gray-300: #bbb;
+  --gray-400: #888;
+  --gray-500: #666;
+  --gray-600: #555;
+  --gray-700: #333;
+  --gray-800: #1a1a1a;
+  --gray-900: #0d0d0d;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--black);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Nav ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+.logo span { color: var(--red); }
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.step-indicator { display: flex; gap: 6px; }
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: all 0.5s cubic-bezier(0.4,0,0.2,1); }
+.step-dot.active { background: var(--red); box-shadow: 0 0 12px var(--red-glow); transform: scale(1.25); }
+.step-dot.done { background: var(--red); opacity: 0.5; }
+.nav-save { padding: 0.5rem 1.25rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: var(--gray-400); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+.nav-save:hover { border-color: var(--white); color: var(--white); }
+
+/* ── Layout ── */
+.builder { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; padding-top: 60px; }
+
+/* ── Left: Prompts ── */
+.prompt-side { display: flex; flex-direction: column; justify-content: center; padding: 4rem 3.5rem; position: relative; overflow: hidden; }
+.prompt-side::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent); }
+
+.step { display: none; animation: stepIn 0.6s cubic-bezier(0.16,1,0.3,1); }
+.step.active { display: block; }
+@keyframes stepIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+.step-eyebrow { display: inline-block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; padding: 0.35rem 0.85rem; border-radius: 100px; border: 1px solid rgba(200,16,46,0.3); background: rgba(200,16,46,0.06); }
+.step h2 { font-family: var(--font-serif); font-size: 2.4rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.75rem; }
+.step h2 em { font-style: italic; color: var(--red); }
+.step .step-sub { color: var(--gray-400); font-size: 0.95rem; font-weight: 300; line-height: 1.6; margin-bottom: 2.5rem; max-width: 440px; }
+
+.prompt-input { width: 100%; padding: 1rem 0; background: transparent; border: none; border-bottom: 2px solid rgba(255,255,255,0.1); color: var(--white); font-family: var(--font-sans); font-size: 1.4rem; font-weight: 300; outline: none; transition: border-color 0.4s; margin-bottom: 1.5rem; }
+.prompt-input::placeholder { color: var(--gray-600); }
+.prompt-input:focus { border-color: var(--red); }
+
+.prompt-textarea { width: 100%; padding: 1rem; min-height: 100px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; color: var(--white); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; line-height: 1.6; outline: none; resize: vertical; transition: border-color 0.4s; margin-bottom: 1.5rem; }
+.prompt-textarea::placeholder { color: var(--gray-600); }
+.prompt-textarea:focus { border-color: var(--red); }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
+.tag { padding: 0.6rem 1.25rem; border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: var(--gray-300); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.3s; user-select: none; }
+.tag:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); }
+.tag.selected { background: var(--red); border-color: var(--red); color: var(--white); box-shadow: 0 4px 16px var(--red-glow); transform: scale(1.03); }
+
+/* ── Size Selector ── */
+.size-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+.size-card { padding: 1.25rem 0.75rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); text-align: center; cursor: pointer; transition: all 0.35s; }
+.size-card:hover { border-color: rgba(255,255,255,0.2); }
+.size-card.selected { border-color: var(--red); background: rgba(200,16,46,0.1); box-shadow: 0 0 0 3px rgba(200,16,46,0.12); }
+.size-card .size-icon { font-size: 1.8rem; display: block; margin-bottom: 0.5rem; }
+.size-card .size-label { font-size: 0.85rem; font-weight: 600; display: block; }
+.size-card .size-desc { font-size: 0.72rem; color: var(--gray-400); margin-top: 0.2rem; display: block; }
+
+/* ── Navigation ── */
+.step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
+.btn-back { padding: 0.75rem 1.5rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--gray-400); font-family: var(--font-sans); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+.btn-back:hover { border-color: var(--white); color: var(--white); }
+.btn-next { padding: 0.75rem 2rem; border-radius: 10px; border: none; background: var(--red); color: var(--white); font-family: var(--font-sans); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s; letter-spacing: 0.02em; }
+.btn-next:hover { background: var(--red-hover); transform: translateY(-1px); box-shadow: 0 6px 25px var(--red-glow); }
+
+/* ── Right: Live Preview ── */
+.preview-side { display: flex; align-items: center; justify-content: center; padding: 4rem 3rem; background: rgba(255,255,255,0.015); position: sticky; top: 60px; height: calc(100vh - 60px); }
+.preview-label { position: absolute; top: 2rem; left: 50%; transform: translateX(-50%); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-500); }
+
+/* ── Client Preview Card ── */
+.client-card { width: 380px; border-radius: 24px; overflow: hidden; background: var(--gray-900); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 25px 80px rgba(0,0,0,0.6); transition: all 0.5s cubic-bezier(0.4,0,0.2,1); }
+.client-card:hover { transform: translateY(-4px); box-shadow: 0 35px 100px rgba(0,0,0,0.7), 0 0 40px var(--red-glow); }
+
+.client-card-header { padding: 2rem 1.75rem 1.5rem; position: relative; background: linear-gradient(135deg, rgba(200,16,46,0.08), transparent); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.client-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--gray-800); border: 2px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--red); margin-bottom: 1rem; overflow: hidden; transition: all 0.3s; }
+.client-avatar.has-initial { background: var(--red); color: var(--white); }
+.client-name { font-family: var(--font-serif); font-size: 1.4rem; color: var(--gray-600); transition: color 0.3s; margin-bottom: 0.2rem; }
+.client-name.has-content { color: var(--white); }
+.client-type { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); opacity: 0; transition: opacity 0.4s; }
+.client-type.visible { opacity: 1; }
+
+.client-card-body { padding: 1.5rem 1.75rem; }
+.client-section { margin-bottom: 1.25rem; }
+.client-section-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 0.5rem; }
+.client-card-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; min-height: 1.5rem; }
+.client-tag { padding: 0.25rem 0.65rem; border-radius: 100px; background: rgba(200,16,46,0.1); border: 1px solid rgba(200,16,46,0.2); color: var(--red); font-size: 0.7rem; font-weight: 600; animation: tagPop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes tagPop { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+.client-note { font-size: 0.85rem; color: var(--gray-400); line-height: 1.5; font-weight: 300; min-height: 1.5rem; }
+.client-card-footer { padding: 1rem 1.75rem; border-top: 1px solid rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: space-between; }
+.client-badge { padding: 0.3rem 0.75rem; border-radius: 100px; background: rgba(255,255,255,0.05); font-size: 0.72rem; font-weight: 600; color: var(--gray-400); letter-spacing: 0.04em; }
+.client-since { font-size: 0.72rem; color: var(--gray-500); }
+
+/* ── Completion ── */
+.completion { text-align: center; animation: stepIn 0.6s cubic-bezier(0.16,1,0.3,1); }
+.completion .check-circle { width: 80px; height: 80px; border-radius: 50%; background: var(--red); display: inline-flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 1.5rem; box-shadow: 0 8px 40px var(--red-glow); animation: scaleIn 0.5s 0.2s cubic-bezier(0.34,1.56,0.64,1) both; }
+@keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
+.completion h2 { font-family: var(--font-serif); font-size: 2.2rem; margin-bottom: 0.75rem; }
+.completion p { color: var(--gray-400); font-size: 1rem; margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto; }
+.btn-finish { display: inline-block; padding: 1rem 2.5rem; border-radius: 12px; background: var(--red); color: var(--white); font-family: var(--font-sans); font-size: 1rem; font-weight: 600; text-decoration: none; transition: all 0.3s; }
+.btn-finish:hover { background: var(--red-hover); transform: translateY(-2px); box-shadow: 0 8px 30px var(--red-glow); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .builder { grid-template-columns: 1fr; }
+  .preview-side { position: relative; top: auto; height: auto; padding: 2rem 1.5rem 4rem; order: -1; }
+  .prompt-side { padding: 2rem 1.5rem 4rem; }
+  .client-card { width: 100%; max-width: 380px; }
+  .step h2 { font-size: 1.8rem; }
+  .preview-label { position: relative; top: auto; left: auto; transform: none; text-align: center; margin-bottom: 1.5rem; }
+}
+@media (max-width: 500px) {
+  nav { padding: 0.75rem 1rem; }
+  .size-cards { grid-template-columns: 1fr; }
+  .step-nav { flex-direction: column; gap: 0.75rem; }
+  .step-nav .btn-back, .step-nav .btn-next { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">OFF<span>SHIFT</span></a>
+  <div class="nav-right">
+    <div class="step-indicator" id="stepIndicator"></div>
+    <button class="nav-save" onclick="saveProgress()">Save & Exit</button>
+  </div>
+</nav>
+
+<div class="builder">
+
+  <!-- LEFT: Prompts -->
+  <div class="prompt-side" id="promptSide">
+
+    <!-- Step 1: Name -->
+    <div class="step active" data-step="0">
+      <span class="step-eyebrow">Welcome</span>
+      <h2>Let's get to <em>know you.</em></h2>
+      <p class="step-sub">Your first name and last initial — that's all we need. Privacy is everything on OffShift.</p>
+      <input type="text" class="prompt-input" id="clientName" placeholder="Your first name" maxlength="20" oninput="updatePreview()">
+      <input type="text" class="prompt-input" id="clientLastInitial" placeholder="Last initial (e.g. M)" maxlength="1" oninput="updatePreview()" style="font-size:1.1rem;">
+      <div class="step-nav">
+        <div></div>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Event Types -->
+    <div class="step" data-step="1">
+      <span class="step-eyebrow">Your events</span>
+      <h2>What kind of events do you <em>host?</em></h2>
+      <p class="step-sub">Select all that apply. This helps us match you with the right Pros.</p>
+      <div class="tag-cloud" id="eventTags">
+        <div class="tag" onclick="toggleEvent(this)" data-value="Private Dinner">🍽️ Private Dinner</div>
+        <div class="tag" onclick="toggleEvent(this)" data-value="Cocktail Party">🍸 Cocktail Party</div>
+        <div class="tag" onclick="toggleEvent(this)" data-value="Wedding">💒 Wedding</div>
+        <div class="tag" onclick="toggleEvent(this)" data-value="Corporate Event">🏢 Corporate Event</div>
+        <div class="tag" onclick="toggleEvent(this)" data-value="Birthday">🎂 Birthday</div>
+        <div class="tag" onclick="toggleEvent(this)" data-value="Holiday Party">🎄 Holiday Party</div>
+        <div class="tag" onclick="toggleEvent(this)" data-value="Brunch">☀️ Brunch</div>
+        <div class="tag" onclick="toggleEvent(this)" data-value="Fundraiser">🎗️ Fundraiser</div>
+        <div class="tag" onclick="toggleEvent(this)" data-value="House Party">🏠 House Party</div>
+        <div class="tag" onclick="toggleEvent(this)" data-value="Live Music Night">🎵 Live Music Night</div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Typical Size -->
+    <div class="step" data-step="2">
+      <span class="step-eyebrow">Event scale</span>
+      <h2>How big do you go <em>typically?</em></h2>
+      <p class="step-sub">Helps Pros know what they're walking into. No wrong answer here.</p>
+      <div class="size-cards" id="sizeCards">
+        <div class="size-card" onclick="selectSize(this, 'Intimate')" data-value="Intimate">
+          <span class="size-icon">🕯️</span>
+          <span class="size-label">Intimate</span>
+          <span class="size-desc">2–15 guests</span>
+        </div>
+        <div class="size-card" onclick="selectSize(this, 'Medium')" data-value="Medium">
+          <span class="size-icon">🎉</span>
+          <span class="size-label">Medium</span>
+          <span class="size-desc">15–50 guests</span>
+        </div>
+        <div class="size-card" onclick="selectSize(this, 'Large')" data-value="Large">
+          <span class="size-icon">🏟️</span>
+          <span class="size-label">Large</span>
+          <span class="size-desc">50+ guests</span>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Talent Preferences -->
+    <div class="step" data-step="3">
+      <span class="step-eyebrow">Preferences</span>
+      <h2>What talent are you <em>looking for?</em></h2>
+      <p class="step-sub">Select the types of Pros you'd like to browse. You can always explore more later.</p>
+      <div class="tag-cloud" id="talentTags">
+        <div class="tag" onclick="toggleTalent(this)" data-value="Mixologist">🍸 Mixologists</div>
+        <div class="tag" onclick="toggleTalent(this)" data-value="Bartender">🥃 Bartenders</div>
+        <div class="tag" onclick="toggleTalent(this)" data-value="Chef">👨‍🍳 Chefs</div>
+        <div class="tag" onclick="toggleTalent(this)" data-value="Musician">🎵 Musicians</div>
+        <div class="tag" onclick="toggleTalent(this)" data-value="DJ">🎧 DJs</div>
+        <div class="tag" onclick="toggleTalent(this)" data-value="Photographer">📸 Photographers</div>
+        <div class="tag" onclick="toggleTalent(this)" data-value="Sommelier">🍷 Sommeliers</div>
+        <div class="tag" onclick="toggleTalent(this)" data-value="Server">🍽️ Servers</div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Anything Else -->
+    <div class="step" data-step="4">
+      <span class="step-eyebrow">Almost done</span>
+      <h2>Anything else we should <em>know?</em></h2>
+      <p class="step-sub">Dietary restrictions, venue details, vibe preferences — whatever helps Pros prepare for your events.</p>
+      <textarea class="prompt-textarea" id="clientNote" placeholder="e.g. We host monthly dinner parties at our home in Mt. Pleasant. We love creative menus and always have a great bar setup." maxlength="300" oninput="updatePreview()"></textarea>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="finishProfile()">Complete Setup ✓</button>
+      </div>
+    </div>
+
+    <!-- Completion -->
+    <div class="step" data-step="5">
+      <div class="completion">
+        <div class="check-circle">✓</div>
+        <h2>You're <em>in.</em></h2>
+        <p>Your account is set up. Start browsing Charleston's finest talent and book your next unforgettable event.</p>
+        <a href="index.html" class="btn-finish">Browse Pros →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Live Preview -->
+  <div class="preview-side">
+    <span class="preview-label">Your Client Profile</span>
+    <div class="client-card" id="clientCard">
+      <div class="client-card-header">
+        <div class="client-avatar" id="clientAvatar">?</div>
+        <div class="client-name" id="cardClientName">Your Name</div>
+        <div class="client-type" id="cardClientType"></div>
+      </div>
+      <div class="client-card-body">
+        <div class="client-section">
+          <div class="client-section-label">Events</div>
+          <div class="client-card-tags" id="cardEvents"></div>
+        </div>
+        <div class="client-section">
+          <div class="client-section-label">Looking For</div>
+          <div class="client-card-tags" id="cardTalents"></div>
+        </div>
+        <div class="client-section">
+          <div class="client-section-label">Notes</div>
+          <div class="client-note" id="cardNote"></div>
+        </div>
+      </div>
+      <div class="client-card-footer">
+        <span class="client-badge" id="cardBadge">New Member</span>
+        <span class="client-since">Since April 2026</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "offshift-charleston.firebaseapp.com",
+  projectId: "offshift-charleston",
+  storageBucket: "offshift-charleston.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const TOTAL_STEPS = 6;
+let currentStep = 0;
+let profile = { name: '', lastInitial: '', events: [], size: '', talents: [], note: '' };
+
+// Step dots
+const indicator = document.getElementById('stepIndicator');
+for (let i = 0; i < TOTAL_STEPS - 1; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'step-dot' + (i === 0 ? ' active' : '');
+  indicator.appendChild(dot);
+}
+
+function goToStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+  document.querySelectorAll('.step-dot').forEach((d, i) => {
+    d.className = 'step-dot';
+    if (i < n) d.classList.add('done');
+    if (i === n) d.classList.add('active');
+  });
+  currentStep = n;
+}
+function nextStep() { if (currentStep < TOTAL_STEPS - 1) goToStep(currentStep + 1); }
+function prevStep() { if (currentStep > 0) goToStep(currentStep - 1); }
+
+function toggleEvent(el) {
+  el.classList.toggle('selected');
+  const val = el.dataset.value;
+  if (el.classList.contains('selected')) { profile.events.push(val); }
+  else { profile.events = profile.events.filter(e => e !== val); }
+  updatePreview();
+}
+
+function selectSize(el, size) {
+  document.querySelectorAll('.size-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  profile.size = size;
+  updatePreview();
+}
+
+function toggleTalent(el) {
+  el.classList.toggle('selected');
+  const val = el.dataset.value;
+  if (el.classList.contains('selected')) { profile.talents.push(val); }
+  else { profile.talents = profile.talents.filter(t => t !== val); }
+  updatePreview();
+}
+
+function updatePreview() {
+  const name = document.getElementById('clientName')?.value || '';
+  const initial = document.getElementById('clientLastInitial')?.value?.toUpperCase() || '';
+  profile.name = name;
+  profile.lastInitial = initial;
+  profile.note = document.getElementById('clientNote')?.value || '';
+
+  // Name
+  const cardName = document.getElementById('cardClientName');
+  const displayName = name ? `${name}${initial ? ' ' + initial + '.' : ''}` : 'Your Name';
+  cardName.textContent = displayName;
+  cardName.classList.toggle('has-content', !!name);
+
+  // Avatar
+  const avatar = document.getElementById('clientAvatar');
+  if (name) {
+    avatar.textContent = name.charAt(0).toUpperCase();
+    avatar.classList.add('has-initial');
+  } else {
+    avatar.textContent = '?';
+    avatar.classList.remove('has-initial');
+  }
+
+  // Client type (from size)
+  const typeEl = document.getElementById('cardClientType');
+  if (profile.size) {
+    const typeMap = { 'Intimate': 'Intimate Gatherings', 'Medium': 'Medium Events', 'Large': 'Large-Scale Events' };
+    typeEl.textContent = typeMap[profile.size] || '';
+    typeEl.classList.add('visible');
+  } else {
+    typeEl.classList.remove('visible');
+  }
+
+  // Events
+  document.getElementById('cardEvents').innerHTML = profile.events.map(e => `<span class="client-tag">${e}</span>`).join('');
+
+  // Talents
+  document.getElementById('cardTalents').innerHTML = profile.talents.map(t => `<span class="client-tag">${t}</span>`).join('');
+
+  // Note
+  document.getElementById('cardNote').textContent = profile.note;
+}
+
+async function finishProfile() {
+  const user = auth.currentUser;
+  if (user) {
+    try {
+      await db.collection('users').doc(user.uid).update({
+        firstName: profile.name,
+        lastInitial: profile.lastInitial,
+        displayName: `${profile.name} ${profile.lastInitial}.`,
+        eventTypes: profile.events,
+        typicalSize: profile.size,
+        talentPreferences: profile.talents,
+        note: profile.note,
+        role: 'client',
+        profileComplete: true,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (err) { console.warn('Firestore save error:', err); }
+  }
+  goToStep(5);
+}
+
+function saveProgress() {
+  const user = auth.currentUser;
+  if (user) {
+    db.collection('users').doc(user.uid).update({
+      firstName: profile.name, lastInitial: profile.lastInitial,
+      eventTypes: profile.events, typicalSize: profile.size,
+      talentPreferences: profile.talents, note: profile.note,
+      profileComplete: false
+    }).then(() => { window.location.href = 'index.html'; })
+      .catch(() => { window.location.href = 'index.html'; });
+  } else { window.location.href = 'index.html'; }
+}
+</script>
+
+</body>
+</html>

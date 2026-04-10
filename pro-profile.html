@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFFSHIFT — Build Your Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --red: #C8102E;
+  --red-hover: #a00d24;
+  --red-glow: rgba(200,16,46,0.3);
+  --gray-100: #f5f5f5;
+  --gray-200: #e0e0e0;
+  --gray-300: #bbb;
+  --gray-400: #888;
+  --gray-500: #666;
+  --gray-600: #555;
+  --gray-700: #333;
+  --gray-800: #1a1a1a;
+  --gray-900: #0d0d0d;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--black);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Nav ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+}
+.logo span { color: var(--red); }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.step-indicator {
+  display: flex;
+  gap: 6px;
+}
+.step-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.step-dot.active {
+  background: var(--red);
+  box-shadow: 0 0 12px var(--red-glow);
+  transform: scale(1.25);
+}
+.step-dot.done {
+  background: var(--red);
+  opacity: 0.5;
+}
+.nav-save {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: var(--gray-400);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.nav-save:hover { border-color: var(--white); color: var(--white); }
+
+/* ── Layout ── */
+.builder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  padding-top: 60px;
+}
+
+/* ── Left: Prompt Side ── */
+.prompt-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.prompt-side::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent);
+}
+
+/* ── Steps ── */
+.step {
+  display: none;
+  animation: stepIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.step.active { display: block; }
+@keyframes stepIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 1rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+  border: 1px solid rgba(200,16,46,0.3);
+  background: rgba(200,16,46,0.06);
+}
+
+.step h2 {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.step h2 em { font-style: italic; color: var(--red); }
+
+.step .step-sub {
+  color: var(--gray-400);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  max-width: 440px;
+}
+
+/* ── Input styles ── */
+.prompt-input {
+  width: 100%;
+  padding: 1rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.4s;
+  margin-bottom: 1.5rem;
+}
+.prompt-input::placeholder { color: var(--gray-600); }
+.prompt-input:focus { border-color: var(--red); }
+
+.prompt-textarea {
+  width: 100%;
+  padding: 1rem;
+  min-height: 120px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.6;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.4s;
+  margin-bottom: 1.5rem;
+}
+.prompt-textarea::placeholder { color: var(--gray-600); }
+.prompt-textarea:focus { border-color: var(--red); }
+
+/* ── Tag Selector ── */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+.tag {
+  padding: 0.6rem 1.25rem;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: var(--gray-300);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  user-select: none;
+}
+.tag:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); }
+.tag.selected {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+  box-shadow: 0 4px 16px var(--red-glow);
+  transform: scale(1.03);
+}
+
+/* ── Rate Slider ── */
+.rate-display {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.rate-amount {
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  line-height: 1;
+}
+.rate-amount .dollar { color: var(--red); font-weight: 400; font-size: 2rem; vertical-align: top; margin-right: 2px; }
+.rate-per { color: var(--gray-400); font-size: 0.85rem; margin-top: 0.25rem; }
+
+.rate-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--red), var(--red) var(--val, 50%), rgba(255,255,255,0.1) var(--val, 50%));
+  outline: none;
+  margin-bottom: 0.75rem;
+}
+.rate-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5), 0 0 0 3px var(--red);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.rate-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.rate-range-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--gray-500);
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Photo Upload ── */
+.photo-upload {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.photo-preview {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  border: 2px dashed rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: all 0.3s;
+  cursor: pointer;
+  background: rgba(255,255,255,0.03);
+}
+.photo-preview:hover { border-color: var(--red); }
+.photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+.photo-preview .placeholder-icon { font-size: 2rem; opacity: 0.3; }
+.photo-upload-text {
+  font-size: 0.9rem;
+  color: var(--gray-400);
+  line-height: 1.5;
+}
+.photo-upload-text strong { color: var(--white); }
+.photo-upload input[type="file"] { display: none; }
+
+/* ── Availability Grid ── */
+.avail-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+.avail-day {
+  text-align: center;
+  padding: 0.75rem 0.25rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  cursor: pointer;
+  transition: all 0.3s;
+  user-select: none;
+}
+.avail-day:hover { border-color: rgba(255,255,255,0.2); }
+.avail-day.selected {
+  background: rgba(200,16,46,0.15);
+  border-color: var(--red);
+}
+.avail-day .day-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: 0.25rem;
+  display: block;
+}
+.avail-day.selected .day-label { color: var(--white); }
+.avail-day .day-icon {
+  font-size: 1.2rem;
+  display: block;
+  opacity: 0.3;
+  transition: opacity 0.3s;
+}
+.avail-day.selected .day-icon { opacity: 1; }
+
+.time-pref {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.time-chip {
+  padding: 0.55rem 1rem;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  color: var(--gray-400);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.time-chip:hover { border-color: rgba(255,255,255,0.2); }
+.time-chip.selected { background: var(--red); border-color: var(--red); color: var(--white); }
+
+/* ── Navigation Buttons ── */
+.step-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+.btn-back {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent;
+  color: var(--gray-400);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-back:hover { border-color: var(--white); color: var(--white); }
+.btn-next {
+  padding: 0.75rem 2rem;
+  border-radius: 10px;
+  border: none;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.02em;
+}
+.btn-next:hover { background: var(--red-hover); transform: translateY(-1px); box-shadow: 0 6px 25px var(--red-glow); }
+.btn-next:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+
+/* ── Right: Live Preview ── */
+.preview-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 3rem;
+  background: rgba(255,255,255,0.015);
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+}
+
+.preview-label {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+
+/* ── Profile Card Preview ── */
+.profile-card {
+  width: 360px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--gray-900);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+  transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.profile-card:hover { transform: translateY(-4px); box-shadow: 0 35px 100px rgba(0,0,0,0.7), 0 0 40px var(--red-glow); }
+
+.card-photo {
+  width: 100%;
+  height: 280px;
+  background: linear-gradient(135deg, var(--gray-800), var(--gray-900));
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-photo img { width: 100%; height: 100%; object-fit: cover; }
+.card-photo .empty-state {
+  text-align: center;
+  color: var(--gray-600);
+}
+.card-photo .empty-state .big-icon { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
+.card-photo .empty-state span { font-size: 0.8rem; }
+
+.card-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+  background: var(--red);
+  color: var(--white);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: none;
+}
+
+.card-rate {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+  display: none;
+}
+.card-rate .card-rate-unit { font-weight: 400; font-size: 0.7rem; color: var(--gray-400); }
+
+.card-body {
+  padding: 1.5rem;
+}
+.card-name {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 0.15rem;
+  min-height: 1.5rem;
+  color: var(--gray-600);
+  transition: color 0.3s;
+}
+.card-name.has-content { color: var(--white); }
+
+.card-craft {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.75rem;
+  min-height: 1rem;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.card-craft.visible { opacity: 1; }
+
+.card-bio {
+  font-size: 0.88rem;
+  color: var(--gray-400);
+  line-height: 1.55;
+  margin-bottom: 1rem;
+  min-height: 2rem;
+  font-weight: 300;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  min-height: 1.5rem;
+}
+.card-tag {
+  padding: 0.3rem 0.75rem;
+  border-radius: 100px;
+  background: rgba(200,16,46,0.1);
+  border: 1px solid rgba(200,16,46,0.2);
+  color: var(--red);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  animation: tagPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes tagPop {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.card-availability {
+  display: flex;
+  gap: 0.35rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.card-avail-dot {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: rgba(255,255,255,0.04);
+  color: var(--gray-600);
+  transition: all 0.3s;
+}
+.card-avail-dot.active {
+  background: rgba(200,16,46,0.15);
+  color: var(--red);
+}
+
+/* ── Completion Screen ── */
+.completion {
+  text-align: center;
+  animation: stepIn 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.completion .check-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--red);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 40px var(--red-glow);
+  animation: scaleIn 0.5s 0.2s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
+.completion h2 {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+}
+.completion p {
+  color: var(--gray-400);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.btn-finish {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+.btn-finish:hover { background: var(--red-hover); transform: translateY(-2px); box-shadow: 0 8px 30px var(--red-glow); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .builder { grid-template-columns: 1fr; }
+  .preview-side {
+    position: relative;
+    top: auto;
+    height: auto;
+    padding: 2rem 1.5rem 4rem;
+    order: -1;
+  }
+  .prompt-side { padding: 2rem 1.5rem 4rem; }
+  .profile-card { width: 100%; max-width: 360px; }
+  .step h2 { font-size: 1.8rem; }
+  .preview-label { position: relative; top: auto; left: auto; transform: none; text-align: center; margin-bottom: 1.5rem; }
+}
+@media (max-width: 500px) {
+  .avail-grid { grid-template-columns: repeat(4, 1fr); }
+  nav { padding: 0.75rem 1rem; }
+  .step-nav { flex-direction: column; gap: 0.75rem; }
+  .step-nav .btn-back, .step-nav .btn-next { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a href="index.html" class="logo">OFF<span>SHIFT</span></a>
+  <div class="nav-right">
+    <div class="step-indicator" id="stepIndicator"></div>
+    <button class="nav-save" onclick="saveProgress()">Save & Exit</button>
+  </div>
+</nav>
+
+<!-- Builder Layout -->
+<div class="builder">
+
+  <!-- LEFT: Prompts -->
+  <div class="prompt-side" id="promptSide">
+
+    <!-- Step 1: Identity -->
+    <div class="step active" data-step="0">
+      <span class="step-eyebrow">Let's start</span>
+      <h2>What should people <em>call you?</em></h2>
+      <p class="step-sub">First name only — we protect your full identity. This is how clients will know you on OffShift.</p>
+      <input type="text" class="prompt-input" id="proName" placeholder="Your first name" maxlength="20" oninput="updatePreview()">
+      <input type="text" class="prompt-input" id="proLastInitial" placeholder="Last initial (e.g. R)" maxlength="1" oninput="updatePreview()" style="font-size:1.1rem;">
+      <div class="step-nav">
+        <div></div>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Craft -->
+    <div class="step" data-step="1">
+      <span class="step-eyebrow">Your craft</span>
+      <h2>What's your <em>superpower?</em></h2>
+      <p class="step-sub">Choose the category that best describes what you do. This is how clients will find you.</p>
+      <div class="tag-cloud" id="craftTags">
+        <div class="tag" onclick="selectCraft(this)" data-value="Mixologist">🍸 Mixologist</div>
+        <div class="tag" onclick="selectCraft(this)" data-value="Bartender">🥃 Bartender</div>
+        <div class="tag" onclick="selectCraft(this)" data-value="Chef">👨‍🍳 Chef</div>
+        <div class="tag" onclick="selectCraft(this)" data-value="Pastry Chef">🧁 Pastry Chef</div>
+        <div class="tag" onclick="selectCraft(this)" data-value="Musician">🎵 Musician</div>
+        <div class="tag" onclick="selectCraft(this)" data-value="DJ">🎧 DJ</div>
+        <div class="tag" onclick="selectCraft(this)" data-value="Photographer">📸 Photographer</div>
+        <div class="tag" onclick="selectCraft(this)" data-value="Sommelier">🍷 Sommelier</div>
+        <div class="tag" onclick="selectCraft(this)" data-value="Server">🍽️ Server</div>
+        <div class="tag" onclick="selectCraft(this)" data-value="Event Planner">🎉 Event Planner</div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Specialties -->
+    <div class="step" data-step="2">
+      <span class="step-eyebrow">Stand out</span>
+      <h2>What makes you <em>different?</em></h2>
+      <p class="step-sub">Pick up to 5 specialties that define your style. These show as badges on your profile.</p>
+      <div class="tag-cloud" id="specTags">
+        <div class="tag" onclick="toggleSpec(this)" data-value="Craft Cocktails">Craft Cocktails</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Farm-to-Table">Farm-to-Table</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Tiki & Tropical">Tiki & Tropical</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Molecular">Molecular</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Live Jazz">Live Jazz</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Acoustic">Acoustic</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Southern Cuisine">Southern Cuisine</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Sushi & Raw Bar">Sushi & Raw Bar</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Wine Pairing">Wine Pairing</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="BBQ & Smoke">BBQ & Smoke</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Private Dining">Private Dining</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Corporate Events">Corporate Events</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Weddings">Weddings</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Brunch">Brunch</div>
+        <div class="tag" onclick="toggleSpec(this)" data-value="Vegan/Plant-Based">Vegan/Plant-Based</div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Story -->
+    <div class="step" data-step="3">
+      <span class="step-eyebrow">Your story</span>
+      <h2>Tell us about <em>you.</em></h2>
+      <p class="step-sub">Two or three sentences that capture your vibe. What do you bring to an event that no one else can?</p>
+      <textarea class="prompt-textarea" id="proBio" placeholder="e.g. I've been behind the bar for 12 years, crafting experiences that people remember long after the last sip. I specialize in turning any gathering into something unforgettable." maxlength="300" oninput="updatePreview(); updateCharCount()"></textarea>
+      <div style="text-align:right;color:var(--gray-500);font-size:0.78rem;margin-top:-1rem;margin-bottom:1.5rem;"><span id="charCount">0</span>/300</div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Rate -->
+    <div class="step" data-step="4">
+      <span class="step-eyebrow">Your worth</span>
+      <h2>Set your <em>rate.</em></h2>
+      <p class="step-sub">What you charge per hour. You're worth it — price yourself accordingly. You can always adjust later.</p>
+      <div class="rate-display">
+        <div class="rate-amount"><span class="dollar">$</span><span id="rateValue">75</span></div>
+        <div class="rate-per">per hour</div>
+      </div>
+      <input type="range" class="rate-slider" id="rateSlider" min="25" max="500" value="75" step="5" oninput="updateRate()">
+      <div class="rate-range-labels"><span>$25</span><span>$500+</span></div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 6: Photo -->
+    <div class="step" data-step="5">
+      <span class="step-eyebrow">Show yourself</span>
+      <h2>Add a <em>photo.</em></h2>
+      <p class="step-sub">This is your first impression. Action shots work best — you in your element, doing what you do.</p>
+      <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+        <div class="photo-preview" id="photoPreview">
+          <span class="placeholder-icon">📷</span>
+        </div>
+        <div class="photo-upload-text">
+          <strong>Click to upload</strong><br>
+          JPG, PNG, or WebP. Square crops best.
+        </div>
+        <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(event)">
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 7: Availability -->
+    <div class="step" data-step="6">
+      <span class="step-eyebrow">Your schedule</span>
+      <h2>When are you <em>available?</em></h2>
+      <p class="step-sub">Select the days you're generally open. You'll fine-tune exact dates from your dashboard.</p>
+      <div class="avail-grid" id="availGrid">
+        <div class="avail-day" onclick="toggleDay(this)" data-day="Mon"><span class="day-label">Mon</span><span class="day-icon">●</span></div>
+        <div class="avail-day" onclick="toggleDay(this)" data-day="Tue"><span class="day-label">Tue</span><span class="day-icon">●</span></div>
+        <div class="avail-day" onclick="toggleDay(this)" data-day="Wed"><span class="day-label">Wed</span><span class="day-icon">●</span></div>
+        <div class="avail-day" onclick="toggleDay(this)" data-day="Thu"><span class="day-label">Thu</span><span class="day-icon">●</span></div>
+        <div class="avail-day" onclick="toggleDay(this)" data-day="Fri"><span class="day-label">Fri</span><span class="day-icon">●</span></div>
+        <div class="avail-day" onclick="toggleDay(this)" data-day="Sat"><span class="day-label">Sat</span><span class="day-icon">●</span></div>
+        <div class="avail-day" onclick="toggleDay(this)" data-day="Sun"><span class="day-label">Sun</span><span class="day-icon">●</span></div>
+      </div>
+      <p style="font-size:0.78rem;font-weight:500;letter-spacing:0.06em;color:var(--gray-400);text-transform:uppercase;margin-bottom:0.75rem;">Preferred time</p>
+      <div class="time-pref" id="timePref">
+        <div class="time-chip" onclick="toggleTime(this)" data-time="Morning">Morning</div>
+        <div class="time-chip" onclick="toggleTime(this)" data-time="Afternoon">Afternoon</div>
+        <div class="time-chip" onclick="toggleTime(this)" data-time="Evening">Evening</div>
+        <div class="time-chip" onclick="toggleTime(this)" data-time="Late Night">Late Night</div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-next" onclick="finishProfile()">Complete Profile ✓</button>
+      </div>
+    </div>
+
+    <!-- Completion -->
+    <div class="step" data-step="7">
+      <div class="completion">
+        <div class="check-circle">✓</div>
+        <h2>You're <em>live.</em></h2>
+        <p>Your profile is ready for OffShift. Clients in Charleston can now discover you when you post availability.</p>
+        <a href="index.html" class="btn-finish">Go to Dashboard →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Live Preview -->
+  <div class="preview-side">
+    <span class="preview-label">Live Preview</span>
+    <div class="profile-card" id="profileCard">
+      <div class="card-photo" id="cardPhoto">
+        <div class="empty-state">
+          <span class="big-icon">✦</span>
+          <span>Your photo here</span>
+        </div>
+        <span class="card-badge" id="cardBadge">Rising Pro</span>
+        <span class="card-rate" id="cardRate"><span id="cardRateAmt">$75</span><span class="card-rate-unit"> /hr</span></span>
+      </div>
+      <div class="card-body">
+        <div class="card-name" id="cardName">Your Name</div>
+        <div class="card-craft" id="cardCraft"></div>
+        <div class="card-bio" id="cardBio"></div>
+        <div class="card-tags" id="cardTags"></div>
+        <div class="card-availability" id="cardAvail">
+          <div class="card-avail-dot">M</div>
+          <div class="card-avail-dot">T</div>
+          <div class="card-avail-dot">W</div>
+          <div class="card-avail-dot">T</div>
+          <div class="card-avail-dot">F</div>
+          <div class="card-avail-dot">S</div>
+          <div class="card-avail-dot">S</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ─── Firebase Config ───
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "offshift-charleston.firebaseapp.com",
+  projectId: "offshift-charleston",
+  storageBucket: "offshift-charleston.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// ─── State ───
+const TOTAL_STEPS = 8;
+let currentStep = 0;
+let profile = {
+  name: '', lastInitial: '', craft: '', specialties: [],
+  bio: '', rate: 75, photoURL: '', days: [], times: []
+};
+
+// Build step dots
+const indicator = document.getElementById('stepIndicator');
+for (let i = 0; i < TOTAL_STEPS - 1; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'step-dot' + (i === 0 ? ' active' : '');
+  indicator.appendChild(dot);
+}
+
+// ─── Navigation ───
+function goToStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+  document.querySelectorAll('.step-dot').forEach((d, i) => {
+    d.className = 'step-dot';
+    if (i < n) d.classList.add('done');
+    if (i === n) d.classList.add('active');
+  });
+  currentStep = n;
+}
+function nextStep() { if (currentStep < TOTAL_STEPS - 1) goToStep(currentStep + 1); }
+function prevStep() { if (currentStep > 0) goToStep(currentStep - 1); }
+
+// ─── Craft Selection ───
+function selectCraft(el) {
+  document.querySelectorAll('#craftTags .tag').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  profile.craft = el.dataset.value;
+  updatePreview();
+}
+
+// ─── Specialty Toggle ───
+function toggleSpec(el) {
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+    profile.specialties = profile.specialties.filter(s => s !== el.dataset.value);
+  } else {
+    if (profile.specialties.length >= 5) return;
+    el.classList.add('selected');
+    profile.specialties.push(el.dataset.value);
+  }
+  updatePreview();
+}
+
+// ─── Rate Slider ───
+function updateRate() {
+  const slider = document.getElementById('rateSlider');
+  const val = slider.value;
+  profile.rate = parseInt(val);
+  document.getElementById('rateValue').textContent = val;
+  const pct = ((val - 25) / (500 - 25)) * 100;
+  slider.style.setProperty('--val', pct + '%');
+  updatePreview();
+}
+
+// ─── Photo ───
+function handlePhoto(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    profile.photoURL = ev.target.result;
+    document.getElementById('photoPreview').innerHTML = `<img src="${ev.target.result}">`;
+    updatePreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+// ─── Availability ───
+function toggleDay(el) {
+  el.classList.toggle('selected');
+  const day = el.dataset.day;
+  if (el.classList.contains('selected')) {
+    if (!profile.days.includes(day)) profile.days.push(day);
+  } else {
+    profile.days = profile.days.filter(d => d !== day);
+  }
+  updatePreview();
+}
+function toggleTime(el) {
+  el.classList.toggle('selected');
+  const time = el.dataset.time;
+  if (el.classList.contains('selected')) {
+    if (!profile.times.includes(time)) profile.times.push(time);
+  } else {
+    profile.times = profile.times.filter(t => t !== time);
+  }
+}
+
+// ─── Character Count ───
+function updateCharCount() {
+  document.getElementById('charCount').textContent = document.getElementById('proBio').value.length;
+}
+
+// ─── Live Preview Update ───
+function updatePreview() {
+  const name = document.getElementById('proName')?.value || '';
+  const initial = document.getElementById('proLastInitial')?.value?.toUpperCase() || '';
+  profile.name = name;
+  profile.lastInitial = initial;
+  profile.bio = document.getElementById('proBio')?.value || '';
+
+  // Name
+  const cardName = document.getElementById('cardName');
+  const displayName = name ? `${name}${initial ? ' ' + initial + '.' : ''}` : 'Your Name';
+  cardName.textContent = displayName;
+  cardName.classList.toggle('has-content', !!name);
+
+  // Craft
+  const cardCraft = document.getElementById('cardCraft');
+  cardCraft.textContent = profile.craft;
+  cardCraft.classList.toggle('visible', !!profile.craft);
+
+  // Badge
+  const badge = document.getElementById('cardBadge');
+  badge.style.display = profile.craft ? 'block' : 'none';
+
+  // Bio
+  document.getElementById('cardBio').textContent = profile.bio || '';
+
+  // Specialties
+  const tagsEl = document.getElementById('cardTags');
+  tagsEl.innerHTML = profile.specialties.map(s => `<span class="card-tag">${s}</span>`).join('');
+
+  // Rate
+  const rateEl = document.getElementById('cardRate');
+  document.getElementById('cardRateAmt').textContent = `$${profile.rate}`;
+  rateEl.style.display = 'block';
+
+  // Photo
+  const photoEl = document.getElementById('cardPhoto');
+  if (profile.photoURL) {
+    photoEl.innerHTML = `<img src="${profile.photoURL}"><span class="card-badge" id="cardBadge" style="display:${profile.craft ? 'block' : 'none'}">Rising Pro</span><span class="card-rate" id="cardRate" style="display:block"><span id="cardRateAmt">$${profile.rate}</span><span class="card-rate-unit"> /hr</span></span>`;
+  }
+
+  // Availability dots
+  const dayMap = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dayLabels = ['M','T','W','T','F','S','S'];
+  const availEl = document.getElementById('cardAvail');
+  availEl.innerHTML = dayMap.map((d, i) =>
+    `<div class="card-avail-dot${profile.days.includes(d) ? ' active' : ''}">${dayLabels[i]}</div>`
+  ).join('');
+}
+
+// ─── Finish ───
+async function finishProfile() {
+  const user = auth.currentUser;
+  if (user) {
+    try {
+      await db.collection('users').doc(user.uid).update({
+        firstName: profile.name,
+        lastInitial: profile.lastInitial,
+        displayName: `${profile.name} ${profile.lastInitial}.`,
+        craft: profile.craft,
+        specialties: profile.specialties,
+        bio: profile.bio,
+        rate: profile.rate,
+        availableDays: profile.days,
+        preferredTimes: profile.times,
+        role: 'pro',
+        profileComplete: true,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (err) { console.warn('Firestore save error:', err); }
+  }
+  goToStep(7);
+}
+
+// ─── Save & Exit ───
+function saveProgress() {
+  const user = auth.currentUser;
+  if (user) {
+    db.collection('users').doc(user.uid).update({
+      firstName: profile.name,
+      lastInitial: profile.lastInitial,
+      craft: profile.craft,
+      specialties: profile.specialties,
+      bio: profile.bio,
+      rate: profile.rate,
+      availableDays: profile.days,
+      preferredTimes: profile.times,
+      profileComplete: false
+    }).then(() => { window.location.href = 'index.html'; })
+      .catch(() => { window.location.href = 'index.html'; });
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+// Init slider visual
+updateRate();
+</script>
+
+</body>
+</html>
