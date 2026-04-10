@@ -1016,6 +1016,23 @@ footer {
 }
 .marquee-item span { color: var(--red); margin: 0 24px; font-style: normal; font-size: 0.7rem; }
 @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.nav-signin {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  margin-right: 0.5rem;
+}
+.nav-signin:hover {
+  border-color: var(--white);
+  background: rgba(255,255,255,0.08);
+}
 </style>
 </head>
 <body>
@@ -1037,7 +1054,12 @@ footer {
     <a href="browse.html">Browse Pros</a>
     <a href="#experience">The Experience</a>
     <a href="#apply">Become a Pro</a>
+<<<<<<< HEAD
     <a href="login.html" class="nav-cta">Sign In</a>
+=======
+    <a href="login.html" class="nav-signin">Sign In</a>
+      <a href="#apply" class="nav-cta">Apply Now</a>
+>>>>>>> 9e66bec2521ae2e8f929d84caaea3fb161fce2d0
   </div>
   <div class="nav-toggle" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
     <span></span><span></span><span></span>
