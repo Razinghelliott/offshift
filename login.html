@@ -671,13 +671,24 @@ async function handleSubmit(e) {
   e.preventDefault();
   clearMessages();
 
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
   const btn = document.getElementById('submitBtn');
-
   btn.classList.add('loading');
 
   try {
+    // Google user picking a role — already signed in, just save role and redirect
+    const currentUser = auth.currentUser;
+    if (mode === 'signup' && currentUser && currentUser.providerData.some(p => p.providerId === 'google.com')) {
+      if (!selectedRole) { showError('Please select whether you are a Pro or a Client.'); btn.classList.remove('loading'); return; }
+      await db.collection('users').doc(currentUser.uid).update({
+        role: selectedRole
+      });
+      redirectByRole(selectedRole, false);
+      return;
+    }
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
     if (mode === 'signup') {
       if (!selectedRole) { showError('Please select whether you are a Pro or a Client.'); btn.classList.remove('loading'); return; }
       const firstName = document.getElementById('firstName').value.trim();
