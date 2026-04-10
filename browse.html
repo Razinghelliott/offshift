@@ -1082,6 +1082,170 @@ function signOut() {
   auth.signOut().then(() => { window.location.href = 'login.html'; });
 }
 
+// ─── Sample Pros (placeholder until real data fills in) ───
+const samplePros = [
+  {
+    id: 'sample-1', name: 'Marcus T.', craft: 'Chef',
+    specialties: ['Lowcountry Cuisine', 'Farm-to-Table', 'Seafood', 'Private Dining'],
+    bio: 'James Beard semifinalist specializing in elevated Lowcountry cuisine. 12 years helming kitchens from Manhattan to King Street — now cooking exclusively for private events.',
+    rate: 175, rating: 4.9, reviews: 47,
+    days: ['Mon','Wed','Thu','Fri','Sat'], times: ['Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-2', name: 'Sienna R.', craft: 'Photographer',
+    specialties: ['Editorial', 'Weddings', 'Portraits', 'Golden Hour'],
+    bio: 'Light chaser. Story teller. My editorial work has appeared in Garden & Gun and Charleston Magazine. I shoot every frame like it\'s the cover.',
+    rate: 200, rating: 5.0, reviews: 63,
+    days: ['Tue','Wed','Fri','Sat','Sun'], times: ['Morning', 'Afternoon'],
+    photoURL: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-3', name: 'Devon K.', craft: 'Bartender',
+    specialties: ['Craft Cocktails', 'Molecular Mixology', 'Whiskey', 'Event Bars'],
+    bio: 'Award-winning mixologist who turned a passion for flavor into liquid art. I build bespoke cocktail menus that become the conversation piece of your evening.',
+    rate: 95, rating: 4.8, reviews: 38,
+    days: ['Thu','Fri','Sat','Sun'], times: ['Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-4', name: 'Camille J.', craft: 'Florist',
+    specialties: ['Wedding Florals', 'Installations', 'Dried Arrangements', 'Tablescapes'],
+    bio: 'Botanical architect creating immersive floral experiences. From intimate dinner tablescapes to grand installations — every stem is placed with intention.',
+    rate: 150, rating: 4.9, reviews: 52,
+    days: ['Mon','Tue','Wed','Thu','Fri'], times: ['Morning', 'Afternoon'],
+    photoURL: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-5', name: 'Joaquin M.', craft: 'DJ',
+    specialties: ['House', 'R&B', 'Wedding Receptions', 'Vinyl Sets'],
+    bio: 'Resident DJ at The Cedar Room. I read rooms the way surfers read waves — instinctively. Vinyl collector, vibe curator, dance floor architect.',
+    rate: 125, rating: 4.7, reviews: 29,
+    days: ['Fri','Sat','Sun'], times: ['Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-6', name: 'Lena W.', craft: 'Makeup Artist',
+    specialties: ['Bridal', 'Editorial', 'Airbrush', 'Special FX'],
+    bio: 'Celebrity makeup artist turned Charleston local. Trained at MAC and Bobbi Brown — now I make brides cry (happy tears only). Skin-first philosophy, always.',
+    rate: 185, rating: 5.0, reviews: 71,
+    days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], times: ['Morning', 'Afternoon'],
+    photoURL: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-7', name: 'Graham P.', craft: 'Musician',
+    specialties: ['Jazz', 'Acoustic', 'Ceremony Music', 'Trio/Quartet'],
+    bio: 'Berklee-trained guitarist leading a jazz trio that\'s become a staple of Charleston\'s cocktail hour scene. We play standards like they were written yesterday.',
+    rate: 250, rating: 4.8, reviews: 34,
+    days: ['Wed','Thu','Fri','Sat'], times: ['Afternoon', 'Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-8', name: 'Nadia F.', craft: 'Event Planner',
+    specialties: ['Luxury Weddings', 'Corporate Galas', 'Intimate Dinners', 'Destination Events'],
+    bio: 'Producer of over 200 flawless events. I don\'t plan parties — I engineer experiences. Every detail orchestrated, every moment intentional, every guest enchanted.',
+    rate: 300, rating: 4.9, reviews: 56,
+    days: ['Mon','Tue','Wed','Thu','Fri'], times: ['Morning', 'Afternoon', 'Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-9', name: 'Theo B.', craft: 'Videographer',
+    specialties: ['Cinematic Weddings', 'Brand Films', 'Drone', 'Documentary'],
+    bio: 'Former CNN shooter who traded breaking news for love stories. My films have that analog warmth with modern precision. Every edit breathes.',
+    rate: 225, rating: 4.7, reviews: 41,
+    days: ['Tue','Wed','Fri','Sat','Sun'], times: ['Morning', 'Afternoon', 'Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1579566346927-c68383817a25?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-10', name: 'Ivy C.', craft: 'Baker',
+    specialties: ['Custom Cakes', 'French Pastry', 'Macarons', 'Dessert Tables'],
+    bio: 'Le Cordon Bleu Paris graduate. My cakes are sculptures, my croissants are religion, and my macaron towers have been known to make grown adults weep.',
+    rate: 130, rating: 4.9, reviews: 58,
+    days: ['Mon','Tue','Wed','Thu','Fri','Sat'], times: ['Morning'],
+    photoURL: 'https://images.unsplash.com/photo-1486427944544-d2c246c4df14?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-11', name: 'Kai D.', craft: 'Hair Stylist',
+    specialties: ['Bridal Updos', 'Color', 'Extensions', 'Editorial'],
+    bio: 'Master stylist with a cult following on King Street. Known for effortless waves that look like you just stepped off a yacht. Because maybe you did.',
+    rate: 160, rating: 4.8, reviews: 44,
+    days: ['Tue','Wed','Thu','Fri','Sat'], times: ['Morning', 'Afternoon'],
+    photoURL: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-12', name: 'Rafael S.', craft: 'Chef',
+    specialties: ['Latin Fusion', 'Seafood', 'Open Fire', 'Tasting Menus'],
+    bio: 'Born in Buenos Aires, forged in Charleston kitchens. I cook with fire — literally. My open-flame tasting menus are an experience you taste, feel, and remember.',
+    rate: 200, rating: 4.8, reviews: 33,
+    days: ['Wed','Thu','Fri','Sat'], times: ['Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-13', name: 'Zara N.', craft: 'Caterer',
+    specialties: ['Southern Elegance', 'Passed Hors d\'oeuvres', 'Brunch', 'Farm Dinners'],
+    bio: 'My team and I turn meals into memories. Whether it\'s a 12-person farm dinner under the oaks or a 200-guest gala, we bring warmth, flavor, and impeccable service.',
+    rate: 85, rating: 4.7, reviews: 39,
+    days: ['Mon','Wed','Thu','Fri','Sat','Sun'], times: ['Morning', 'Afternoon', 'Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-14', name: 'Owen H.', craft: 'Photographer',
+    specialties: ['Lifestyle', 'Food Photography', 'Real Estate', 'Headshots'],
+    bio: 'I see beauty in the mundane and make the extraordinary feel intimate. Specializing in lifestyle and culinary photography that makes you feel like you\'re already there.',
+    rate: 150, rating: 4.6, reviews: 27,
+    days: ['Mon','Tue','Wed','Thu','Fri'], times: ['Morning', 'Afternoon'],
+    photoURL: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-15', name: 'Maren L.', craft: 'Musician',
+    specialties: ['Vocalist', 'Jazz Standards', 'Soul', 'Ceremony Singer'],
+    bio: 'Velvet voice, timeless repertoire. From Ella to Adele, I bring a warmth that fills a room without a microphone. Spoleto Festival featured artist three years running.',
+    rate: 275, rating: 5.0, reviews: 48,
+    days: ['Thu','Fri','Sat','Sun'], times: ['Afternoon', 'Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-16', name: 'Ellis V.', craft: 'Bartender',
+    specialties: ['Tiki', 'Zero-Proof', 'Champagne Bars', 'Custom Syrups'],
+    bio: 'Sober-curious? I got you. Tiki obsessed? Even better. I build bars that cater to every guest — because the best parties have the best drinks, alcohol or not.',
+    rate: 110, rating: 4.7, reviews: 31,
+    days: ['Fri','Sat','Sun'], times: ['Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-17', name: 'Sutton A.', craft: 'Florist',
+    specialties: ['Minimalist', 'Tropical', 'Bouquets', 'Event Styling'],
+    bio: 'Less is more — unless it\'s tropical, then more is more. I design arrangements that feel wild and refined at once. Featured in Martha Stewart Weddings.',
+    rate: 175, rating: 4.9, reviews: 45,
+    days: ['Mon','Tue','Wed','Thu','Fri','Sat'], times: ['Morning', 'Afternoon'],
+    photoURL: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-18', name: 'Julian G.', craft: 'DJ',
+    specialties: ['Afrobeats', 'Open Format', 'Corporate', 'Sound Design'],
+    bio: 'Global sounds, local energy. I bring Afrobeats, deep house, and everything between to stages and dance floors from Folly Beach to downtown rooftops.',
+    rate: 150, rating: 4.8, reviews: 36,
+    days: ['Wed','Thu','Fri','Sat'], times: ['Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-19', name: 'Priya K.', craft: 'Makeup Artist',
+    specialties: ['South Asian Bridal', 'Glam', 'Natural Beauty', 'Color Theory'],
+    bio: 'Trained across three continents, specialized in making every skin tone luminous. South Asian bridal specialist, but I make everyone glow like they\'re backlit by God.',
+    rate: 195, rating: 4.9, reviews: 53,
+    days: ['Mon','Tue','Wed','Fri','Sat','Sun'], times: ['Morning', 'Afternoon'],
+    photoURL: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=400&fit=crop'
+  },
+  {
+    id: 'sample-20', name: 'Beckett W.', craft: 'Videographer',
+    specialties: ['Music Videos', 'Short Films', 'Social Content', 'Aerial'],
+    bio: 'Sundance shorts, Super Bowl spots, and your Saturday wedding — I bring the same cinematic obsession to everything. DJI Inspire certified pilot.',
+    rate: 275, rating: 4.8, reviews: 42,
+    days: ['Mon','Tue','Wed','Thu','Fri','Sat'], times: ['Morning', 'Afternoon', 'Evening'],
+    photoURL: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&h=400&fit=crop'
+  }
+];
+
 // ─── Load Pros ───
 async function loadPros() {
   try {
@@ -1092,7 +1256,6 @@ async function loadPros() {
     allPros = [];
     snapshot.forEach(doc => {
       const data = doc.data();
-      // Generate simulated rating for now
       const rating = (3.5 + Math.random() * 1.5);
       const reviews = Math.floor(5 + Math.random() * 45);
       allPros.push({
@@ -1113,17 +1276,19 @@ async function loadPros() {
       });
     });
 
+    // Merge in sample pros
+    allPros = [...allPros, ...samplePros];
+
     buildFilterMenus();
     applyFilters();
     updateStats();
   } catch (err) {
     console.error('Error loading pros:', err);
-    document.getElementById('prosGrid').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">⚠️</div>
-        <h3>Something went wrong</h3>
-        <p>We couldn't load the pros right now. Please try again in a moment.</p>
-      </div>`;
+    // Fall back to sample data if Firestore fails
+    allPros = [...samplePros];
+    buildFilterMenus();
+    applyFilters();
+    updateStats();
   }
 }
 
