@@ -17,10 +17,10 @@
   --dark-border: #222222;
   --white: #f5f5f5;
   --white-pure: #ffffff;
-  --red: #c31415;
-  --red-hover: #9c1011;
-  --red-glow: rgba(195, 20, 21, 0.3);
-  --red-subtle: rgba(195, 20, 21, 0.06);
+  --red: #c8102e;
+  --red-hover: #a00d24;
+  --red-glow: rgba(200, 16, 46, 0.3);
+  --red-subtle: rgba(200, 16, 46, 0.06);
   --green: #34C759;
   --green-subtle: rgba(52, 199, 89, 0.1);
   --green-border: rgba(52, 199, 89, 0.25);
@@ -204,7 +204,7 @@ nav {
 /* Availability states */
 .cal-day.available { border-color: var(--green-border); background: var(--green-subtle); }
 .cal-day.available .day-dot { background: var(--green); }
-.cal-day.blocked { border-color: rgba(195,20,21,0.2); background: var(--red-subtle); }
+.cal-day.blocked { border-color: rgba(200,16,46,0.2); background: var(--red-subtle); }
 .cal-day.blocked .day-dot { background: var(--red); }
 .cal-day.override { border-color: var(--orange-border); background: var(--orange-subtle); }
 .cal-day.override .day-dot { background: var(--orange); }
@@ -235,7 +235,7 @@ nav {
 }
 .override-btn:hover { background: rgba(255,255,255,0.08); color: var(--white); }
 .override-btn.selected-avail { background: var(--green-subtle); border-color: var(--green-border); color: var(--green); }
-.override-btn.selected-block { background: var(--red-subtle); border-color: rgba(195,20,21,0.3); color: var(--red); }
+.override-btn.selected-block { background: var(--red-subtle); border-color: rgba(200,16,46,0.3); color: var(--red); }
 
 .override-times { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
 .override-times .time-input { flex: 1; }
@@ -244,7 +244,7 @@ nav {
   padding: 10px 24px; background: var(--red); color: var(--white-pure); border: none;
   border-radius: 8px; font-family: var(--sans); font-size: 0.8rem; font-weight: 600;
   cursor: pointer; transition: var(--transition); width: 100%;
-  box-shadow: 0 4px 16px rgba(195,20,21,0.25);
+  box-shadow: 0 4px 16px rgba(200,16,46,0.25);
 }
 .override-save:hover { background: var(--red-hover); }
 .override-clear {
@@ -262,7 +262,7 @@ nav {
   font-size: 0.82rem; transition: var(--transition);
 }
 .override-item.type-available { background: var(--green-subtle); border: 1px solid var(--green-border); color: var(--green); }
-.override-item.type-blocked { background: var(--red-subtle); border: 1px solid rgba(195,20,21,0.2); color: var(--red); }
+.override-item.type-blocked { background: var(--red-subtle); border: 1px solid rgba(200,16,46,0.2); color: var(--red); }
 .override-item .ov-date { font-weight: 600; }
 .override-item .ov-time { font-weight: 400; opacity: 0.8; margin-left: 8px; }
 .override-item .ov-remove {
@@ -289,7 +289,7 @@ nav {
   padding: 12px 32px; background: var(--red); color: var(--white-pure); border: none;
   border-radius: 8px; font-family: var(--sans); font-size: 0.82rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
-  transition: var(--transition); box-shadow: 0 4px 20px rgba(195,20,21,0.3);
+  transition: var(--transition); box-shadow: 0 4px 20px rgba(200,16,46,0.3);
 }
 .btn-save:hover { background: var(--red-hover); transform: translateY(-1px); }
 .btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
@@ -310,7 +310,7 @@ nav {
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
 }
 .toast.success { border-color: rgba(52,199,89,0.3); }
-.toast.error { border-color: rgba(195,20,21,0.3); }
+.toast.error { border-color: rgba(200,16,46,0.3); }
 .toast.show { transform: translateX(0); }
 
 /* ===== LOADING ===== */
