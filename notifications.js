@@ -27,10 +27,10 @@
     .notif-badge {
       position: absolute; top: -4px; right: -4px;
       min-width: 18px; height: 18px; padding: 0 5px;
-      border-radius: 9px; background: #c8102e;
+      border-radius: 9px; background: #c31415;
       font-size: 0.6rem; font-weight: 700; color: #fff;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 8px rgba(200,16,46,0.4);
+      box-shadow: 0 2px 8px rgba(195,20,21,0.4);
       animation: notifPop 0.3s cubic-bezier(0.4,0,0.2,1);
     }
     .notif-badge.hidden { display: none; }
@@ -56,7 +56,7 @@
       font-size: 0.7rem; color: #888; background: none; border: none; cursor: pointer;
       font-family: 'Inter', sans-serif; transition: color 0.3s;
     }
-    .notif-mark-read:hover { color: #c8102e; }
+    .notif-mark-read:hover { color: #c31415; }
 
     .notif-item {
       padding: 14px 20px; display: flex; gap: 12px; align-items: flex-start;
@@ -64,10 +64,10 @@
     }
     .notif-item:hover { background: rgba(255,255,255,0.03); }
     .notif-item:last-child { border-bottom: none; }
-    .notif-item.unread { background: rgba(200,16,46,0.04); }
+    .notif-item.unread { background: rgba(195,20,21,0.04); }
     .notif-item.unread::before {
       content: ''; flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%;
-      background: #c8102e; margin-top: 6px; box-shadow: 0 0 8px rgba(200,16,46,0.4);
+      background: #c31415; margin-top: 6px; box-shadow: 0 0 8px rgba(195,20,21,0.4);
     }
 
     .notif-icon {
@@ -76,9 +76,9 @@
     }
     .notif-icon.booking { background: rgba(52,199,89,0.1); }
     .notif-icon.confirmed { background: rgba(52,199,89,0.15); }
-    .notif-icon.declined { background: rgba(200,16,46,0.1); }
+    .notif-icon.declined { background: rgba(195,20,21,0.1); }
     .notif-icon.request { background: rgba(255,149,0,0.1); }
-    .notif-icon.message { background: rgba(200,16,46,0.1); }
+    .notif-icon.message { background: rgba(195,20,21,0.1); }
 
     .notif-content { flex: 1; min-width: 0; }
     .notif-from { font-size: 0.8rem; font-weight: 600; color: #f5f5f5; margin-bottom: 2px; }
@@ -102,10 +102,10 @@
     .msg-badge-count {
       position: absolute; top: -4px; right: -4px;
       min-width: 18px; height: 18px; padding: 0 5px;
-      border-radius: 9px; background: #c8102e;
+      border-radius: 9px; background: #c31415;
       font-size: 0.6rem; font-weight: 700; color: #fff;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 8px rgba(200,16,46,0.4);
+      box-shadow: 0 2px 8px rgba(195,20,21,0.4);
       animation: notifPop 0.3s cubic-bezier(0.4,0,0.2,1);
     }
     .msg-badge-count.hidden { display: none; }

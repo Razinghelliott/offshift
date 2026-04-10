@@ -12,9 +12,9 @@
 :root {
   --black: #000000;
   --white: #ffffff;
-  --red: #C8102E;
-  --red-hover: #a00d24;
-  --red-glow: rgba(200,16,46,0.3);
+  --red: #c31415;
+  --red-hover: #9c1011;
+  --red-glow: rgba(195,20,21,0.3);
   --gray-100: #f5f5f5;
   --gray-200: #e0e0e0;
   --gray-300: #bbb;
@@ -72,7 +72,7 @@ nav {
 .step.active { display: block; }
 @keyframes stepIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-.step-eyebrow { display: inline-block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; padding: 0.35rem 0.85rem; border-radius: 100px; border: 1px solid rgba(200,16,46,0.3); background: rgba(200,16,46,0.06); }
+.step-eyebrow { display: inline-block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; padding: 0.35rem 0.85rem; border-radius: 100px; border: 1px solid rgba(195,20,21,0.3); background: rgba(195,20,21,0.06); }
 .step h2 { font-family: var(--font-serif); font-size: 2.4rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.75rem; }
 .step h2 em { font-style: italic; color: var(--red); }
 .step .step-sub { color: var(--gray-400); font-size: 0.95rem; font-weight: 300; line-height: 1.6; margin-bottom: 2.5rem; max-width: 440px; }
@@ -94,7 +94,7 @@ nav {
 .size-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
 .size-card { padding: 1.25rem 0.75rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); text-align: center; cursor: pointer; transition: all 0.35s; }
 .size-card:hover { border-color: rgba(255,255,255,0.2); }
-.size-card.selected { border-color: var(--red); background: rgba(200,16,46,0.1); box-shadow: 0 0 0 3px rgba(200,16,46,0.12); }
+.size-card.selected { border-color: var(--red); background: rgba(195,20,21,0.1); box-shadow: 0 0 0 3px rgba(195,20,21,0.12); }
 .size-card .size-icon { font-size: 1.8rem; display: block; margin-bottom: 0.5rem; }
 .size-card .size-label { font-size: 0.85rem; font-weight: 600; display: block; }
 .size-card .size-desc { font-size: 0.72rem; color: var(--gray-400); margin-top: 0.2rem; display: block; }
@@ -114,7 +114,7 @@ nav {
 .client-card { width: 380px; border-radius: 24px; overflow: hidden; background: var(--gray-900); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 25px 80px rgba(0,0,0,0.6); transition: all 0.5s cubic-bezier(0.4,0,0.2,1); }
 .client-card:hover { transform: translateY(-4px); box-shadow: 0 35px 100px rgba(0,0,0,0.7), 0 0 40px var(--red-glow); }
 
-.client-card-header { padding: 2rem 1.75rem 1.5rem; position: relative; background: linear-gradient(135deg, rgba(200,16,46,0.08), transparent); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.client-card-header { padding: 2rem 1.75rem 1.5rem; position: relative; background: linear-gradient(135deg, rgba(195,20,21,0.08), transparent); border-bottom: 1px solid rgba(255,255,255,0.04); }
 .client-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--gray-800); border: 2px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--red); margin-bottom: 1rem; overflow: hidden; transition: all 0.3s; }
 .client-avatar.has-initial { background: var(--red); color: var(--white); }
 .client-name { font-family: var(--font-serif); font-size: 1.4rem; color: var(--gray-600); transition: color 0.3s; margin-bottom: 0.2rem; }
@@ -126,7 +126,7 @@ nav {
 .client-section { margin-bottom: 1.25rem; }
 .client-section-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 0.5rem; }
 .client-card-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; min-height: 1.5rem; }
-.client-tag { padding: 0.25rem 0.65rem; border-radius: 100px; background: rgba(200,16,46,0.1); border: 1px solid rgba(200,16,46,0.2); color: var(--red); font-size: 0.7rem; font-weight: 600; animation: tagPop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+.client-tag { padding: 0.25rem 0.65rem; border-radius: 100px; background: rgba(195,20,21,0.1); border: 1px solid rgba(195,20,21,0.2); color: var(--red); font-size: 0.7rem; font-weight: 600; animation: tagPop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
 @keyframes tagPop { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
 .client-note { font-size: 0.85rem; color: var(--gray-400); line-height: 1.5; font-weight: 300; min-height: 1.5rem; }
 .client-card-footer { padding: 1rem 1.75rem; border-top: 1px solid rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: space-between; }
