@@ -78,6 +78,7 @@
     .notif-icon.confirmed { background: rgba(52,199,89,0.15); }
     .notif-icon.declined { background: rgba(200,16,46,0.1); }
     .notif-icon.request { background: rgba(255,149,0,0.1); }
+    .notif-icon.message { background: rgba(200,16,46,0.1); }
 
     .notif-content { flex: 1; min-width: 0; }
     .notif-from { font-size: 0.8rem; font-weight: 600; color: #f5f5f5; margin-bottom: 2px; }
@@ -85,6 +86,29 @@
     .notif-time { font-size: 0.65rem; color: #666; margin-top: 4px; }
 
     .notif-empty { padding: 40px 20px; text-align: center; color: #666; font-size: 0.85rem; }
+
+    .msg-badge-wrap {
+      position: relative; cursor: pointer;
+    }
+    .msg-badge-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s; text-decoration: none;
+    }
+    .msg-badge-icon:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+    .msg-badge-icon svg { width: 18px; height: 18px; color: #aaa; transition: color 0.3s; }
+    .msg-badge-icon:hover svg { color: #f5f5f5; }
+    .msg-badge-count {
+      position: absolute; top: -4px; right: -4px;
+      min-width: 18px; height: 18px; padding: 0 5px;
+      border-radius: 9px; background: #c8102e;
+      font-size: 0.6rem; font-weight: 700; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(200,16,46,0.4);
+      animation: notifPop 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .msg-badge-count.hidden { display: none; }
 
     @media (max-width: 500px) { .notif-dropdown { width: calc(100vw - 32px); right: -60px; } }
   `;
@@ -161,11 +185,13 @@
       const iconClass = n.type === 'booking_confirmed' ? 'confirmed'
         : n.type === 'booking_declined' ? 'declined'
         : n.type === 'booking_request' ? 'request'
+        : n.type === 'new_message' ? 'message'
         : 'booking';
 
       const iconEmoji = n.type === 'booking_confirmed' ? '&#10003;'
         : n.type === 'booking_declined' ? '&#10007;'
         : n.type === 'booking_request' ? '&#128276;'
+        : n.type === 'new_message' ? '&#128172;'
         : '&#128197;';
 
       const timeAgo = getTimeAgo(n.createdAt);
@@ -185,7 +211,9 @@
           db.collection('notifications').doc(n.id).update({ read: true });
         }
         // Navigate based on type
-        if (n.type === 'booking_request') {
+        if (n.type === 'new_message' && n.bookingId) {
+          window.location.href = 'messages.html?booking=' + n.bookingId;
+        } else if (n.type === 'booking_request') {
           window.location.href = 'pro-bookings.html';
         } else if (n.type === 'booking_confirmed' || n.type === 'booking_declined') {
           window.location.href = 'client-bookings.html';
@@ -238,13 +266,76 @@
     return div.innerHTML;
   }
 
+  // ─── Build Messages Badge ───
+  let msgUnsub1 = null, msgUnsub2 = null;
+
+  function buildMsgBadge() {
+    const navUser = document.querySelector('.nav-user');
+    if (!navUser) return null;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'msg-badge-wrap';
+    wrap.innerHTML = `
+      <a href="messages.html" class="msg-badge-icon" title="Messages">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </a>
+      <div class="msg-badge-count hidden" id="msgBadge">0</div>
+    `;
+    // Insert before notif-wrap (or first child)
+    const notifWrap = navUser.querySelector('.notif-wrap');
+    if (notifWrap) {
+      navUser.insertBefore(wrap, notifWrap);
+    } else {
+      navUser.insertBefore(wrap, navUser.firstChild);
+    }
+    return wrap;
+  }
+
+  function startMsgListener(userId) {
+    const badge = document.getElementById('msgBadge');
+    if (!badge) return;
+
+    let clientUnread = new Set();
+    let proUnread = new Set();
+
+    function updateMsgBadge() {
+      const total = new Set([...clientUnread, ...proUnread]).size;
+      badge.textContent = total > 9 ? '9+' : total;
+      badge.classList.toggle('hidden', total === 0);
+    }
+
+    // Listen for bookings where user is client and has unread
+    msgUnsub1 = db.collection('bookings')
+      .where('clientId', '==', userId)
+      .where('unreadBy.' + userId, '==', true)
+      .onSnapshot(snap => {
+        clientUnread = new Set(snap.docs.map(d => d.id));
+        updateMsgBadge();
+      }, err => { console.error('Msg badge client err:', err); });
+
+    // Listen for bookings where user is pro and has unread
+    msgUnsub2 = db.collection('bookings')
+      .where('proId', '==', userId)
+      .where('unreadBy.' + userId, '==', true)
+      .onSnapshot(snap => {
+        proUnread = new Set(snap.docs.map(d => d.id));
+        updateMsgBadge();
+      }, err => { console.error('Msg badge pro err:', err); });
+  }
+
   // ─── Public init ───
   window.initNotifications = function(userId) {
     const wrap = buildNotifUI();
     if (!wrap) return;
     setupToggle();
 
-    // Real-time listener
+    // Messages badge
+    buildMsgBadge();
+    startMsgListener(userId);
+
+    // Real-time notification listener
     unsubscribe = db.collection('notifications')
       .where('userId', '==', userId)
       .orderBy('createdAt', 'desc')
@@ -260,5 +351,7 @@
 
   window.destroyNotifications = function() {
     if (unsubscribe) unsubscribe();
+    if (msgUnsub1) msgUnsub1();
+    if (msgUnsub2) msgUnsub2();
   };
 })();

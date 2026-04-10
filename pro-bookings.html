@@ -105,6 +105,17 @@ nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 4
 .booking-message-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-muted); margin-bottom: 6px; }
 .booking-message-text { font-size: 0.85rem; color: var(--gray-light); line-height: 1.6; font-weight: 300; }
 
+.booking-chat-link { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
+.chat-link-btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+  border-radius: 8px; font-size: 0.78rem; font-weight: 500; color: var(--gray-light);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  transition: var(--transition); text-decoration: none; cursor: pointer;
+}
+.chat-link-btn:hover { color: var(--white); background: rgba(200,16,46,0.1); border-color: rgba(200,16,46,0.25); }
+.chat-link-btn svg { opacity: 0.7; }
+.chat-link-btn:hover svg { opacity: 1; }
+
 .booking-actions { display: flex; gap: 10px; justify-content: flex-end; }
 .action-btn {
   padding: 10px 24px; border-radius: 8px; font-family: var(--sans); font-size: 0.8rem;
@@ -156,6 +167,7 @@ nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 4
   <a href="index.html" class="nav-logo">OFFSHIFT</a>
   <div class="nav-links">
     <a href="browse.html">Browse</a>
+    <a href="messages.html">Messages</a>
     <a href="pro-dashboard.html">Dashboard</a>
   </div>
   <div class="nav-user">
@@ -337,6 +349,13 @@ function renderBookings() {
           <button class="action-btn accept" onclick="updateBooking('${booking.id}', 'confirmed')">Accept</button>
         </div>
       ` : ''}
+
+      <div class="booking-chat-link">
+        <a href="messages.html?booking=${booking.id}" class="chat-link-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Message ${booking.clientName ? booking.clientName.split(' ')[0] : 'Client'}
+        </a>
+      </div>
     `;
 
     list.appendChild(card);

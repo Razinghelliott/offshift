@@ -914,6 +914,7 @@ nav.scrolled {
   <div class="nav-links" id="navLinks">
     <a href="index.html">Home</a>
     <a href="browse.html" class="active">Browse Pros</a>
+    <a href="messages.html" id="msgLink" style="display:none;">Messages</a>
     <a href="pro-dashboard.html" id="dashLink" style="display:none;">Dashboard</a>
     <div class="nav-user" id="navUser" style="display:none;">
       <a href="pro-dashboard.html" class="nav-avatar" id="navAvatar" title="Dashboard"></a>
@@ -1079,6 +1080,8 @@ auth.onAuthStateChanged(user => {
     initNotifications(user.uid);
     const dashLink = document.getElementById('dashLink');
     if (dashLink) dashLink.style.display = 'block';
+    const msgLink = document.getElementById('msgLink');
+    if (msgLink) msgLink.style.display = 'block';
     const avatar = document.getElementById('navAvatar');
     if (user.photoURL) {
       avatar.innerHTML = `<img src="${user.photoURL}" alt="">`;
@@ -1090,6 +1093,8 @@ auth.onAuthStateChanged(user => {
     navSignIn.style.display = 'block';
     const dashLink = document.getElementById('dashLink');
     if (dashLink) dashLink.style.display = 'none';
+    const msgLink2 = document.getElementById('msgLink');
+    if (msgLink2) msgLink2.style.display = 'none';
   }
 });
 

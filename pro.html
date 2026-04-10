@@ -171,6 +171,7 @@ nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 4
   <a href="index.html" class="nav-logo">OFFSHIFT</a>
   <div class="nav-links">
     <a href="browse.html">Browse</a>
+    <a href="messages.html" id="msgLink" style="display:none;">Messages</a>
   </div>
   <div class="nav-user" id="navUser" style="display:none;">
     <a href="pro-dashboard.html" class="nav-avatar" id="navAvatar" title="Dashboard"><span id="navInitials">?</span></a>
@@ -280,6 +281,8 @@ auth.onAuthStateChanged(user => {
   if (user) {
     $('navUser').style.display = 'flex';
     $('navSignIn').style.display = 'none';
+    const ml = document.getElementById('msgLink');
+    if (ml) ml.style.display = 'block';
     initNotifications(user.uid);
     const initials = user.displayName ? user.displayName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2) : user.email[0].toUpperCase();
     $('navInitials').textContent = initials;
