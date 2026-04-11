@@ -151,6 +151,8 @@ nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 4
   .booking-actions { justify-content: stretch; }
   .action-btn { flex: 1; text-align: center; }
 }
+.brand-text { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.charleston { color: #c8102e; }
 </style>
 </head>
 <body>
@@ -179,12 +181,12 @@ nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 4
 <div class="page">
   <div class="page-header">
     <h1>Your <em>Bookings</em></h1>
-    <p>Review requests from clients, accept or decline, and manage your schedule.</p>
+    <p>Review requests from bookers, accept or decline, and manage your schedule.</p>
   </div>
 
   <div class="sub-nav">
     <a href="pro-dashboard.html">Profile</a>
-    <a href="pro-availability.html">Availability</a>
+    <a href="pro-availability.html">Days Off</a>
     <a href="pro-bookings.html" class="active">Bookings</a>
   </div>
 
@@ -201,7 +203,7 @@ nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 4
     <div class="empty-state">
       <div class="icon">&#128197;</div>
       <h3>No bookings yet</h3>
-      <p>When clients send booking requests, they'll appear here.</p>
+      <p>When bookers send booking requests, they'll appear here.</p>
     </div>
   </div>
 </div>
@@ -310,7 +312,7 @@ function renderBookings() {
             ${booking.clientPhoto ? `<img src="${booking.clientPhoto}" alt="">` : clientInitial}
           </div>
           <div>
-            <div class="booking-client-name">${booking.clientName || 'Client'}</div>
+            <div class="booking-client-name">${booking.clientName || 'Booker'}</div>
             <div class="booking-client-email">${booking.clientEmail || ''}</div>
           </div>
         </div>
@@ -338,7 +340,7 @@ function renderBookings() {
 
       ${booking.message ? `
         <div class="booking-message">
-          <div class="booking-message-label">Client Message</div>
+          <div class="booking-message-label">Booker Message</div>
           <div class="booking-message-text">${escapeHtml(booking.message)}</div>
         </div>
       ` : ''}
@@ -353,7 +355,7 @@ function renderBookings() {
       <div class="booking-chat-link">
         <a href="messages.html?booking=${booking.id}" class="chat-link-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Message ${booking.clientName ? booking.clientName.split(' ')[0] : 'Client'}
+          Message ${booking.clientName ? booking.clientName.split(' ')[0] : 'Booker'}
         </a>
       </div>
     `;

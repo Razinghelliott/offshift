@@ -439,6 +439,8 @@ nav {
   .logo { font-size: 1.1rem; }
   .name-row { grid-template-columns: 1fr; }
 }
+.brand-text { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.charleston { color: #c8102e; }
 </style>
 </head>
 <body>
@@ -527,7 +529,7 @@ nav {
             <label class="role-option" onclick="selectRole(this, 'client')">
               <input type="radio" name="role" value="client">
               <span class="role-icon">✨</span>
-              <span class="role-label">Client</span>
+              <span class="role-label">Booker</span>
               <span class="role-desc">I'm booking talent</span>
             </label>
           </div>
@@ -686,7 +688,7 @@ async function handleSubmit(e) {
     // Google user picking a role — already signed in, just save role and redirect
     const currentUser = auth.currentUser;
     if (mode === 'signup' && currentUser && currentUser.providerData.some(p => p.providerId === 'google.com')) {
-      if (!selectedRole) { showError('Please select whether you are a Pro or a Client.'); btn.classList.remove('loading'); return; }
+      if (!selectedRole) { showError('Please select whether you are a Pro or a Booker.'); btn.classList.remove('loading'); return; }
       await db.collection('users').doc(currentUser.uid).update({
         role: selectedRole
       });
@@ -698,7 +700,7 @@ async function handleSubmit(e) {
     const password = document.getElementById('password').value;
 
     if (mode === 'signup') {
-      if (!selectedRole) { showError('Please select whether you are a Pro or a Client.'); btn.classList.remove('loading'); return; }
+      if (!selectedRole) { showError('Please select whether you are a Pro or a Booker.'); btn.classList.remove('loading'); return; }
       const firstName = document.getElementById('firstName').value.trim();
       const lastInitial = document.getElementById('lastInitial').value.trim().toUpperCase();
       if (!firstName) { showError('Please enter your first name.'); btn.classList.remove('loading'); return; }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OFFSHIFT — Availability</title>
+<title>OFFSHIFT — Days Off</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -332,6 +332,8 @@ nav {
   .day-row { grid-template-columns: 60px 1fr auto; gap: 8px; padding: 10px 12px; }
   .time-input { width: 80px; font-size: 0.75rem; }
 }
+.brand-text { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.charleston { color: #c8102e; }
 </style>
 </head>
 <body>
@@ -365,14 +367,14 @@ nav {
 <!-- Page -->
 <div class="page">
   <div class="page-header">
-    <h1>Your <em>Availability</em></h1>
-    <p>Set your weekly schedule and override specific dates. Clients will see when you're free to book.</p>
+    <h1>Your <em>Days Off</em></h1>
+    <p>Set your weekly schedule and override specific dates. Bookers will see when you're free to book.</p>
   </div>
 
   <!-- Sub-nav -->
   <div class="sub-nav">
     <a href="pro-dashboard.html">Profile</a>
-    <a href="pro-availability.html" class="active">Availability</a>
+    <a href="pro-availability.html" class="active">Days Off</a>
     <a href="pro-bookings.html">Bookings</a>
   </div>
 
@@ -866,7 +868,7 @@ $('saveBtn').addEventListener('click', async () => {
     hasChanges = false;
     $('saveStatus').textContent = 'All changes saved';
     $('saveStatus').className = 'save-status saved';
-    showToast('Availability saved', 'success');
+    showToast('Days off saved', 'success');
 
     setTimeout(() => { if (!hasChanges) $('saveBar').classList.remove('visible'); }, 2000);
   } catch (err) {

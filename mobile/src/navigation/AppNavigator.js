@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { theme } from '../config/theme';
 import { db } from '../config/firebase';
-import { collectionGroup, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
 
 // Screens
 import LoginScreen from '../screens/LoginScreen';

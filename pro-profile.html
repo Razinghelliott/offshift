@@ -644,6 +644,8 @@ nav {
   .step-nav { flex-direction: column; gap: 0.75rem; }
   .step-nav .btn-back, .step-nav .btn-next { width: 100%; text-align: center; }
 }
+.brand-text { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.charleston { color: #c8102e; }
 </style>
 </head>
 <body>
@@ -667,7 +669,7 @@ nav {
     <div class="step active" data-step="0">
       <span class="step-eyebrow">Let's start</span>
       <h2>What should people <em>call you?</em></h2>
-      <p class="step-sub">First name only — we protect your full identity. This is how clients will know you on OffShift.</p>
+      <p class="step-sub">First name only — we protect your full identity. This is how bookers will know you on OffShift.</p>
       <input type="text" class="prompt-input" id="proName" placeholder="Your first name" maxlength="20" oninput="updatePreview()">
       <input type="text" class="prompt-input" id="proLastInitial" placeholder="Last initial (e.g. R)" maxlength="1" oninput="updatePreview()" style="font-size:1.1rem;">
       <div class="step-nav">
@@ -680,7 +682,7 @@ nav {
     <div class="step" data-step="1">
       <span class="step-eyebrow">Your craft</span>
       <h2>What's your <em>superpower?</em></h2>
-      <p class="step-sub">Choose the category that best describes what you do. This is how clients will find you.</p>
+      <p class="step-sub">Choose the category that best describes what you do. This is how bookers will find you.</p>
       <div class="tag-cloud" id="craftTags">
         <div class="tag" onclick="selectCraft(this)" data-value="Mixologist">🍸 Mixologist</div>
         <div class="tag" onclick="selectCraft(this)" data-value="Bartender">🥃 Bartender</div>
@@ -810,7 +812,7 @@ nav {
       <div class="completion">
         <div class="check-circle">✓</div>
         <h2>You're <em>live.</em></h2>
-        <p>Your profile is ready for OffShift. Clients in Charleston can now discover you when you post availability.</p>
+        <p>Your profile is ready for <span class="brand-text">OFFSHIFT</span>. Bookers in <span class="charleston">Charleston</span> can now discover you when you post availability.</p>
         <a href="index.html" class="btn-finish">Go to Dashboard →</a>
       </div>
     </div>
