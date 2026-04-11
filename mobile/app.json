@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "OFFSHIFT",
+    "slug": "offshift",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0a0a0a"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.offshift.app"
+    },
+    "android": {
+      "package": "com.offshift.app",
+      "backgroundColor": "#0a0a0a"
+    },
+    "scheme": "offshift",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow OFFSHIFT to access your photos.",
+          "cameraPermission": "Allow OFFSHIFT to access your camera."
+        }
+      ],
+      "expo-asset"
+    ]
+  }
+}
