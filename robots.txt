@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Disallow: /messages.html
+Disallow: /pro-dashboard.html
+Disallow: /pro-bookings.html
+Disallow: /pro-availability.html
+Disallow: /pro-profile.html
+Disallow: /client-bookings.html
+Disallow: /client-profile.html
+Disallow: /book.html
+
+Sitemap: https://offshiftcharleston.com/sitemap.xml

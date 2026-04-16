@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="logo.png">
+
+<!-- Primary SEO -->
+<title>The Journal | OFFSHIFT Charleston — Guides to Hiring Local Talent</title>
+<meta name="description" content="Guides, stories, and pricing breakdowns for hiring private chefs, bartenders, musicians, and event talent in Charleston, SC. From the team at OffShift.">
+<meta name="keywords" content="charleston private chef, charleston bartender, charleston wedding vendors, hire local talent charleston, private event charleston">
+<meta name="author" content="OFFSHIFT Charleston">
+<link rel="canonical" href="https://offshiftcharleston.com/journal.html">
+
+<!-- Open Graph / Social -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Journal | OFFSHIFT Charleston">
+<meta property="og:description" content="Guides, stories, and pricing breakdowns for hiring private chefs, bartenders, musicians, and event talent in Charleston, SC.">
+<meta property="og:url" content="https://offshiftcharleston.com/journal.html">
+<meta property="og:image" content="https://offshiftcharleston.com/logo.png">
+<meta property="og:site_name" content="OFFSHIFT Charleston">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Journal | OFFSHIFT Charleston">
+<meta name="twitter:description" content="Guides, stories, and pricing breakdowns for hiring Charleston's finest local talent.">
+
+<!-- Structured data: Blog -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "The OFFSHIFT Journal",
+  "description": "Guides and stories on hiring private chefs, bartenders, musicians, and event talent in Charleston, SC.",
+  "url": "https://offshiftcharleston.com/journal.html",
+  "publisher": {
+    "@type": "Organization",
+    "name": "OFFSHIFT Charleston",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://offshiftcharleston.com/logo.png"
+    }
+  }
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --black: #0a0a0a;
+  --dark: #111111;
+  --dark-card: #161616;
+  --dark-border: #2a2a2a;
+  --white: #f5f5f5;
+  --white-pure: #ffffff;
+  --red: #c8102e;
+  --red-glow: rgba(200, 16, 46, 0.3);
+  --red-subtle: rgba(200, 16, 46, 0.08);
+  --gray: #888888;
+  --gray-light: #aaaaaa;
+  --gray-dark: #333333;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--black); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+.brand-text { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.charleston { color: var(--red); }
+
+/* Nav */
+nav { position: fixed; top: 0; left: 0; right: 0; padding: 24px 56px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--dark-border); }
+.nav-logo { font-family: var(--sans); font-weight: 800; font-size: 1.25rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--white); }
+.nav-links { display: flex; gap: 36px; align-items: center; }
+.nav-links a { font-size: 0.88rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-light); transition: color 0.3s; position: relative; padding: 8px 0; }
+.nav-links a:hover { color: var(--white); }
+.nav-links a.active { color: var(--white); }
+.nav-cta { padding: 10px 24px !important; border: 1px solid var(--red) !important; color: var(--white) !important; border-radius: 50px; background: var(--red-subtle); }
+.nav-cta:hover { background: var(--red); }
+.nav-toggle { display: none; width: 28px; height: 22px; flex-direction: column; justify-content: space-between; cursor: pointer; }
+.nav-toggle span { display: block; height: 2px; background: var(--white); }
+@media (max-width: 900px) {
+  nav { padding: 18px 24px; }
+  .nav-toggle { display: flex; }
+  .nav-links { position: fixed; top: 0; right: -100%; height: 100vh; width: 78%; max-width: 340px; background: var(--dark); flex-direction: column; padding: 96px 32px; gap: 28px; transition: right 0.4s; }
+  .nav-links.open { right: 0; }
+}
+
+/* Hero */
+.journal-hero { padding: 180px 56px 80px; text-align: center; border-bottom: 1px solid var(--dark-border); background: radial-gradient(ellipse at top, rgba(200,16,46,0.08) 0%, transparent 60%); }
+.journal-hero .eyebrow { font-size: 0.78rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
+.journal-hero h1 { font-family: var(--serif); font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 400; line-height: 1.05; margin-bottom: 24px; }
+.journal-hero h1 em { font-style: italic; color: var(--red); }
+.journal-hero p { font-size: 1.1rem; color: var(--gray-light); max-width: 640px; margin: 0 auto; line-height: 1.7; }
+
+/* Posts grid */
+.posts { max-width: 1200px; margin: 0 auto; padding: 80px 56px 120px; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; }
+.post-card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 14px; overflow: hidden; transition: transform 0.35s, border-color 0.35s; display: flex; flex-direction: column; }
+.post-card:hover { transform: translateY(-4px); border-color: var(--red); }
+.post-card-img { width: 100%; aspect-ratio: 16/10; background-size: cover; background-position: center; position: relative; }
+.post-card-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 50%, rgba(10,10,10,0.4)); }
+.post-card-body { padding: 28px 28px 32px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.post-card-meta { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); }
+.post-card h2 { font-family: var(--serif); font-size: 1.6rem; line-height: 1.25; font-weight: 700; }
+.post-card p { font-size: 0.95rem; color: var(--gray-light); line-height: 1.6; }
+.post-card .read-more { margin-top: auto; font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white); display: inline-flex; align-items: center; gap: 10px; padding-top: 8px; }
+.post-card .read-more::after { content: "→"; transition: transform 0.3s; }
+.post-card:hover .read-more::after { transform: translateX(4px); }
+@media (max-width: 700px) { .posts { padding: 56px 20px 80px; } .journal-hero { padding: 140px 24px 60px; } }
+
+/* Footer (compact) */
+footer { background: var(--dark); border-top: 1px solid var(--dark-border); padding: 56px 56px 32px; }
+.footer-top { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 2fr; gap: 48px; margin-bottom: 40px; }
+.footer-logo img { width: 56px; margin-bottom: 16px; }
+.footer-tagline { font-size: 0.88rem; color: var(--gray); max-width: 320px; line-height: 1.6; }
+.footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.footer-col h4 { font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--white); margin-bottom: 16px; font-weight: 600; }
+.footer-col a { display: block; font-size: 0.88rem; color: var(--gray-light); margin-bottom: 10px; transition: color 0.3s; }
+.footer-col a:hover { color: var(--red); }
+.footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 24px; border-top: 1px solid var(--dark-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--gray); font-size: 0.82rem; }
+@media (max-width: 700px) { footer { padding: 40px 24px 24px; } .footer-top { grid-template-columns: 1fr; } .footer-links { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="index.html" class="nav-logo">OFFSHIFT</a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html#how">How It Works</a>
+    <a href="browse.html">Browse Pros</a>
+    <a href="swag.html">Swag</a>
+    <a href="index.html#experience">The Experience</a>
+    <a href="journal.html" class="active">Journal</a>
+    <a href="index.html#apply">Become a Pro</a>
+    <a href="login.html" class="nav-cta">Sign In</a>
+  </div>
+  <div class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="journal-hero">
+  <div class="eyebrow">The Journal</div>
+  <h1>Stories &amp; guides from <em>Charleston's</em><br>finest local talent.</h1>
+  <p>Pricing breakdowns, hiring guides, and behind-the-scenes from the people who shape Charleston's private events. Practical reading for hosts, planners, and pros.</p>
+</section>
+
+<!-- Posts -->
+<main class="posts">
+  <article class="post-card">
+    <a href="how-to-hire-a-private-chef-in-charleston.html" aria-label="How to Hire a Private Chef in Charleston">
+      <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80')"></div>
+      <div class="post-card-body">
+        <div class="post-card-meta">Hiring Guide · 8 min read</div>
+        <h2>How to Hire a Private Chef in Charleston: A Complete Guide</h2>
+        <p>Everything you need to know before booking a private chef in Charleston — from realistic pricing and what's included, to the questions that separate great chefs from merely available ones.</p>
+        <span class="read-more">Read the guide</span>
+      </div>
+    </a>
+  </article>
+
+  <article class="post-card">
+    <a href="how-much-does-a-bartender-cost-in-charleston.html" aria-label="How Much Does a Bartender Cost in Charleston">
+      <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1200&q=80')"></div>
+      <div class="post-card-body">
+        <div class="post-card-meta">Pricing · 7 min read</div>
+        <h2>How Much Does a Bartender Cost in Charleston? (2026 Pricing Guide)</h2>
+        <p>Transparent pricing for private-event bartenders in Charleston — hourly rates, gratuity norms, how many bartenders you actually need, and what to supply vs. what they bring.</p>
+        <span class="read-more">See the numbers</span>
+      </div>
+    </a>
+  </article>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo"><img src="logo.png" alt="OffShift"></div>
+      <p class="footer-tagline"><span class="charleston">Charleston</span>'s modern marketplace for exceptional local talent. Professional craft, on your terms.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="browse.html">Browse Talent</a>
+        <a href="index.html#how">How It Works</a>
+        <a href="index.html#experience">Why OffShift</a>
+      </div>
+      <div class="footer-col">
+        <h4>Journal</h4>
+        <a href="how-to-hire-a-private-chef-in-charleston.html">Hiring a Private Chef</a>
+        <a href="how-much-does-a-bartender-cost-in-charleston.html">Bartender Pricing</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="mailto:hello@offshiftcharleston.com">Contact Us</a>
+        <a href="#">Instagram</a>
+        <a href="#"><span class="charleston">Charleston</span>, SC</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 <span class="brand-text">OFFSHIFT</span> <span class="charleston">Charleston</span>. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

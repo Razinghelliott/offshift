@@ -1,0 +1,56 @@
+# Dependencies — should NEVER be committed
+node_modules/
+**/node_modules/
+mobile/node_modules/
+
+# Expo / React Native
+.expo/
+.expo-shared/
+mobile/.expo/
+mobile/.expo-shared/
+mobile/ios/build/
+mobile/android/build/
+mobile/android/app/build/
+mobile/android/.gradle/
+mobile/ios/Pods/
+mobile/ios/*.xcworkspace/xcuserdata/
+mobile/web-build/
+mobile/dist/
+
+# Build output
+dist/
+build/
+*.bundle
+*.apk
+*.aab
+*.ipa
+
+# Metro
+.metro-health-check*
+
+# Logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.log
+
+# Env / secrets (don't commit keys!)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# macOS / editor noise
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python / misc
+__pycache__/
+*.pyc
