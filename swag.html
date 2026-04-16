@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="logo.png">
+<title>OFFSHIFT — Swag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #0a0a0a;
+  --dark: #111111;
+  --dark-card: #141414;
+  --dark-card-hover: #1a1a1a;
+  --dark-border: #222222;
+  --white: #f5f5f5;
+  --white-pure: #ffffff;
+  --red: #c8102e;
+  --red-hover: #a00d24;
+  --red-glow: rgba(200, 16, 46, 0.3);
+  --red-subtle: rgba(200, 16, 46, 0.06);
+  --gray: #888888;
+  --gray-light: #aaaaaa;
+  --gray-dark: #333333;
+  --gray-muted: #666666;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.brand-text { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.charleston { color: #c8102e; }
+
+/* ===== AMBIENT ===== */
+.ambient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+.orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: orbFloat 20s ease-in-out infinite; }
+.orb:nth-child(1) { width: 600px; height: 600px; background: var(--red); top: -200px; right: -200px; }
+.orb:nth-child(2) { width: 500px; height: 500px; background: #1a0a10; bottom: -100px; left: -200px; animation-delay: -7s; }
+.orb:nth-child(3) { width: 400px; height: 400px; background: var(--red); top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.06; animation-delay: -14s; }
+@keyframes orbFloat { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -30px) scale(1.05); } 66% { transform: translate(-20px, 20px) scale(0.95); } }
+
+/* ===== NAV ===== */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 2rem; height: 70px; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.nav-logo { font-family: var(--sans); font-weight: 700; font-size: 1.1rem; letter-spacing: 0.12em; color: var(--white); }
+.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-links a { font-size: 0.82rem; font-weight: 500; color: var(--gray-light); transition: color 0.3s; letter-spacing: 0.02em; }
+.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-cta-link { color: var(--red) !important; font-weight: 600 !important; }
+.nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 1001; }
+.nav-toggle span { width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: var(--transition); }
+.nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gray-dark); background-size: cover; background-position: center; border: 2px solid rgba(255,255,255,0.1); }
+.nav-user { display: flex; align-items: center; gap: 12px; }
+.nav-signout { background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--gray-light); padding: 6px 14px; border-radius: 100px; font-size: 0.72rem; cursor: pointer; transition: var(--transition); font-family: var(--sans); }
+.nav-signout:hover { border-color: var(--red); color: var(--red); }
+
+/* ===== PAGE HEADER ===== */
+.page-header { text-align: center; padding: 120px 2rem 2rem; max-width: 700px; margin: 0 auto; }
+.page-header h1 { font-family: var(--serif); font-size: 2.8rem; font-weight: 400; margin-bottom: 0.75rem; }
+.page-header h1 em { color: var(--red); font-style: italic; }
+.page-header p { color: var(--gray); font-size: 0.95rem; line-height: 1.6; }
+
+/* ===== CATEGORY FILTER ===== */
+.filter-bar { display: flex; justify-content: center; gap: 0.5rem; padding: 1rem 2rem 2rem; flex-wrap: wrap; }
+.filter-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--gray-light); padding: 0.5rem 1.25rem; border-radius: 100px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: var(--sans); letter-spacing: 0.03em; }
+.filter-btn:hover { border-color: rgba(255,255,255,0.15); color: var(--white); }
+.filter-btn.active { background: var(--red); border-color: var(--red); color: var(--white); }
+
+/* ===== PRODUCT GRID ===== */
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+.product-card { background: var(--dark-card); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius); overflow: hidden; transition: var(--transition); cursor: pointer; position: relative; }
+.product-card:hover { transform: translateY(-4px); border-color: rgba(200,16,46,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px var(--red-subtle); }
+
+.product-img { width: 100%; aspect-ratio: 1 / 1; background: var(--dark); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.product-img .product-icon { font-size: 3.5rem; opacity: 0.9; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.product-card:hover .product-icon { transform: scale(1.1); }
+.product-img .product-tag { position: absolute; top: 12px; left: 12px; background: var(--red); color: white; font-size: 0.65rem; font-weight: 700; padding: 4px 10px; border-radius: 100px; letter-spacing: 0.05em; text-transform: uppercase; }
+.product-img .product-badge { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); color: white; font-size: 0.65rem; font-weight: 600; padding: 4px 10px; border-radius: 100px; }
+
+.product-info { padding: 1.25rem; }
+.product-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
+.product-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.5; margin-bottom: 1rem; }
+.product-bottom { display: flex; align-items: center; justify-content: space-between; }
+.product-price { font-weight: 700; font-size: 1.1rem; color: var(--white); }
+.product-price .original { color: var(--gray-muted); text-decoration: line-through; font-size: 0.8rem; font-weight: 400; margin-left: 6px; }
+
+/* Size selector */
+.product-sizes { display: flex; gap: 0.35rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.size-btn { width: 36px; height: 32px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--gray-light); font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: var(--sans); display: flex; align-items: center; justify-content: center; }
+.size-btn:hover { border-color: rgba(255,255,255,0.25); color: var(--white); }
+.size-btn.selected { background: var(--red); border-color: var(--red); color: white; }
+
+.add-btn { background: var(--red); border: none; color: white; padding: 0.55rem 1.1rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: var(--sans); letter-spacing: 0.03em; display: flex; align-items: center; gap: 6px; }
+.add-btn:hover { background: var(--red-hover); transform: scale(1.03); }
+.add-btn.added { background: rgba(255,255,255,0.08); color: var(--gray-light); pointer-events: none; }
+.add-btn svg { width: 14px; height: 14px; }
+
+/* ===== CART DRAWER ===== */
+.cart-toggle { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; background: var(--red); color: white; width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(200,16,46,0.4); transition: var(--transition); }
+.cart-toggle:hover { transform: scale(1.08); box-shadow: 0 12px 40px rgba(200,16,46,0.5); }
+.cart-toggle svg { width: 24px; height: 24px; }
+.cart-badge { position: absolute; top: -4px; right: -4px; background: white; color: var(--red); width: 22px; height: 22px; border-radius: 50%; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.cart-badge:empty { display: none; }
+
+.cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1100; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+
+.cart-drawer { position: fixed; top: 0; right: -420px; width: 400px; max-width: 90vw; height: 100vh; background: var(--dark); border-left: 1px solid rgba(255,255,255,0.06); z-index: 1101; display: flex; flex-direction: column; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.cart-drawer.open { right: 0; }
+
+.cart-header { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; }
+.cart-header h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; }
+.cart-close { background: none; border: none; color: var(--gray); cursor: pointer; padding: 8px; transition: color 0.3s; }
+.cart-close:hover { color: var(--white); }
+.cart-close svg { width: 20px; height: 20px; }
+
+.cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+.cart-items::-webkit-scrollbar { width: 4px; }
+.cart-items::-webkit-scrollbar-thumb { background: var(--gray-dark); border-radius: 4px; }
+
+.cart-empty { text-align: center; padding: 3rem 1rem; color: var(--gray-muted); }
+.cart-empty-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.5; }
+.cart-empty p { font-size: 0.85rem; }
+
+.cart-item { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.cart-item-icon { width: 60px; height: 60px; border-radius: 12px; background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+.cart-item-details { flex: 1; }
+.cart-item-name { font-weight: 600; font-size: 0.85rem; margin-bottom: 2px; }
+.cart-item-meta { font-size: 0.72rem; color: var(--gray); margin-bottom: 0.5rem; }
+.cart-item-bottom { display: flex; align-items: center; justify-content: space-between; }
+.cart-item-price { font-weight: 700; font-size: 0.9rem; }
+.cart-item-qty { display: flex; align-items: center; gap: 0.5rem; }
+.qty-btn { width: 26px; height: 26px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--gray-light); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; transition: var(--transition); font-family: var(--sans); }
+.qty-btn:hover { border-color: var(--red); color: var(--red); }
+.qty-val { font-weight: 600; font-size: 0.85rem; min-width: 18px; text-align: center; }
+.cart-item-remove { background: none; border: none; color: var(--gray-muted); cursor: pointer; font-size: 0.7rem; font-weight: 500; padding: 2px 0; transition: color 0.3s; font-family: var(--sans); }
+.cart-item-remove:hover { color: var(--red); }
+
+.cart-footer { padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
+.cart-subtotal { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
+.cart-total { display: flex; justify-content: space-between; margin-bottom: 1.25rem; font-size: 1.1rem; font-weight: 700; }
+.checkout-btn { width: 100%; padding: 0.85rem; border: none; border-radius: 100px; background: var(--red); color: white; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: var(--sans); letter-spacing: 0.04em; }
+.checkout-btn:hover { background: var(--red-hover); }
+.checkout-btn:disabled { opacity: 0.4; pointer-events: none; }
+.stripe-note { text-align: center; font-size: 0.68rem; color: var(--gray-muted); margin-top: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 4px; }
+.stripe-note svg { width: 12px; height: 12px; }
+
+/* ===== QUICK VIEW MODAL ===== */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1200; opacity: 0; pointer-events: none; transition: opacity 0.3s; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal { background: var(--dark); border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; }
+.modal-img { width: 100%; aspect-ratio: 1 / 1; background: var(--black); display: flex; align-items: center; justify-content: center; font-size: 5rem; border-radius: 24px 24px 0 0; }
+.modal-body { padding: 2rem; }
+.modal-name { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 0.3rem; }
+.modal-price { font-size: 1.2rem; font-weight: 700; color: var(--red); margin-bottom: 1rem; }
+.modal-desc { font-size: 0.85rem; color: var(--gray-light); line-height: 1.7; margin-bottom: 1.5rem; }
+.modal-section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-muted); margin-bottom: 0.6rem; }
+.modal-sizes { display: flex; gap: 0.4rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.modal-size-btn { padding: 0.45rem 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--gray-light); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: var(--sans); }
+.modal-size-btn:hover { border-color: rgba(255,255,255,0.3); color: white; }
+.modal-size-btn.selected { background: var(--red); border-color: var(--red); color: white; }
+.modal-add-btn { width: 100%; padding: 0.85rem; border: none; border-radius: 100px; background: var(--red); color: white; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: var(--sans); letter-spacing: 0.04em; }
+.modal-add-btn:hover { background: var(--red-hover); }
+.modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+.modal-close:hover { background: var(--red); }
+
+/* ===== TOAST ===== */
+.toast-container { position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%); z-index: 2000; }
+.toast { background: var(--dark-card); border: 1px solid rgba(255,255,255,0.08); color: var(--white); padding: 0.75rem 1.5rem; border-radius: 100px; font-size: 0.8rem; font-weight: 500; box-shadow: 0 10px 40px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 8px; animation: toastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap; }
+.toast svg { width: 16px; height: 16px; color: var(--red); flex-shrink: 0; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== FOOTER ===== */
+.footer { text-align: center; padding: 3rem 2rem; border-top: 1px solid rgba(255,255,255,0.04); }
+.footer-logo { margin-bottom: 0.5rem; }
+.footer-logo img { height: 28px; opacity: 0.6; }
+.footer p { font-size: 0.72rem; color: var(--gray-muted); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: var(--dark); flex-direction: column; padding: 80px 2rem 2rem; gap: 1.5rem; transition: right 0.4s; border-left: 1px solid rgba(255,255,255,0.04); }
+  .nav-links.open { right: 0; }
+  .nav-toggle { display: flex; }
+  .page-header { padding-top: 100px; }
+  .page-header h1 { font-size: 2rem; }
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; padding: 0 1rem 3rem; }
+  .cart-drawer { width: 100%; max-width: 100vw; }
+}
+
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .product-info { padding: 0.85rem; }
+  .product-name { font-size: 0.82rem; }
+  .product-desc { display: none; }
+  .product-sizes { display: none; }
+  .product-bottom { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+  .add-btn { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Ambient -->
+<div class="ambient">
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+</div>
+
+<!-- Nav -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">OFFSHIFT</a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="browse.html">Browse Pros</a>
+    <a href="swag.html" class="active">Swag</a>
+    <a href="messages.html" id="msgLink" style="display:none;">Messages</a>
+    <a href="pro-dashboard.html" id="dashLink" style="display:none;">Dashboard</a>
+    <div class="nav-user" id="navUser" style="display:none;">
+      <a href="pro-dashboard.html" class="nav-avatar" id="navAvatar" title="Dashboard"></a>
+      <button class="nav-signout" onclick="handleSignOut()">Sign Out</button>
+    </div>
+    <a href="login.html" id="navSignIn" class="nav-cta-link" style="display:none;">Sign In</a>
+  </div>
+  <div class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header">
+  <h1>The <em>Swag</em> Shop</h1>
+  <p>Rep the movement. Premium gear for the <span class="brand-text">OFFSHIFT</span> collective &mdash; built for those who value craft over algorithms.</p>
+</div>
+
+<!-- Category Filters -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+  <button class="filter-btn" onclick="filterProducts('apparel')">Apparel</button>
+  <button class="filter-btn" onclick="filterProducts('bar-kitchen')">Bar &amp; Kitchen</button>
+  <button class="filter-btn" onclick="filterProducts('drinkware')">Drinkware</button>
+  <button class="filter-btn" onclick="filterProducts('accessories')">Accessories</button>
+</div>
+
+<!-- Product Grid -->
+<div class="product-grid" id="productGrid"></div>
+
+<!-- Cart FAB -->
+<button class="cart-toggle" id="cartToggle" onclick="toggleCart()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+  <span class="cart-badge" id="cartBadge"></span>
+</button>
+
+<!-- Cart Overlay -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<!-- Cart Drawer -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close" onclick="toggleCart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="cart-empty-icon">&#128722;</div>
+      <p>Your cart is empty</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <span id="cartSubtotal">$0</span>
+    </div>
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">$0</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">Proceed to Checkout</button>
+    <div class="stripe-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secured by Stripe
+    </div>
+  </div>
+</div>
+
+<!-- Quick View Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-img" id="modalImg"></div>
+    <div class="modal-body">
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-section-label" id="modalSizeLabel" style="display:none;">Select Size</div>
+      <div class="modal-sizes" id="modalSizes"></div>
+      <button class="modal-add-btn" id="modalAddBtn" onclick="modalAddToCart()">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-logo"><img src="logo.png" alt="OffShift"></div>
+  <p>&copy; 2026 <span class="brand-text">OFFSHIFT</span> <span class="charleston">Charleston</span>. All rights reserved.</p>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCMOVJsVnSWBCKAbSNeq3mDUvJpb_lHVbQ",
+  authDomain: "offshift-charleston.firebaseapp.com",
+  projectId: "offshift-charleston",
+  storageBucket: "offshift-charleston.firebasestorage.app",
+  messagingSenderId: "168641222703",
+  appId: "1:168641222703:web:0de0a6b4ed61be3b1c0ae6"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// Auth state — show/hide nav elements
+auth.onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById('navSignIn').style.display = 'none';
+    document.getElementById('navUser').style.display = 'flex';
+    document.getElementById('msgLink').style.display = '';
+    document.getElementById('dashLink').style.display = '';
+    if (user.photoURL) {
+      document.getElementById('navAvatar').style.backgroundImage = `url(${user.photoURL})`;
+    }
+  } else {
+    document.getElementById('navSignIn').style.display = '';
+    document.getElementById('navUser').style.display = 'none';
+    document.getElementById('msgLink').style.display = 'none';
+    document.getElementById('dashLink').style.display = 'none';
+  }
+});
+
+function handleSignOut() {
+  auth.signOut().then(() => window.location.href = 'index.html');
+}
+</script>
+
+<script>
+// ═══════════════════════════════════════
+// PRODUCT CATALOG
+// ═══════════════════════════════════════
+const products = [
+  // ── APPAREL ──
+  {
+    id: 'tee-classic',
+    name: 'OFFSHIFT Classic Tee',
+    desc: 'Heavyweight 100% cotton tee with embroidered OS monogram on the chest. Relaxed fit, pre-shrunk.',
+    price: 38,
+    category: 'apparel',
+    icon: '👕',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    tag: 'Best Seller'
+  },
+  {
+    id: 'hoodie-blacked',
+    name: 'Blacked Out Hoodie',
+    desc: 'French terry pullover hoodie with tonal OFFSHIFT embroidery. Double-lined hood, kangaroo pocket.',
+    price: 72,
+    category: 'apparel',
+    icon: '🧥',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL']
+  },
+  {
+    id: 'hat-structured',
+    name: 'Structured Snapback',
+    desc: 'Six-panel snapback with raised OS monogram. One size fits most. Flat brim.',
+    price: 34,
+    category: 'apparel',
+    icon: '🧢',
+    sizes: null
+  },
+  {
+    id: 'crewneck',
+    name: 'Zero AI Crewneck',
+    desc: 'Midweight fleece crewneck. Front reads "Zero AI. 100% Effort." — because algorithms never showed up to your event.',
+    price: 58,
+    category: 'apparel',
+    icon: '👔',
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'New'
+  },
+
+  // ── BAR & KITCHEN ──
+  {
+    id: 'apron-pro',
+    name: 'Pro Apron',
+    desc: 'Waxed canvas cross-back apron with leather straps. Adjustable. Three deep pockets. Built for real work.',
+    price: 64,
+    category: 'bar-kitchen',
+    icon: '👨‍🍳',
+    sizes: null,
+    tag: 'Pro Favorite'
+  },
+  {
+    id: 'opener-speed',
+    name: 'Speed Opener',
+    desc: 'Flat stainless steel speed opener with laser-etched OS monogram. The one bartenders actually use.',
+    price: 14,
+    category: 'bar-kitchen',
+    icon: '🍾',
+    sizes: null
+  },
+  {
+    id: 'cutting-board',
+    name: 'Chef\'s Board',
+    desc: 'End-grain walnut cutting board with burned OFFSHIFT mark. 16"×12". Oiled and ready to use.',
+    price: 78,
+    category: 'bar-kitchen',
+    icon: '🪵',
+    sizes: null,
+    badge: 'Limited Run'
+  },
+  {
+    id: 'bar-towel',
+    name: 'Bar Towel Set',
+    desc: 'Set of 3 black cotton bar towels with red OS embroidery. The finishing touch for any setup.',
+    price: 22,
+    category: 'bar-kitchen',
+    icon: '🧹',
+    sizes: null
+  },
+
+  // ── DRINKWARE ──
+  {
+    id: 'tumbler',
+    name: 'Insulated Tumbler',
+    desc: 'Double-wall stainless steel 20oz tumbler. Matte black with laser-etched OFFSHIFT logo. Keeps cold for 24hrs.',
+    price: 32,
+    category: 'drinkware',
+    icon: '🥤',
+    sizes: null,
+    tag: 'Best Seller'
+  },
+  {
+    id: 'pint-glass',
+    name: 'OS Pint Glass',
+    desc: '16oz pint glass with frosted OS monogram. Dishwasher safe. Looks better with a pour in it.',
+    price: 16,
+    category: 'drinkware',
+    icon: '🍺',
+    sizes: null
+  },
+  {
+    id: 'espresso-set',
+    name: 'Espresso Cup Set',
+    desc: 'Set of 2 matte black ceramic espresso cups (3oz) with the OFFSHIFT mark on the base.',
+    price: 28,
+    category: 'drinkware',
+    icon: '☕',
+    sizes: null
+  },
+
+  // ── ACCESSORIES ──
+  {
+    id: 'sticker-pack',
+    name: 'Sticker Pack',
+    desc: 'Pack of 6 die-cut vinyl stickers. Waterproof, UV-resistant. OS monogram, wordmark, and statement pieces.',
+    price: 10,
+    category: 'accessories',
+    icon: '✨',
+    sizes: null
+  },
+  {
+    id: 'tote-canvas',
+    name: 'Canvas Tote',
+    desc: 'Heavy 12oz cotton canvas tote. Screen-printed OFFSHIFT wordmark. Internal pocket. Reinforced handles.',
+    price: 28,
+    category: 'accessories',
+    icon: '👜',
+    sizes: null
+  },
+  {
+    id: 'keychain',
+    name: 'Brass Keychain',
+    desc: 'Solid brass keychain with debossed OS monogram. Develops a unique patina over time.',
+    price: 18,
+    category: 'accessories',
+    icon: '🔑',
+    sizes: null
+  },
+  {
+    id: 'phone-case',
+    name: 'Phone Case',
+    desc: 'Slim matte black case with embossed OS monogram. Available for iPhone 15/16 series.',
+    price: 24,
+    category: 'accessories',
+    icon: '📱',
+    sizes: ['15', '15 Pro', '16', '16 Pro'],
+    badge: 'New'
+  }
+];
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let cart = [];
+let activeFilter = 'all';
+let modalProduct = null;
+let modalSelectedSize = null;
+
+// ═══════════════════════════════════════
+// RENDER PRODUCTS
+// ═══════════════════════════════════════
+function renderProducts() {
+  const grid = document.getElementById('productGrid');
+  const filtered = activeFilter === 'all' ? products : products.filter(p => p.category === activeFilter);
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card" onclick="openModal('${p.id}')">
+      <div class="product-img">
+        <span class="product-icon">${p.icon}</span>
+        ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ''}
+        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        ${p.sizes ? `
+          <div class="product-sizes" data-product="${p.id}">
+            ${p.sizes.map(s => `<button class="size-btn" onclick="event.stopPropagation(); selectSize('${p.id}', '${s}', this)">${s}</button>`).join('')}
+          </div>
+        ` : ''}
+        <div class="product-bottom">
+          <div class="product-price">$${p.price}</div>
+          <button class="add-btn" onclick="event.stopPropagation(); addToCart('${p.id}')" data-add="${p.id}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Track selected sizes per product on cards
+const cardSizes = {};
+
+function selectSize(productId, size, el) {
+  cardSizes[productId] = size;
+  const container = el.closest('.product-sizes');
+  container.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ═══════════════════════════════════════
+// FILTER
+// ═══════════════════════════════════════
+function filterProducts(cat) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderProducts();
+}
+
+// ═══════════════════════════════════════
+// CART
+// ═══════════════════════════════════════
+function addToCart(productId, sizeOverride) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+
+  const size = sizeOverride || cardSizes[productId] || (product.sizes ? product.sizes[0] : null);
+  const key = productId + (size ? `-${size}` : '');
+
+  const existing = cart.find(c => c.key === key);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ key, productId, size, qty: 1 });
+  }
+
+  updateCart();
+  showToast(`${product.name}${size ? ` (${size})` : ''} added to cart`);
+
+  // Button feedback
+  const btn = document.querySelector(`[data-add="${productId}"]`);
+  if (btn) {
+    btn.classList.add('added');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Added`;
+    setTimeout(() => {
+      btn.classList.remove('added');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Add`;
+    }, 1500);
+  }
+}
+
+function removeFromCart(key) {
+  cart = cart.filter(c => c.key !== key);
+  updateCart();
+}
+
+function changeQty(key, delta) {
+  const item = cart.find(c => c.key === key);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) {
+    removeFromCart(key);
+    return;
+  }
+  updateCart();
+}
+
+function updateCart() {
+  const totalItems = cart.reduce((s, c) => s + c.qty, 0);
+  const totalPrice = cart.reduce((s, c) => {
+    const p = products.find(pr => pr.id === c.productId);
+    return s + (p ? p.price * c.qty : 0);
+  }, 0);
+
+  // Badge
+  document.getElementById('cartBadge').textContent = totalItems || '';
+
+  // Items
+  const container = document.getElementById('cartItems');
+  const emptyEl = document.getElementById('cartEmpty');
+  const footerEl = document.getElementById('cartFooter');
+
+  if (cart.length === 0) {
+    emptyEl.style.display = '';
+    footerEl.style.display = 'none';
+    container.querySelectorAll('.cart-item').forEach(el => el.remove());
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  footerEl.style.display = '';
+
+  // Rebuild cart items
+  const existingItems = container.querySelectorAll('.cart-item');
+  existingItems.forEach(el => el.remove());
+
+  cart.forEach(c => {
+    const p = products.find(pr => pr.id === c.productId);
+    if (!p) return;
+    const el = document.createElement('div');
+    el.className = 'cart-item';
+    el.innerHTML = `
+      <div class="cart-item-icon">${p.icon}</div>
+      <div class="cart-item-details">
+        <div class="cart-item-name">${p.name}</div>
+        <div class="cart-item-meta">${c.size ? `Size: ${c.size}` : p.category.replace('-', ' & ')}</div>
+        <div class="cart-item-bottom">
+          <div class="cart-item-price">$${p.price * c.qty}</div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="changeQty('${c.key}', -1)">&minus;</button>
+            <span class="qty-val">${c.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${c.key}', 1)">+</button>
+          </div>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart('${c.key}')">Remove</button>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+
+  // Totals
+  document.getElementById('cartSubtotal').textContent = `$${totalPrice}`;
+  document.getElementById('cartTotal').textContent = `$${totalPrice}`;
+}
+
+function toggleCart() {
+  const drawer = document.getElementById('cartDrawer');
+  const overlay = document.getElementById('cartOverlay');
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+
+// ═══════════════════════════════════════
+// QUICK VIEW MODAL
+// ═══════════════════════════════════════
+function openModal(productId) {
+  modalProduct = products.find(p => p.id === productId);
+  if (!modalProduct) return;
+  modalSelectedSize = modalProduct.sizes ? modalProduct.sizes[0] : null;
+
+  document.getElementById('modalImg').innerHTML = `<span style="font-size:5rem">${modalProduct.icon}</span>`;
+  document.getElementById('modalName').textContent = modalProduct.name;
+  document.getElementById('modalPrice').textContent = `$${modalProduct.price}`;
+  document.getElementById('modalDesc').textContent = modalProduct.desc;
+
+  const sizeLabel = document.getElementById('modalSizeLabel');
+  const sizesContainer = document.getElementById('modalSizes');
+
+  if (modalProduct.sizes) {
+    sizeLabel.style.display = '';
+    sizesContainer.style.display = 'flex';
+    sizesContainer.innerHTML = modalProduct.sizes.map((s, i) =>
+      `<button class="modal-size-btn ${i === 0 ? 'selected' : ''}" onclick="selectModalSize('${s}', this)">${s}</button>`
+    ).join('');
+  } else {
+    sizeLabel.style.display = 'none';
+    sizesContainer.style.display = 'none';
+  }
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  modalProduct = null;
+}
+
+function selectModalSize(size, el) {
+  modalSelectedSize = size;
+  document.querySelectorAll('.modal-size-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function modalAddToCart() {
+  if (!modalProduct) return;
+  addToCart(modalProduct.id, modalSelectedSize);
+  closeModal();
+}
+
+// ═══════════════════════════════════════
+// STRIPE CHECKOUT
+// ═══════════════════════════════════════
+async function checkout() {
+  const btn = document.getElementById('checkoutBtn');
+  btn.textContent = 'Redirecting...';
+  btn.disabled = true;
+
+  // Build line items for Stripe
+  const lineItems = cart.map(c => {
+    const p = products.find(pr => pr.id === c.productId);
+    return {
+      name: p.name + (c.size ? ` (${c.size})` : ''),
+      price: p.price,
+      qty: c.qty,
+      icon: p.icon
+    };
+  });
+
+  // NOTE: In production, this would call your backend to create a Stripe Checkout Session.
+  // For now, we show a placeholder since Stripe keys aren't configured yet.
+  //
+  // Example backend call:
+  // const res = await fetch('/api/create-checkout-session', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({ items: lineItems })
+  // });
+  // const { url } = await res.json();
+  // window.location.href = url;
+
+  setTimeout(() => {
+    showToast('Stripe checkout coming soon — keys not configured yet');
+    btn.textContent = 'Proceed to Checkout';
+    btn.disabled = false;
+  }, 1500);
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+    ${msg}
+  `;
+  container.innerHTML = '';
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+renderProducts();
+
+// Keyboard: Escape to close modal/cart
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('modalOverlay').classList.contains('open')) closeModal();
+    else if (document.getElementById('cartDrawer').classList.contains('open')) toggleCart();
+  }
+});
+</script>
+
+<!-- Notifications badge (shared) -->
+<script src="notifications.js"></script>
+<script>
+  auth.onAuthStateChanged(u => { if (u && window.initNotifications) window.initNotifications(u.uid); });
+</script>
+
+</body>
+</html>
