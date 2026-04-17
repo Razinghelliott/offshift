@@ -20,8 +20,8 @@
   --red: #c8102e;
   --red-glow: rgba(200, 16, 46, 0.3);
   --red-subtle: rgba(200, 16, 46, 0.08);
-  --gray: #888888;
-  --gray-light: #aaaaaa;
+  --gray: #a0a0a0;
+  --gray-light: #c4c4c4;
   --gray-dark: #333333;
   --serif: 'Playfair Display', Georgia, serif;
   --sans: 'Inter', -apple-system, sans-serif;
@@ -334,6 +334,7 @@ nav.scrolled {
   line-height: 1.08;
   letter-spacing: -0.02em;
   margin-bottom: 24px;
+  text-shadow: 0 3px 20px rgba(0,0,0,0.7);
   opacity: 0;
   animation: fadeUp 1s ease 2.7s forwards;
 }
@@ -342,12 +343,13 @@ nav.scrolled {
   color: var(--red);
 }
 .hero-sub {
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
-  font-weight: 300;
-  color: var(--gray-light);
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-weight: 400;
+  color: #e8e8e8;
   line-height: 1.7;
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto 40px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
   opacity: 0;
   animation: fadeUp 1s ease 2.9s forwards;
 }
