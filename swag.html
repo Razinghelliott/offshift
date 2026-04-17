@@ -60,9 +60,17 @@ a { color: inherit; text-decoration: none; }
 /* ===== NAV ===== */
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 2rem; height: 70px; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.04); }
 .nav-logo { font-family: var(--sans); font-weight: 700; font-size: 1.1rem; letter-spacing: 0.12em; color: var(--white); }
-.nav-links { display: flex; align-items: center; gap: 2rem; }
-.nav-links a { font-size: 0.82rem; font-weight: 500; color: var(--gray-light); transition: color 0.3s; letter-spacing: 0.02em; }
-.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-links { display: flex; align-items: center; gap: 1.6rem; }
+.nav-links a:not(.nav-cta-link):not(.nav-avatar) { font-size: 0.82rem; font-weight: 500; color: var(--gray-light); letter-spacing: 0.02em; position: relative; display: inline-flex; align-items: center; transition: color 0.3s ease; padding: 4px 0; }
+.nav-links a:not(.nav-cta-link):not(.nav-avatar)::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--red); transition: width 0.35s cubic-bezier(0.4,0,0.2,1); }
+.nav-links a:hover:not(.nav-cta-link):not(.nav-avatar), .nav-links a.active:not(.nav-cta-link):not(.nav-avatar) { color: var(--white); }
+.nav-links a:hover:not(.nav-cta-link):not(.nav-avatar)::after, .nav-links a.active:not(.nav-cta-link):not(.nav-avatar)::after { width: 100%; }
+.nav-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; opacity: 1; transform: scale(1); overflow: hidden; transition: width 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease, transform 0.35s cubic-bezier(0.4,0,0.2,1); }
+.nav-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.nav-text { display: inline-block; max-width: 0; opacity: 0; white-space: nowrap; transform: translateX(-6px); overflow: hidden; transition: max-width 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease 0.05s, transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+.nav-links a:hover:not(.nav-cta-link):not(.nav-avatar) .nav-icon, .nav-links a.active:not(.nav-cta-link):not(.nav-avatar) .nav-icon { width: 0; opacity: 0; transform: scale(0.6); }
+.nav-links a:hover:not(.nav-cta-link):not(.nav-avatar) .nav-text, .nav-links a.active:not(.nav-cta-link):not(.nav-avatar) .nav-text { max-width: 200px; opacity: 1; transform: translateX(0); }
+@media (max-width: 900px) { .nav-icon { display: none; } .nav-text { max-width: none; opacity: 1; transform: none; overflow: visible; } }
 .nav-cta-link { color: var(--red) !important; font-weight: 600 !important; }
 .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 1001; }
 .nav-toggle span { width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: var(--transition); }
@@ -229,12 +237,30 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 2rem
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">OFFSHIFT</a>
   <div class="nav-links" id="navLinks">
-    <a href="index.html">Home</a>
-    <a href="browse.html">Browse Pros</a>
-    <a href="swag.html" class="active">Swag</a>
-    <a href="journal.html">Journal</a>
-    <a href="messages.html" id="msgLink" style="display:none;">Messages</a>
-    <a href="pro-dashboard.html" id="dashLink" style="display:none;">Dashboard</a>
+    <a href="index.html" aria-label="Home">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-7h4v7h4a1 1 0 0 0 1-1V10"/></svg></span>
+      <span class="nav-text">Home</span>
+    </a>
+    <a href="browse.html" aria-label="Browse Pros">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+      <span class="nav-text">Browse Pros</span>
+    </a>
+    <a href="swag.html" class="active" aria-label="Swag">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+      <span class="nav-text">Swag</span>
+    </a>
+    <a href="journal.html" aria-label="Journal">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+      <span class="nav-text">Journal</span>
+    </a>
+    <a href="messages.html" id="msgLink" style="display:none;" aria-label="Messages">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      <span class="nav-text">Messages</span>
+    </a>
+    <a href="pro-dashboard.html" id="dashLink" style="display:none;" aria-label="Dashboard">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></span>
+      <span class="nav-text">Dashboard</span>
+    </a>
     <div class="nav-user" id="navUser" style="display:none;">
       <a href="pro-dashboard.html" class="nav-avatar" id="navAvatar" title="Dashboard"></a>
       <button class="nav-signout" onclick="handleSignOut()">Sign Out</button>

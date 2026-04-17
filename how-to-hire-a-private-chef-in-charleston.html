@@ -134,8 +134,16 @@ a { color: inherit; text-decoration: none; }
 nav { position: fixed; top: 0; left: 0; right: 0; padding: 24px 56px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--dark-border); }
 .nav-logo { font-family: var(--sans); font-weight: 800; font-size: 1.25rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--white); }
 .nav-links { display: flex; gap: 36px; align-items: center; }
-.nav-links a { font-size: 0.88rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-light); transition: color 0.3s; padding: 8px 0; }
-.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-links a:not(.nav-cta) { font-size: 0.88rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-light); transition: color 0.3s ease; padding: 8px 0; position: relative; display: inline-flex; align-items: center; }
+.nav-links a:not(.nav-cta)::after { content: ''; position: absolute; bottom: 2px; left: 0; width: 0; height: 1px; background: var(--red); transition: width 0.35s cubic-bezier(0.4,0,0.2,1); }
+.nav-links a:hover:not(.nav-cta), .nav-links a.active:not(.nav-cta) { color: var(--white); }
+.nav-links a:hover:not(.nav-cta)::after, .nav-links a.active:not(.nav-cta)::after { width: 100%; }
+.nav-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; opacity: 1; transform: scale(1); overflow: hidden; transition: width 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease, transform 0.35s cubic-bezier(0.4,0,0.2,1); }
+.nav-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.nav-text { display: inline-block; max-width: 0; opacity: 0; white-space: nowrap; transform: translateX(-6px); overflow: hidden; transition: max-width 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease 0.05s, transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+.nav-links a:hover:not(.nav-cta) .nav-icon, .nav-links a.active:not(.nav-cta) .nav-icon { width: 0; opacity: 0; transform: scale(0.6); }
+.nav-links a:hover:not(.nav-cta) .nav-text, .nav-links a.active:not(.nav-cta) .nav-text { max-width: 200px; opacity: 1; transform: translateX(0); }
+@media (max-width: 900px) { .nav-icon { display: none; } .nav-text { max-width: none; opacity: 1; transform: none; overflow: visible; } }
 .nav-cta { padding: 10px 24px !important; border: 1px solid var(--red) !important; color: var(--white) !important; border-radius: 50px; background: var(--red-subtle); }
 .nav-cta:hover { background: var(--red); }
 .nav-toggle { display: none; width: 28px; height: 22px; flex-direction: column; justify-content: space-between; cursor: pointer; }
@@ -211,12 +219,30 @@ footer { background: var(--dark); border-top: 1px solid var(--dark-border); padd
 <nav>
   <a href="index.html" class="nav-logo">OFFSHIFT</a>
   <div class="nav-links" id="navLinks">
-    <a href="index.html#how">How It Works</a>
-    <a href="browse.html">Browse Pros</a>
-    <a href="swag.html">Swag</a>
-    <a href="index.html#experience">The Experience</a>
-    <a href="journal.html" class="active">Journal</a>
-    <a href="index.html#apply">Become a Pro</a>
+    <a href="index.html#how" aria-label="How It Works">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12l2 2 4-4"/></svg></span>
+      <span class="nav-text">How It Works</span>
+    </a>
+    <a href="browse.html" aria-label="Browse Pros">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+      <span class="nav-text">Browse Pros</span>
+    </a>
+    <a href="swag.html" aria-label="Swag">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+      <span class="nav-text">Swag</span>
+    </a>
+    <a href="index.html#experience" aria-label="The Experience">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.6L20 10l-4 4 1 6-5-3-5 3 1-6-4-4 5.6-1.4z"/></svg></span>
+      <span class="nav-text">The Experience</span>
+    </a>
+    <a href="journal.html" class="active" aria-label="Journal">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+      <span class="nav-text">Journal</span>
+    </a>
+    <a href="index.html#apply" aria-label="Become a Pro">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
+      <span class="nav-text">Become a Pro</span>
+    </a>
     <a href="login.html" class="nav-cta">Sign In</a>
   </div>
   <div class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
