@@ -94,7 +94,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; padding: 24px 56px; display: f
 
 /* Hero — split layout with ambient orbs */
 .journal-hero { position: relative; padding: 160px 56px 80px; border-bottom: 1px solid var(--dark-border); overflow: hidden; background: radial-gradient(ellipse at 20% 30%, rgba(200,16,46,0.06) 0%, transparent 50%); }
-.journal-hero-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 80px; align-items: center; position: relative; z-index: 2; }
+.journal-hero-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.55fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 2; }
 .journal-hero-content { max-width: 620px; }
 .journal-hero .eyebrow { font-size: 0.78rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--red); margin-bottom: 22px; display: inline-flex; align-items: center; gap: 10px; }
 .journal-hero .eyebrow::before { content: ""; display: inline-block; width: 28px; height: 1px; background: var(--red); }
@@ -120,16 +120,16 @@ nav { position: fixed; top: 0; left: 0; right: 0; padding: 24px 56px; display: f
 
 /* Featured card on the right of hero */
 .featured-wrap { position: relative; }
-.featured-label { position: absolute; top: -14px; left: 24px; z-index: 3; background: var(--red); color: var(--white-pure); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; padding: 6px 14px; border-radius: 4px; box-shadow: 0 4px 20px rgba(200,16,46,0.4); }
-.featured-card { display: block; background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 18px; overflow: hidden; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), border-color 0.35s, box-shadow 0.45s; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-.featured-card:hover { transform: translateY(-6px) scale(1.01); border-color: var(--red); box-shadow: 0 30px 80px rgba(200,16,46,0.25); }
-.featured-img { width: 100%; aspect-ratio: 16/11; background-size: cover; background-position: center; position: relative; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+.featured-label { position: absolute; top: -12px; left: 18px; z-index: 3; background: var(--red); color: var(--white-pure); font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; padding: 5px 12px; border-radius: 4px; box-shadow: 0 4px 18px rgba(200,16,46,0.4); }
+.featured-card { display: block; background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 14px; overflow: hidden; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), border-color 0.35s, box-shadow 0.45s; box-shadow: 0 14px 40px rgba(0,0,0,0.35); max-width: 420px; margin-left: auto; }
+.featured-card:hover { transform: translateY(-5px) scale(1.01); border-color: var(--red); box-shadow: 0 24px 60px rgba(200,16,46,0.22); }
+.featured-img { width: 100%; aspect-ratio: 16/9; background-size: cover; background-position: center; position: relative; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); }
 .featured-card:hover .featured-img { transform: scale(1.04); }
-.featured-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(10,10,10,0.85)); }
-.featured-body { padding: 26px 28px 32px; position: relative; }
-.featured-meta { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
-.featured-title { font-family: var(--serif); font-size: 1.55rem; line-height: 1.25; font-weight: 700; margin-bottom: 16px; color: var(--white); }
-.featured-link { font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white); display: inline-flex; align-items: center; gap: 10px; }
+.featured-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 45%, rgba(10,10,10,0.75)); }
+.featured-body { padding: 20px 22px 24px; position: relative; }
+.featured-meta { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+.featured-title { font-family: var(--serif); font-size: 1.25rem; line-height: 1.3; font-weight: 700; margin-bottom: 14px; color: var(--white); }
+.featured-link { font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white); display: inline-flex; align-items: center; gap: 10px; }
 .featured-link::after { content: "→"; transition: transform 0.35s; }
 .featured-card:hover .featured-link::after { transform: translateX(6px); }
 
@@ -196,9 +196,9 @@ footer { background: var(--dark); border-top: 1px solid var(--dark-border); padd
       <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
       <span class="nav-text">Browse Pros</span>
     </a>
-    <a href="swag.html" aria-label="Swag">
+    <a href="swag.html" aria-label="Merch">
       <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
-      <span class="nav-text">Swag</span>
+      <span class="nav-text">Merch</span>
     </a>
     <a href="index.html#experience" aria-label="The Experience">
       <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.6L20 10l-4 4 1 6-5-3-5 3 1-6-4-4 5.6-1.4z"/></svg></span>
@@ -233,12 +233,12 @@ footer { background: var(--dark); border-top: 1px solid var(--dark-border); padd
       <p class="journal-hero-dek">Pricing breakdowns, hiring guides, and behind-the-scenes from the people who shape Charleston's private events. Practical reading for hosts, planners, and pros.</p>
       <div class="hero-stats">
         <div class="hero-stat">
-          <span class="hero-stat-value">2</span>
+          <span class="hero-stat-value">6</span>
           <span class="hero-stat-label">Guides</span>
         </div>
         <div class="hero-stat">
-          <span class="hero-stat-value">15</span>
-          <span class="hero-stat-label">Min read</span>
+          <span class="hero-stat-value">40</span>
+          <span class="hero-stat-label">Min of reading</span>
         </div>
         <div class="hero-stat">
           <span class="hero-stat-value">Weekly</span>
@@ -293,6 +293,54 @@ footer { background: var(--dark); border-top: 1px solid var(--dark-border); padd
         <h2>How Much Does a Bartender Cost in Charleston? (2026 Pricing Guide)</h2>
         <p>Transparent pricing for private-event bartenders in Charleston — hourly rates, gratuity norms, how many bartenders you actually need, and what to supply vs. what they bring.</p>
         <span class="read-more">See the numbers</span>
+      </div>
+    </a>
+  </article>
+
+  <article class="post-card" data-category="hiring">
+    <a href="hiring-a-wedding-bartender-in-charleston.html" aria-label="Hiring a Wedding Bartender in Charleston">
+      <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=1200&q=80')"></div>
+      <div class="post-card-body">
+        <div class="post-card-meta">Hiring Guide · 6 min read</div>
+        <h2>Hiring a Wedding Bartender in Charleston: What to Know Before You Book</h2>
+        <p>Insurance, licensing, signature cocktails, and timing — a practical guide to picking the bartender who'll run your wedding bar right.</p>
+        <span class="read-more">Read the guide</span>
+      </div>
+    </a>
+  </article>
+
+  <article class="post-card" data-category="pricing">
+    <a href="charleston-wedding-vendor-costs.html" aria-label="Charleston Wedding Vendor Costs 2026">
+      <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80')"></div>
+      <div class="post-card-body">
+        <div class="post-card-meta">Pricing · 7 min read</div>
+        <h2>Charleston Wedding Vendor Costs: A 2026 Breakdown</h2>
+        <p>What each line item actually costs — photographer, florist, caterer, bar — so you can build a Charleston wedding budget that survives contact with reality.</p>
+        <span class="read-more">See the breakdown</span>
+      </div>
+    </a>
+  </article>
+
+  <article class="post-card" data-category="spotlight">
+    <a href="spotlight-charleston-private-chefs.html" aria-label="Spotlight: The Craft Behind Charleston's Private Chefs">
+      <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf?w=1200&q=80')"></div>
+      <div class="post-card-body">
+        <div class="post-card-meta">Spotlight · 5 min read</div>
+        <h2>The Craft Behind Charleston's Private Chefs</h2>
+        <p>Sourcing, philosophy, and the quiet performance of cooking in someone else's kitchen — a look inside the people shaping Charleston's private dining.</p>
+        <span class="read-more">Read the spotlight</span>
+      </div>
+    </a>
+  </article>
+
+  <article class="post-card" data-category="spotlight">
+    <a href="spotlight-signature-cocktails-charleston.html" aria-label="Spotlight: Signature Cocktails Born in Charleston">
+      <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=1200&q=80')"></div>
+      <div class="post-card-body">
+        <div class="post-card-meta">Spotlight · 5 min read</div>
+        <h2>Signature Cocktails Born in Charleston</h2>
+        <p>Three drinks Charleston's private-event bartenders are actually serving this year — plus the rules pros follow when designing a signature menu.</p>
+        <span class="read-more">Mix it up</span>
       </div>
     </a>
   </article>
