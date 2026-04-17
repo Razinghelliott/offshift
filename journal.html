@@ -92,12 +92,67 @@ nav { position: fixed; top: 0; left: 0; right: 0; padding: 24px 56px; display: f
   .nav-links.open { right: 0; }
 }
 
-/* Hero */
-.journal-hero { padding: 180px 56px 80px; text-align: center; border-bottom: 1px solid var(--dark-border); background: radial-gradient(ellipse at top, rgba(200,16,46,0.08) 0%, transparent 60%); }
-.journal-hero .eyebrow { font-size: 0.78rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
-.journal-hero h1 { font-family: var(--serif); font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 400; line-height: 1.05; margin-bottom: 24px; }
+/* Hero — split layout with ambient orbs */
+.journal-hero { position: relative; padding: 160px 56px 80px; border-bottom: 1px solid var(--dark-border); overflow: hidden; background: radial-gradient(ellipse at 20% 30%, rgba(200,16,46,0.06) 0%, transparent 50%); }
+.journal-hero-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 80px; align-items: center; position: relative; z-index: 2; }
+.journal-hero-content { max-width: 620px; }
+.journal-hero .eyebrow { font-size: 0.78rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--red); margin-bottom: 22px; display: inline-flex; align-items: center; gap: 10px; }
+.journal-hero .eyebrow::before { content: ""; display: inline-block; width: 28px; height: 1px; background: var(--red); }
+.journal-hero h1 { font-family: var(--serif); font-size: clamp(2.4rem, 5.2vw, 4.2rem); font-weight: 400; line-height: 1.05; margin-bottom: 24px; letter-spacing: -0.01em; }
 .journal-hero h1 em { font-style: italic; color: var(--red); }
-.journal-hero p { font-size: 1.1rem; color: var(--gray-light); max-width: 640px; margin: 0 auto; line-height: 1.7; }
+.journal-hero-dek { font-size: 1.1rem; color: var(--gray-light); line-height: 1.7; margin-bottom: 36px; }
+
+/* Stats strip */
+.hero-stats { display: flex; gap: 28px; padding: 24px 0 0; border-top: 1px solid var(--dark-border); }
+.hero-stat { display: flex; flex-direction: column; gap: 4px; }
+.hero-stat-value { font-family: var(--serif); font-size: 1.8rem; font-weight: 700; color: var(--white); line-height: 1; }
+.hero-stat-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); }
+
+/* Ambient floating orbs */
+.hero-ambient { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+.orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.55; }
+.orb-1 { width: 420px; height: 420px; background: radial-gradient(circle, rgba(200,16,46,0.5), transparent 70%); top: -120px; right: -80px; animation: orb-drift-a 18s ease-in-out infinite; }
+.orb-2 { width: 340px; height: 340px; background: radial-gradient(circle, rgba(200,16,46,0.25), transparent 70%); bottom: -100px; left: 15%; animation: orb-drift-b 22s ease-in-out infinite; }
+.orb-3 { width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 70%); top: 40%; right: 38%; animation: orb-drift-c 26s ease-in-out infinite; }
+@keyframes orb-drift-a { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-40px,30px)} }
+@keyframes orb-drift-b { 0%,100%{transform:translate(0,0)} 50%{transform:translate(50px,-20px)} }
+@keyframes orb-drift-c { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,-40px) scale(1.1)} }
+
+/* Featured card on the right of hero */
+.featured-wrap { position: relative; }
+.featured-label { position: absolute; top: -14px; left: 24px; z-index: 3; background: var(--red); color: var(--white-pure); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; padding: 6px 14px; border-radius: 4px; box-shadow: 0 4px 20px rgba(200,16,46,0.4); }
+.featured-card { display: block; background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 18px; overflow: hidden; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), border-color 0.35s, box-shadow 0.45s; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.featured-card:hover { transform: translateY(-6px) scale(1.01); border-color: var(--red); box-shadow: 0 30px 80px rgba(200,16,46,0.25); }
+.featured-img { width: 100%; aspect-ratio: 16/11; background-size: cover; background-position: center; position: relative; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+.featured-card:hover .featured-img { transform: scale(1.04); }
+.featured-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(10,10,10,0.85)); }
+.featured-body { padding: 26px 28px 32px; position: relative; }
+.featured-meta { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+.featured-title { font-family: var(--serif); font-size: 1.55rem; line-height: 1.25; font-weight: 700; margin-bottom: 16px; color: var(--white); }
+.featured-link { font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white); display: inline-flex; align-items: center; gap: 10px; }
+.featured-link::after { content: "→"; transition: transform 0.35s; }
+.featured-card:hover .featured-link::after { transform: translateX(6px); }
+
+/* Filter bar */
+.filter-bar { max-width: 1200px; margin: 0 auto; padding: 60px 56px 0; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+.filter-title { font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gray); font-weight: 600; }
+.filter-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+.filter-pill { background: transparent; color: var(--gray-light); border: 1px solid var(--dark-border); border-radius: 50px; padding: 10px 20px; font-size: 0.78rem; font-family: var(--sans); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; }
+.filter-pill:hover { color: var(--white); border-color: var(--gray); }
+.filter-pill.active { background: var(--red); border-color: var(--red); color: var(--white-pure); box-shadow: 0 4px 20px rgba(200,16,46,0.3); }
+.posts-empty { grid-column: 1 / -1; text-align: center; padding: 80px 20px; color: var(--gray); font-size: 0.95rem; }
+
+@media (max-width: 1000px) {
+  .journal-hero-inner { grid-template-columns: 1fr; gap: 50px; }
+  .journal-hero { padding: 130px 24px 60px; }
+  .hero-stats { gap: 22px; }
+}
+@media (max-width: 700px) {
+  .hero-stat-value { font-size: 1.4rem; }
+  .filter-bar { padding: 40px 20px 0; }
+  .featured-body { padding: 22px 20px 26px; }
+  .featured-title { font-size: 1.3rem; }
+}
 
 /* Posts grid */
 .posts { max-width: 1200px; margin: 0 auto; padding: 80px 56px 120px; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; }
@@ -112,7 +167,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; padding: 24px 56px; display: f
 .post-card .read-more { margin-top: auto; font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white); display: inline-flex; align-items: center; gap: 10px; padding-top: 8px; }
 .post-card .read-more::after { content: "→"; transition: transform 0.3s; }
 .post-card:hover .read-more::after { transform: translateX(4px); }
-@media (max-width: 700px) { .posts { padding: 56px 20px 80px; } .journal-hero { padding: 140px 24px 60px; } }
+@media (max-width: 700px) { .posts { padding: 40px 20px 80px; } }
 
 /* Footer (compact) */
 footer { background: var(--dark); border-top: 1px solid var(--dark-border); padding: 56px 56px 32px; }
@@ -166,14 +221,59 @@ footer { background: var(--dark); border-top: 1px solid var(--dark-border); padd
 
 <!-- Hero -->
 <section class="journal-hero">
-  <div class="eyebrow">The Journal</div>
-  <h1>Stories &amp; guides from <em>Charleston's</em><br>finest local talent.</h1>
-  <p>Pricing breakdowns, hiring guides, and behind-the-scenes from the people who shape Charleston's private events. Practical reading for hosts, planners, and pros.</p>
+  <div class="hero-ambient" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="journal-hero-inner">
+    <div class="journal-hero-content">
+      <div class="eyebrow">The Journal</div>
+      <h1>Stories &amp; guides from <em>Charleston's</em><br>finest local talent.</h1>
+      <p class="journal-hero-dek">Pricing breakdowns, hiring guides, and behind-the-scenes from the people who shape Charleston's private events. Practical reading for hosts, planners, and pros.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-value">2</span>
+          <span class="hero-stat-label">Guides</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">15</span>
+          <span class="hero-stat-label">Min read</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">Weekly</span>
+          <span class="hero-stat-label">New posts</span>
+        </div>
+      </div>
+    </div>
+    <aside class="featured-wrap">
+      <div class="featured-label">Featured</div>
+      <a href="how-to-hire-a-private-chef-in-charleston.html" class="featured-card" aria-label="Featured: How to Hire a Private Chef in Charleston">
+        <div class="featured-img" style="background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=80')"></div>
+        <div class="featured-body">
+          <div class="featured-meta">Hiring Guide · 8 min read</div>
+          <div class="featured-title">How to Hire a Private Chef in Charleston: A Complete Guide</div>
+          <span class="featured-link">Read the guide</span>
+        </div>
+      </a>
+    </aside>
+  </div>
 </section>
 
+<!-- Filter bar -->
+<div class="filter-bar">
+  <div class="filter-title">Browse by topic</div>
+  <div class="filter-pills" id="filterPills">
+    <button class="filter-pill active" data-filter="all">All</button>
+    <button class="filter-pill" data-filter="hiring">Hiring Guides</button>
+    <button class="filter-pill" data-filter="pricing">Pricing</button>
+    <button class="filter-pill" data-filter="spotlight">Spotlights</button>
+  </div>
+</div>
+
 <!-- Posts -->
-<main class="posts">
-  <article class="post-card">
+<main class="posts" id="postsGrid">
+  <article class="post-card" data-category="hiring">
     <a href="how-to-hire-a-private-chef-in-charleston.html" aria-label="How to Hire a Private Chef in Charleston">
       <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80')"></div>
       <div class="post-card-body">
@@ -185,7 +285,7 @@ footer { background: var(--dark); border-top: 1px solid var(--dark-border); padd
     </a>
   </article>
 
-  <article class="post-card">
+  <article class="post-card" data-category="pricing">
     <a href="how-much-does-a-bartender-cost-in-charleston.html" aria-label="How Much Does a Bartender Cost in Charleston">
       <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1200&q=80')"></div>
       <div class="post-card-body">
@@ -196,7 +296,32 @@ footer { background: var(--dark); border-top: 1px solid var(--dark-border); padd
       </div>
     </a>
   </article>
+
+  <div class="posts-empty" id="postsEmpty" style="display:none;">No posts in this category yet — check back soon.</div>
 </main>
+
+<script>
+// Filter pills
+(function() {
+  const pills = document.querySelectorAll('.filter-pill');
+  const cards = document.querySelectorAll('#postsGrid .post-card');
+  const empty = document.getElementById('postsEmpty');
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const filter = pill.dataset.filter;
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      let visible = 0;
+      cards.forEach(card => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      empty.style.display = visible === 0 ? 'block' : 'none';
+    });
+  });
+})();
+</script>
 
 <!-- Footer -->
 <footer>
