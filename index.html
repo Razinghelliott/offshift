@@ -654,7 +654,9 @@ section { padding: 140px 48px; }
 .how-card:hover h3 { transform: translateY(-3px); }
 .how-card:hover p { color: var(--white); }
 /* Animated red sweep along bottom edge on hover */
-.how-card .sweep {
+/* Red sweep accent — applied on .talent-card hover (Meet the Collective) */
+.talent-card { position: relative; }
+.talent-card .sweep {
   position: absolute;
   left: -60%;
   bottom: 0;
@@ -664,8 +666,9 @@ section { padding: 140px 48px; }
   background: linear-gradient(to right, transparent, var(--red), transparent);
   filter: drop-shadow(0 0 8px var(--red));
   transition: left 1s cubic-bezier(0.2,0.8,0.2,1);
+  pointer-events: none;
 }
-.how-card:hover .sweep { left: 100%; }
+.talent-card:hover .sweep { left: 100%; }
 .how-card-num {
   font-family: var(--serif);
   font-size: 4rem;
@@ -729,20 +732,20 @@ section { padding: 140px 48px; }
 .cat-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
-  margin-top: 64px;
-  max-width: 1100px;
+  gap: 22px;
+  margin-top: 56px;
+  max-width: 980px;
   margin-left: auto;
   margin-right: auto;
 }
 .cat-card {
   position: relative;
-  height: 340px;
-  border-radius: 18px;
+  height: 260px;
+  border-radius: 14px;
   overflow: hidden;
   cursor: pointer;
   border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+  box-shadow: 0 14px 38px rgba(0,0,0,0.4);
   transition: transform 0.45s cubic-bezier(0.2,0.8,0.2,1), border-color 0.4s ease, box-shadow 0.5s ease;
 }
 .cat-card:hover {
@@ -772,24 +775,24 @@ section { padding: 140px 48px; }
 .cat-card-content {
   position: absolute;
   bottom: 0; left: 0;
-  padding: 32px;
+  padding: 22px;
   z-index: 2;
 }
 .cat-card-tag {
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--red);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .cat-card h3 {
   font-family: var(--serif);
-  font-size: 1.6rem;
-  margin-bottom: 8px;
+  font-size: 1.4rem;
+  margin-bottom: 6px;
 }
 .cat-card p {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--gray-light);
   opacity: 0;
   transform: translateY(10px);
@@ -797,7 +800,24 @@ section { padding: 140px 48px; }
 }
 .cat-card:hover p { opacity: 1; transform: translateY(0); }
 
-@media (max-width: 768px) { .cat-grid { grid-template-columns: 1fr; gap: 20px; } .cat-card { height: 280px; } .categories { background-attachment: scroll; } }
+/* Tablet: keep 2x2, slightly smaller */
+@media (max-width: 900px) {
+  .cat-grid { gap: 16px; max-width: 720px; }
+  .cat-card { height: 220px; }
+  .cat-card-content { padding: 18px; }
+  .cat-card h3 { font-size: 1.25rem; }
+  .categories { background-attachment: scroll; }
+}
+/* Mobile: 2x2 grid, all 4 cards visible on screen */
+@media (max-width: 600px) {
+  .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 32px; }
+  .cat-card { height: 170px; border-radius: 12px; }
+  .cat-card-content { padding: 14px; }
+  .cat-card-tag { font-size: 0.58rem; letter-spacing: 0.12em; margin-bottom: 4px; }
+  .cat-card h3 { font-size: 1.05rem; line-height: 1.15; }
+  .cat-card p { display: none; }
+  .categories { padding: 60px 16px; }
+}
 
 /* ===== FEATURED TALENT / MARKETPLACE PREVIEW ===== */
 .marketplace {
@@ -1453,7 +1473,6 @@ footer {
     <a href="browse.html">Browse Pros</a>
     <a href="swag.html" style="display:none;">Merch</a>
     <a href="#experience">The Experience</a>
-    <a href="journal.html">Journal</a>
     <a href="#apply">Become a Pro</a>
     <a href="login.html" class="nav-cta">Sign In</a>
   </div>
@@ -1515,7 +1534,6 @@ footer {
       </div>
       <h3>Bespoke Browsing</h3>
       <p>Browse local chefs, bartenders, musicians, and more through a clean, visual grid. Every profile is verified, curated, and ready to book.</p>
-      <div class="sweep"></div>
     </div>
     <div class="how-card reveal reveal-delay-2" style="--bg:url('https://images.unsplash.com/photo-1619892127776-08a763bfe34c?w=1200&q=80')">
       <div class="how-card-num">02</div>
@@ -1524,7 +1542,6 @@ footer {
       </div>
       <h3>Champion Local</h3>
       <p>Book directly with <span class="charleston">Charleston</span> talent. Transparent rates, verified profiles, and real reviews from real bookers. No middlemen.</p>
-      <div class="sweep"></div>
     </div>
     <div class="how-card reveal reveal-delay-3" style="--bg:url('https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf?w=1200&q=80')">
       <div class="how-card-num">03</div>
@@ -1533,7 +1550,6 @@ footer {
       </div>
       <h3>Learn & Connect</h3>
       <p>Host private dinners, workshops, and experiences that feel personal, not generic. Build real connections with the talent behind the craft.</p>
-      <div class="sweep"></div>
     </div>
   </div>
 </section>
@@ -1605,6 +1621,7 @@ footer {
           <span class="talent-reviews">24 bookings</span>
         </div>
       </div>
+      <div class="sweep"></div>
     </div>
     <div class="talent-card reveal reveal-delay-2">
       <div class="talent-card-img" style="background-image:url('https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?w=600&q=80')">
@@ -1620,6 +1637,7 @@ footer {
           <span class="talent-reviews">18 bookings</span>
         </div>
       </div>
+      <div class="sweep"></div>
     </div>
     <div class="talent-card reveal reveal-delay-3">
       <div class="talent-card-img" style="background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80')">
@@ -1635,6 +1653,7 @@ footer {
           <span class="talent-reviews">9 bookings</span>
         </div>
       </div>
+      <div class="sweep"></div>
     </div>
   </div>
 </section>
