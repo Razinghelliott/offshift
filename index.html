@@ -654,21 +654,44 @@ section { padding: 140px 48px; }
 .how-card:hover h3 { transform: translateY(-3px); }
 .how-card:hover p { color: var(--white); }
 /* Animated red sweep along bottom edge on hover */
-/* Red sweep accent — applied on .talent-card hover (Meet the Collective) */
+/* Red perimeter trace — rotates around card border on hover (Meet the Collective) */
+@property --offshift-trace-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 .talent-card { position: relative; }
 .talent-card .sweep {
   position: absolute;
-  left: -60%;
-  bottom: 0;
-  height: 2px;
-  width: 60%;
-  z-index: 3;
-  background: linear-gradient(to right, transparent, var(--red), transparent);
-  filter: drop-shadow(0 0 8px var(--red));
-  transition: left 1s cubic-bezier(0.2,0.8,0.2,1);
+  inset: 0;
+  border-radius: 16px;
+  padding: 2px;
+  z-index: 4;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: conic-gradient(
+    from var(--offshift-trace-angle, 0deg),
+    transparent 0deg,
+    transparent 240deg,
+    rgba(200,16,46,0.2) 285deg,
+    var(--red) 320deg,
+    rgba(200,16,46,0.2) 345deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
 }
-.talent-card:hover .sweep { left: 100%; }
+.talent-card:hover .sweep {
+  opacity: 1;
+  animation: offshift-trace 2.4s linear infinite;
+}
+@keyframes offshift-trace {
+  to { --offshift-trace-angle: 360deg; }
+}
 .how-card-num {
   font-family: var(--serif);
   font-size: 4rem;
