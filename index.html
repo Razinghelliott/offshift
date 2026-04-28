@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="logo.png">
 <title>OFFSHIFT Charleston | Elite Local Talent Marketplace</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,6 +20,14 @@
   --red: #c8102e;
   --red-glow: rgba(200, 16, 46, 0.3);
   --red-subtle: rgba(200, 16, 46, 0.08);
+  --gold: #c9a44a;
+  --gold-light: #d8b56a;
+  --gold-glow: rgba(201, 164, 74, 0.3);
+  --gold-subtle: rgba(201, 164, 74, 0.10);
+  --tiffany: #81d8d0;
+  --tiffany-deep: #3fb8b0;
+  --tiffany-glow: rgba(129, 216, 208, 0.28);
+  --tiffany-subtle: rgba(129, 216, 208, 0.10);
   --gray: #a0a0a0;
   --gray-light: #c4c4c4;
   --gray-dark: #333333;
@@ -147,10 +155,30 @@ nav.scrolled {
   left: 0;
   right: 6%;
   height: 2px;
-  background: var(--red);
+  background: var(--gold);
   transform: translateY(-50%);
   z-index: -1;
-  box-shadow: 0 0 10px rgba(200,16,46,0.5);
+  box-shadow: 0 0 10px rgba(201,164,74,0.55);
+}
+/* "Charleston" script signature — sits below OFFSHIFT, slight upward tilt */
+.nav-logo-charleston {
+  position: absolute;
+  top: 100%;
+  left: 18%;
+  margin-top: -10px;
+  font-family: 'Allura', cursive;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--red);
+  white-space: nowrap;
+  transform: rotate(-6deg);
+  transform-origin: left center;
+  pointer-events: none;
+  text-shadow: 0 0 10px rgba(200,16,46,0.25);
+  z-index: 2;
 }
 .nav-logo img {
   height: 38px;
@@ -451,12 +479,12 @@ nav.scrolled {
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px var(--red-glow); }
 .btn-secondary {
-  background: rgba(255,255,255,0.06);
-  color: var(--white);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: var(--tiffany-subtle);
+  color: var(--tiffany);
+  border: 1px solid rgba(129,216,208,0.4);
   backdrop-filter: blur(10px);
 }
-.btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+.btn-secondary:hover { background: rgba(129,216,208,0.16); border-color: var(--tiffany); color: var(--tiffany); }
 
 .hero-scroll {
   position: absolute;
@@ -514,15 +542,15 @@ nav.scrolled {
 }
 .founding-banner strong { color: var(--white); font-weight: 600; }
 .founding-banner a {
-  color: var(--red);
+  color: var(--gold);
   font-weight: 600;
   font-size: 0.85rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border-bottom: 1px solid transparent;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, color 0.3s;
 }
-.founding-banner a:hover { border-bottom-color: var(--red); }
+.founding-banner a:hover { border-bottom-color: var(--gold); color: var(--gold-light); }
 
 /* ===== SECTION UTILITIES ===== */
 section { padding: 140px 48px; }
@@ -531,7 +559,7 @@ section { padding: 140px 48px; }
   font-weight: 600;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--red);
+  color: var(--gold);
   margin-bottom: 16px;
 }
 .section-title {
@@ -541,7 +569,8 @@ section { padding: 140px 48px; }
   line-height: 1.15;
   margin-bottom: 20px;
 }
-.section-title em { font-style: italic; color: var(--red); }
+.section-title em { font-style: italic; color: var(--gold); }
+.section-title em.charleston, .section-title .charleston em, .section-title em .charleston { color: var(--red); }
 .section-desc {
   font-size: 1.05rem;
   font-weight: 300;
@@ -806,7 +835,7 @@ section { padding: 140px 48px; }
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--red);
+  color: var(--tiffany);
   margin-bottom: 6px;
 }
 .cat-card h3 {
@@ -887,6 +916,14 @@ section { padding: 140px 48px; }
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--tiffany);
+  border: 1px solid rgba(129,216,208,0.32);
+}
+.talent-card-badge.is-founding {
+  background: var(--gold);
+  color: #2b1f00;
+  border-color: var(--gold);
+  box-shadow: 0 4px 14px var(--gold-glow);
 }
 .talent-card-rate {
   position: absolute;
@@ -922,7 +959,7 @@ section { padding: 140px 48px; }
   padding-top: 16px;
   border-top: 1px solid var(--dark-border);
 }
-.talent-stars { color: var(--red); font-size: 0.85rem; }
+.talent-stars { color: var(--gold); font-size: 0.85rem; }
 .talent-reviews { font-size: 0.78rem; color: var(--gray); }
 
 @media (max-width: 900px) { .talent-grid { grid-template-columns: 1fr; } }
@@ -1036,7 +1073,7 @@ section { padding: 140px 48px; }
   font-weight: 600;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--red);
+  color: var(--gold);
   margin-bottom: 22px;
   display: inline-flex;
   align-items: center;
@@ -1046,7 +1083,7 @@ section { padding: 140px 48px; }
   content: '';
   display: inline-block;
   width: 36px; height: 1px;
-  background: var(--red);
+  background: var(--gold);
 }
 .signup-title {
   font-family: var(--serif);
@@ -1057,7 +1094,8 @@ section { padding: 140px 48px; }
   margin-bottom: 22px;
   color: var(--white);
 }
-.signup-title em { font-style: italic; color: var(--red); }
+.signup-title em { font-style: italic; color: var(--gold); }
+.signup-title em.charleston { color: var(--red); }
 .signup-sub {
   font-size: 1.05rem;
   font-weight: 300;
@@ -1490,7 +1528,7 @@ footer {
 
 <!-- Navigation -->
 <nav id="nav">
-  <a href="#" class="nav-logo">OFFSHIFT</a>
+  <a href="#" class="nav-logo">OFFSHIFT<span class="nav-logo-charleston">Charleston</span></a>
   <div class="nav-links" id="navLinks">
     <a href="#how">How It Works</a>
     <a href="browse.html">Browse Pros</a>
@@ -1648,7 +1686,7 @@ footer {
     </div>
     <div class="talent-card reveal reveal-delay-2">
       <div class="talent-card-img" style="background-image:url('https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?w=600&q=80')">
-        <div class="talent-card-badge">&#9733; Founding Pro</div>
+        <div class="talent-card-badge is-founding">&#9733; Founding Pro</div>
         <div class="talent-card-rate">$$</div>
       </div>
       <div class="talent-card-body">
@@ -1733,7 +1771,7 @@ footer {
 <section class="signup-strip" id="signup">
   <div class="signup-inner">
     <div class="signup-eyebrow reveal">Join the Collective</div>
-    <h2 class="signup-title reveal">Be on the list before <em>Charleston</em> is.</h2>
+    <h2 class="signup-title reveal">Be on the list before <em class="charleston">Charleston</em> is.</h2>
     <p class="signup-sub reveal">Founding Pros lock in their first year free. Bookers get early access to the city's most-requested chefs, bartenders, and musicians. Same email — two ways in.</p>
 
     <form class="signup-form reveal" id="stripSignupForm" autocomplete="off">
