@@ -1191,7 +1191,7 @@ footer {
   border-color: var(--white);
   background: rgba(255,255,255,0.08);
 }
-.brand-text { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.brand-text { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); }
 .charleston { color: #c8102e; }
 </style>
 </head>
@@ -1506,7 +1506,7 @@ footer {
 <section class="notify-section" id="notify">
   <div class="notify-inner">
     <div class="section-label reveal">Stay in the Loop</div>
-    <div class="section-title reveal">Get early access to the<br><em><span class="brand-text">OFFSHIFT</span></em> app.</div>
+    <div class="section-title reveal">Get early access to the<br><span class="brand-text">OFFSHIFT</span> app.</div>
     <p class="section-desc reveal" style="margin:0 auto;">The <span class="brand-text">OFFSHIFT</span> mobile app is in development. Your profile and bookings will sync when it launches. Be the first to know.</p>
     <form class="notify-form reveal" onsubmit="event.preventDefault(); this.innerHTML='<p style=\'grid-column:1/-1;text-align:center;padding:24px;color:var(--red);font-weight:600\'>Thank you! We\'ll be in touch.</p>'">
       <input type="text" class="form-input" placeholder="First name" required>
@@ -1568,31 +1568,9 @@ footer {
           <label class="form-label">Short bio *</label>
           <textarea class="form-input" placeholder="3-5 sentences. Write it like guests will read it before they book you." required></textarea>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Where in/around <span class="charleston">Charleston</span>? *</label>
-            <input type="text" class="form-input" placeholder="e.g. Downtown, Mt. Pleasant..." required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Typical price range *</label>
-            <select class="form-input" required>
-              <option value="">Select range</option>
-              <option>Budget-friendly</option>
-              <option>Mid-range</option>
-              <option>Premium</option>
-              <option>Depends on the event</option>
-            </select>
-          </div>
-        </div>
         <div class="form-group">
-          <label class="form-label">When are you usually available? *</label>
-          <div class="avail-group" id="availGroup">
-            <div class="avail-chip" onclick="this.classList.toggle('selected')">Weeknights</div>
-            <div class="avail-chip" onclick="this.classList.toggle('selected')">Weekends</div>
-            <div class="avail-chip" onclick="this.classList.toggle('selected')">Daytime</div>
-            <div class="avail-chip" onclick="this.classList.toggle('selected')">Late Night</div>
-            <div class="avail-chip" onclick="this.classList.toggle('selected')">Flexible</div>
-          </div>
+          <label class="form-label">Where in/around <span class="charleston">Charleston</span>? *</label>
+          <input type="text" class="form-input" placeholder="e.g. Downtown, Mt. Pleasant..." required>
         </div>
         <div class="form-group">
           <label class="form-label">Links (Instagram, website, portfolio)</label>
