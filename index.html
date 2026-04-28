@@ -161,7 +161,7 @@ nav.scrolled {
   box-shadow: 0 0 10px rgba(201,164,74,0.55);
 }
 /* "Charleston" script signature — sits below OFFSHIFT, slight upward tilt */
-.nav-logo-charleston {
+.nav-logo .nav-logo-charleston {
   position: absolute;
   top: 100%;
   left: 18%;
@@ -255,7 +255,7 @@ nav.scrolled {
   transform: translateX(0);
 }
 .nav-cta {
-  background: var(--red) !important;
+  background: var(--tiffany-deep) !important;
   color: var(--white-pure) !important;
   padding: 10px 24px;
   border-radius: 6px;
@@ -263,10 +263,10 @@ nav.scrolled {
   font-weight: 600 !important;
   letter-spacing: 0.12em !important;
   transition: all 0.3s ease !important;
-  box-shadow: 0 0 20px var(--red-glow);
+  box-shadow: 0 0 20px var(--tiffany-glow);
 }
 .nav-cta::after { display: none !important; }
-.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 30px var(--red-glow); }
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 30px var(--tiffany-glow); background: var(--tiffany) !important; color: var(--black) !important; }
 
 /* Mobile nav */
 .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
@@ -437,7 +437,29 @@ nav.scrolled {
 }
 .hero h1 em {
   font-style: italic;
-  color: var(--red);
+  background: linear-gradient(
+    100deg,
+    #b89548 0%,
+    #c9a44a 25%,
+    #c9a44a 42%,
+    #f0d98c 49%,
+    #fbeec0 51%,
+    #f0d98c 53%,
+    #c9a44a 60%,
+    #c9a44a 100%
+  );
+  background-size: 280% 100%;
+  background-position: 100% 50%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 14px rgba(0,0,0,0.55));
+  animation: gold-shine 7s ease-in-out infinite;
+}
+@keyframes gold-shine {
+  0%, 100% { background-position: 100% 50%; }
+  50% { background-position: 0% 50%; }
 }
 .hero-sub {
   font-size: clamp(1.05rem, 1.8vw, 1.25rem);
