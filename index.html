@@ -705,23 +705,50 @@ section { padding: 140px 48px; }
 }
 
 /* ===== TALENT CATEGORIES ===== */
-.categories { position: relative; }
+.categories {
+  position: relative;
+  background-image: url('https://plus.unsplash.com/premium_photo-1694475442325-4e0055fe2dac?w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow: hidden;
+}
+/* Vignette — radial fade from translucent center to dark edges + slight saturation drop */
+.categories::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 0%, rgba(10,10,10,0.55) 55%, rgba(10,10,10,0.92) 95%),
+    linear-gradient(180deg, rgba(10,10,10,0.55) 0%, transparent 25%, transparent 75%, rgba(10,10,10,0.7) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+.categories > * { position: relative; z-index: 1; }
+
 .cat-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
   margin-top: 64px;
-  max-width: 1200px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
 }
 .cat-card {
   position: relative;
-  height: 380px;
-  border-radius: 16px;
+  height: 340px;
+  border-radius: 18px;
   overflow: hidden;
   cursor: pointer;
-  group: true;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+  transition: transform 0.45s cubic-bezier(0.2,0.8,0.2,1), border-color 0.4s ease, box-shadow 0.5s ease;
+}
+.cat-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(200,16,46,0.55);
+  box-shadow: 0 26px 70px rgba(0,0,0,0.55), 0 0 40px rgba(200,16,46,0.18);
 }
 .cat-card-img {
   position: absolute;
@@ -729,7 +756,7 @@ section { padding: 140px 48px; }
   width: 100%; height: 100%;
   background-size: cover;
   background-position: center;
-  transition: transform 0.7s ease;
+  transition: transform 0.9s cubic-bezier(0.2,0.8,0.2,1);
 }
 .cat-card:hover .cat-card-img { transform: scale(1.08); }
 .cat-card-overlay {
@@ -740,7 +767,7 @@ section { padding: 140px 48px; }
   transition: background 0.5s ease;
 }
 .cat-card:hover .cat-card-overlay {
-  background: linear-gradient(180deg, transparent 10%, rgba(200,16,46,0.15) 50%, rgba(10,10,10,0.95) 100%);
+  background: linear-gradient(180deg, transparent 10%, rgba(200,16,46,0.18) 50%, rgba(10,10,10,0.95) 100%);
 }
 .cat-card-content {
   position: absolute;
@@ -758,11 +785,11 @@ section { padding: 140px 48px; }
 }
 .cat-card h3 {
   font-family: var(--serif);
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   margin-bottom: 8px;
 }
 .cat-card p {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--gray-light);
   opacity: 0;
   transform: translateY(10px);
@@ -770,8 +797,7 @@ section { padding: 140px 48px; }
 }
 .cat-card:hover p { opacity: 1; transform: translateY(0); }
 
-@media (max-width: 1024px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .cat-grid { grid-template-columns: 1fr; } .cat-card { height: 300px; } }
+@media (max-width: 768px) { .cat-grid { grid-template-columns: 1fr; gap: 20px; } .cat-card { height: 280px; } .categories { background-attachment: scroll; } }
 
 /* ===== FEATURED TALENT / MARKETPLACE PREVIEW ===== */
 .marketplace {
