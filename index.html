@@ -934,36 +934,184 @@ section { padding: 140px 48px; }
   .exp-img-2 { width: 200px; height: 260px; }
 }
 
-/* ===== STATS STRIP ===== */
-.stats {
+/* ===== SIGNUP STRIP (replaces stats) ===== */
+.signup-strip {
+  position: relative;
   background: var(--dark);
-  padding: 80px 48px;
+  padding: 110px 32px;
   border-top: 1px solid var(--dark-border);
   border-bottom: 1px solid var(--dark-border);
+  overflow: hidden;
 }
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
+.signup-strip::before {
+  content: '';
+  position: absolute;
+  top: -200px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse at center, rgba(200,16,46,0.13) 0%, transparent 60%);
+  pointer-events: none;
 }
-.stat-num {
+.signup-strip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(transparent 0%, transparent calc(50% - 0.5px), rgba(255,255,255,0.025) calc(50% - 0.5px), rgba(255,255,255,0.025) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+  background-size: 100% 60px;
+  pointer-events: none;
+  opacity: 0.4;
+}
+.signup-inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; text-align: center; }
+.signup-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.signup-eyebrow::before, .signup-eyebrow::after {
+  content: '';
+  display: inline-block;
+  width: 36px; height: 1px;
+  background: var(--red);
+}
+.signup-title {
   font-family: var(--serif);
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
   font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 22px;
   color: var(--white);
-  margin-bottom: 8px;
 }
-.stat-num span { color: var(--red); }
-.stat-label {
-  font-size: 0.82rem;
+.signup-title em { font-style: italic; color: var(--red); }
+.signup-sub {
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--gray-light);
+  max-width: 580px;
+  margin: 0 auto 40px;
+}
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 540px;
+  margin: 0 auto;
+}
+.signup-role {
+  display: inline-flex;
+  margin: 0 auto 4px;
+  padding: 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+}
+.signup-role input { position: absolute; opacity: 0; pointer-events: none; }
+.signup-role label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.2,0.8,0.2,1);
+  user-select: none;
+}
+.signup-role input:checked + label {
+  background: var(--red);
+  color: var(--white-pure);
+  box-shadow: 0 4px 18px rgba(200,16,46,0.4);
+}
+.signup-input-row {
+  display: flex;
+  gap: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 6px;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.signup-input-row:focus-within {
+  border-color: rgba(200,16,46,0.55);
+  box-shadow: 0 0 0 4px rgba(200,16,46,0.08), 0 12px 30px rgba(0,0,0,0.3);
+}
+.signup-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 1rem;
+  padding: 14px 16px;
+}
+.signup-input::placeholder { color: var(--gray); }
+.signup-cta {
+  background: var(--red);
+  color: var(--white-pure);
+  border: none;
+  border-radius: 9px;
+  padding: 0 28px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.86rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.3s ease, background 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(200,16,46,0.32);
+}
+.signup-cta:hover { transform: translateY(-2px); background: #a00d24; box-shadow: 0 14px 38px rgba(200,16,46,0.5); }
+.signup-fineprint {
+  font-size: 0.78rem;
   color: var(--gray);
+  margin-top: 16px;
+  letter-spacing: 0.04em;
+}
+.signup-perks {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  margin-top: 44px;
+  flex-wrap: wrap;
+}
+.signup-perk {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--gray-light);
 }
-@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; } }
+.signup-perk svg { width: 16px; height: 16px; stroke: var(--red); fill: none; stroke-width: 1.8; }
+.signup-thanks {
+  background: linear-gradient(135deg, rgba(200,16,46,0.16), rgba(200,16,46,0.04));
+  border: 1px solid rgba(200,16,46,0.4);
+  border-radius: 14px;
+  padding: 32px 28px;
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  color: var(--white);
+}
+@media (max-width: 700px) {
+  .signup-strip { padding: 80px 22px; }
+  .signup-input-row { flex-direction: column; padding: 8px; }
+  .signup-cta { width: 100%; padding: 14px 24px; }
+  .signup-perks { gap: 18px; margin-top: 32px; }
+}
 
 /* ===== CTA / JOIN SECTION ===== */
 .cta-section {
@@ -1535,27 +1683,110 @@ footer {
   </div>
 </section>
 
-<!-- Stats -->
-<div class="stats">
-  <div class="stats-grid">
-    <div class="reveal">
-      <div class="stat-num">50<span>+</span></div>
-      <div class="stat-label">Founding Pros</div>
-    </div>
-    <div class="reveal reveal-delay-1">
-      <div class="stat-num">6<span>+</span></div>
-      <div class="stat-label">Categories</div>
-    </div>
-    <div class="reveal reveal-delay-2">
-      <div class="stat-num">100<span>%</span></div>
-      <div class="stat-label">Human Talent</div>
-    </div>
-    <div class="reveal reveal-delay-3">
-      <div class="stat-num">1<span>st</span></div>
-      <div class="stat-label">Year Free for Founding Pros</div>
+<!-- Signup Strip -->
+<section class="signup-strip" id="signup">
+  <div class="signup-inner">
+    <div class="signup-eyebrow reveal">Join the Collective</div>
+    <h2 class="signup-title reveal">Be on the list before <em>Charleston</em> is.</h2>
+    <p class="signup-sub reveal">Founding Pros lock in their first year free. Bookers get early access to the city's most-requested chefs, bartenders, and musicians. Same email — two ways in.</p>
+
+    <form class="signup-form reveal" id="stripSignupForm" autocomplete="off">
+      <div class="signup-role">
+        <input type="radio" name="stripRole" id="stripRoleHost" value="client" checked>
+        <label for="stripRoleHost">I'm a host</label>
+        <input type="radio" name="stripRole" id="stripRolePro" value="pro">
+        <label for="stripRolePro">I'm a pro</label>
+      </div>
+      <div class="signup-input-row">
+        <input type="email" class="signup-input" id="stripSignupEmail" placeholder="you@email.com" required>
+        <button type="submit" class="signup-cta">Reserve My Spot</button>
+      </div>
+      <p class="signup-fineprint">No spam. One email when your role goes live in <span class="charleston">Charleston</span>.</p>
+    </form>
+
+    <div class="signup-perks reveal">
+      <span class="signup-perk"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>First year free for Founding Pros</span>
+      <span class="signup-perk"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Early access to the collective</span>
+      <span class="signup-perk"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>No agency markup, ever</span>
     </div>
   </div>
-</div>
+</section>
+
+<!-- Firebase SDK (only loaded once, before any code that uses it) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+// Initialize Firebase only if not already initialized (other scripts on the page may have done it)
+if (!firebase.apps.length) {
+  firebase.initializeApp({
+    apiKey: "AIzaSyDNOD676C2uh87ggzmSZFNldI2eyI-ECOQ",
+    authDomain: "offshift-charleston.firebaseapp.com",
+    projectId: "offshift-charleston",
+    storageBucket: "offshift-charleston.firebasestorage.app",
+    messagingSenderId: "168641222703",
+    appId: "1:168641222703:web:63c86ca2ce807272a8ceda"
+  });
+}
+const _signupDb = firebase.firestore();
+
+(function() {
+  const f = document.getElementById('stripSignupForm');
+  if (!f) return;
+
+  function renderThanks(email, role) {
+    const inner = document.querySelector('.signup-inner');
+    inner.innerHTML = `
+      <div class="signup-eyebrow"><span style="color:var(--red);">You're in.</span></div>
+      <div class="signup-thanks">Thanks &mdash; we'll email <strong>${email.replace(/[<>&"]/g, '')}</strong> the moment ${role === 'pro' ? 'Founding Pro applications open' : 'browsing goes live for hosts'}.</div>
+    `;
+  }
+
+  function renderError(msg) {
+    const finePrint = document.querySelector('.signup-fineprint');
+    if (finePrint) {
+      finePrint.style.color = 'var(--red)';
+      finePrint.textContent = msg;
+    }
+  }
+
+  f.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const emailEl = document.getElementById('stripSignupEmail');
+    const email = emailEl.value.trim().toLowerCase();
+    const role = document.querySelector('input[name="stripRole"]:checked').value;
+    const btn = f.querySelector('.signup-cta');
+
+    // Basic email validation
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      renderError('Please enter a valid email address.');
+      return;
+    }
+
+    // Disable while submitting
+    btn.disabled = true;
+    const originalLabel = btn.textContent;
+    btn.textContent = 'Reserving...';
+
+    try {
+      // Use email as the doc ID so duplicate signups overwrite rather than spam the collection
+      const docId = email.replace(/[^a-z0-9]/g, '_');
+      await _signupDb.collection('signups').doc(docId).set({
+        email,
+        role,
+        source: 'index_strip',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        userAgent: navigator.userAgent.slice(0, 200)
+      }, { merge: true });
+      renderThanks(email, role);
+    } catch (err) {
+      console.error('Signup error:', err);
+      btn.textContent = originalLabel;
+      btn.disabled = false;
+      renderError('Something hiccuped on our end — try again or email hello@offshiftcharleston.com.');
+    }
+  });
+})();
+</script>
 
 <!-- CTA Section -->
 <section class="cta-section">
