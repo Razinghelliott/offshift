@@ -1513,7 +1513,7 @@ footer {
       <p>Browse local chefs, bartenders, musicians, and more through a clean, visual grid. Every profile is verified, curated, and ready to book.</p>
       <div class="sweep"></div>
     </div>
-    <div class="how-card reveal reveal-delay-2" style="--bg:url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1200&q=80')">
+    <div class="how-card reveal reveal-delay-2" style="--bg:url('https://images.unsplash.com/photo-1619892127776-08a763bfe34c?w=1200&q=80')">
       <div class="how-card-num">02</div>
       <div class="how-card-icon">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -1786,6 +1786,129 @@ const _signupDb = firebase.firestore();
     }
   });
 })();
+
+// ─── Notify form (mobile-app early access) ───
+(function() {
+  const f = document.getElementById('notifyForm');
+  if (!f) return;
+  const isEmail = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+
+  f.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const firstName = document.getElementById('notifyFirstName').value.trim();
+    const lastName  = document.getElementById('notifyLastName').value.trim();
+    const phone     = document.getElementById('notifyPhone').value.trim();
+    const email     = document.getElementById('notifyEmail').value.trim().toLowerCase();
+    const btn       = document.getElementById('notifyBtn');
+
+    if (!firstName) return;
+    if (!isEmail(email)) {
+      btn.textContent = 'Please enter a valid email';
+      setTimeout(() => { btn.textContent = 'Notify Me When Live'; }, 2200);
+      return;
+    }
+
+    const originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    try {
+      const docId = email.replace(/[^a-z0-9]/g, '_');
+      await _signupDb.collection('signups').doc(docId).set({
+        email,
+        firstName,
+        lastName: lastName || null,
+        phone: phone || null,
+        role: 'client',                 // notify form is host/booker-flavored
+        source: 'index_notify',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        userAgent: navigator.userAgent.slice(0, 200)
+      }, { merge: true });
+
+      f.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:24px;color:var(--red);font-weight:600">Thank you! We\'ll be in touch when the app goes live.</p>';
+    } catch (err) {
+      console.error('Notify form error:', err);
+      btn.disabled = false;
+      btn.textContent = 'Try again';
+      setTimeout(() => { btn.textContent = originalLabel; }, 2500);
+    }
+  });
+})();
+
+// ─── Apply form (Founding Pro application) ───
+(function() {
+  const f = document.getElementById('applyForm');
+  if (!f) return;
+  const isEmail = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+
+  f.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const firstName = document.getElementById('applyFirstName').value.trim();
+    const lastName  = document.getElementById('applyLastName').value.trim();
+    const email     = document.getElementById('applyEmail').value.trim().toLowerCase();
+    const phone     = document.getElementById('applyPhone').value.trim();
+    const craft     = document.getElementById('applyCraft').value.trim();
+    const headline  = document.getElementById('applyHeadline').value.trim();
+    const bio       = document.getElementById('applyBio').value.trim();
+    const location  = document.getElementById('applyLocation').value.trim();
+    const links     = document.getElementById('applyLinks').value.trim();
+    const consent   = document.getElementById('applyConsent').checked;
+    const cats      = Array.from(document.querySelectorAll('#applyCategories input[name="cat"]:checked')).map(cb => cb.value);
+    const btn       = document.getElementById('applyBtn');
+
+    if (!isEmail(email)) {
+      btn.textContent = 'Please enter a valid email';
+      setTimeout(() => { btn.textContent = 'Apply to be a Founding OffShift Pro'; }, 2500);
+      return;
+    }
+    if (cats.length === 0) {
+      btn.textContent = 'Pick at least one category';
+      setTimeout(() => { btn.textContent = 'Apply to be a Founding OffShift Pro'; }, 2500);
+      return;
+    }
+    if (!consent) return;
+
+    const originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    try {
+      // Two writes: a richer application record + a unified signup record so all leads land in one bucket
+      const docId = email.replace(/[^a-z0-9]/g, '_');
+
+      // 1) Detailed application
+      await _signupDb.collection('proApplications').add({
+        firstName, lastName, email, phone, craft,
+        categories: cats,
+        headline, bio, location,
+        links: links || null,
+        status: 'new',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        userAgent: navigator.userAgent.slice(0, 200)
+      });
+
+      // 2) Lightweight signup row — keyed by email so all leads de-dup across forms
+      await _signupDb.collection('signups').doc(docId).set({
+        email,
+        firstName,
+        lastName,
+        phone,
+        role: 'pro',
+        source: 'index_apply',
+        craft,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      f.innerHTML = '<p style="padding:24px;color:var(--red);font-weight:600;font-size:1.1rem">Application received! We\'ll review and be in touch soon.</p>';
+    } catch (err) {
+      console.error('Apply form error:', err);
+      btn.disabled = false;
+      btn.textContent = 'Try again — or email hello@offshiftcharleston.com';
+      setTimeout(() => { btn.textContent = originalLabel; }, 3500);
+    }
+  });
+})();
 </script>
 
 <!-- CTA Section -->
@@ -1807,12 +1930,12 @@ const _signupDb = firebase.firestore();
     <div class="section-label reveal">Stay in the Loop</div>
     <div class="section-title reveal">Get early access to the<br><span class="brand-text">OFFSHIFT</span> app.</div>
     <p class="section-desc reveal" style="margin:0 auto;">The <span class="brand-text">OFFSHIFT</span> mobile app is in development. Your profile and bookings will sync when it launches. Be the first to know.</p>
-    <form class="notify-form reveal" onsubmit="event.preventDefault(); this.innerHTML='<p style=\'grid-column:1/-1;text-align:center;padding:24px;color:var(--red);font-weight:600\'>Thank you! We\'ll be in touch.</p>'">
-      <input type="text" class="form-input" placeholder="First name" required>
-      <input type="text" class="form-input" placeholder="Last name">
-      <input type="tel" class="form-input" placeholder="Phone number">
-      <input type="email" class="form-input" placeholder="Email address" required>
-      <button type="submit" class="btn-submit">Notify Me When Live</button>
+    <form class="notify-form reveal" id="notifyForm" autocomplete="off">
+      <input type="text" class="form-input" id="notifyFirstName" placeholder="First name" required>
+      <input type="text" class="form-input" id="notifyLastName" placeholder="Last name">
+      <input type="tel" class="form-input" id="notifyPhone" placeholder="Phone number">
+      <input type="email" class="form-input" id="notifyEmail" placeholder="Email address" required>
+      <button type="submit" class="btn-submit" id="notifyBtn">Notify Me When Live</button>
     </form>
   </div>
 </section>
@@ -1824,34 +1947,34 @@ const _signupDb = firebase.firestore();
       <div class="section-label reveal">Join the Collective</div>
       <div class="section-title reveal">Become a Founding<br><em><span class="brand-text">OFFSHIFT</span> Pro</em></div>
       <p class="section-desc reveal">Apply now to be considered for our first 50 approved Pros and get your first year free. Lock in founding status today.</p>
-      <form class="apply-form reveal" style="margin-top:40px;" onsubmit="event.preventDefault(); this.innerHTML='<p style=\'padding:24px;color:var(--red);font-weight:600;font-size:1.1rem\'>Application received! We\'ll review and be in touch soon.</p>'">
+      <form class="apply-form reveal" id="applyForm" style="margin-top:40px;" autocomplete="off">
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Full Name *</label>
-            <input type="text" class="form-input" placeholder="First name" required>
+            <input type="text" class="form-input" id="applyFirstName" placeholder="First name" required>
           </div>
           <div class="form-group">
             <label class="form-label">Last Name *</label>
-            <input type="text" class="form-input" placeholder="Last name" required>
+            <input type="text" class="form-input" id="applyLastName" placeholder="Last name" required>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Email *</label>
-            <input type="email" class="form-input" placeholder="your@email.com" required>
+            <input type="email" class="form-input" id="applyEmail" placeholder="your@email.com" required>
           </div>
           <div class="form-group">
             <label class="form-label">Phone Number *</label>
-            <input type="tel" class="form-input" placeholder="(555) 555-5555" required>
+            <input type="tel" class="form-input" id="applyPhone" placeholder="(555) 555-5555" required>
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">What do you do? *</label>
-          <input type="text" class="form-input" placeholder="e.g. Private Chef, Jazz Musician, Mixologist..." required>
+          <input type="text" class="form-input" id="applyCraft" placeholder="e.g. Private Chef, Jazz Musician, Mixologist..." required>
         </div>
         <div class="form-group">
           <label class="form-label">Which best describes what you offer? *</label>
-          <div class="checkbox-group">
+          <div class="checkbox-group" id="applyCategories">
             <label class="checkbox-label"><input type="checkbox" name="cat" value="food"><span>Food</span></label>
             <label class="checkbox-label"><input type="checkbox" name="cat" value="music"><span>Music</span></label>
             <label class="checkbox-label"><input type="checkbox" name="cat" value="experiences"><span>Experiences</span></label>
@@ -1861,27 +1984,27 @@ const _signupDb = firebase.firestore();
         </div>
         <div class="form-group">
           <label class="form-label">One-line headline *</label>
-          <input type="text" class="form-input" placeholder="The line guests see before they book you" required>
+          <input type="text" class="form-input" id="applyHeadline" placeholder="The line guests see before they book you" required>
         </div>
         <div class="form-group">
           <label class="form-label">Short bio *</label>
-          <textarea class="form-input" placeholder="3-5 sentences. Write it like guests will read it before they book you." required></textarea>
+          <textarea class="form-input" id="applyBio" placeholder="3-5 sentences. Write it like guests will read it before they book you." required></textarea>
         </div>
         <div class="form-group">
           <label class="form-label">Where in/around <span class="charleston">Charleston</span>? *</label>
-          <input type="text" class="form-input" placeholder="e.g. Downtown, Mt. Pleasant..." required>
+          <input type="text" class="form-input" id="applyLocation" placeholder="e.g. Downtown, Mt. Pleasant..." required>
         </div>
         <div class="form-group">
           <label class="form-label">Links (Instagram, website, portfolio)</label>
-          <input type="text" class="form-input" placeholder="https://instagram.com/yourhandle">
+          <input type="text" class="form-input" id="applyLinks" placeholder="https://instagram.com/yourhandle">
         </div>
         <div style="margin-top:8px;">
           <label style="display:flex;gap:10px;align-items:flex-start;font-size:0.82rem;color:var(--gray-light);cursor:pointer;">
-            <input type="checkbox" required style="margin-top:3px;">
+            <input type="checkbox" id="applyConsent" required style="margin-top:3px;">
             <span>I understand this is an application and not a guarantee of approval. OffShift will contact me if I'm a fit for the first 50 Pros.</span>
           </label>
         </div>
-        <button type="submit" class="btn-submit" style="margin-top:8px;">Apply to be a Founding OffShift Pro</button>
+        <button type="submit" class="btn-submit" id="applyBtn" style="margin-top:8px;">Apply to be a Founding OffShift Pro</button>
       </form>
     </div>
     <div class="apply-perks reveal">
