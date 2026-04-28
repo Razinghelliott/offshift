@@ -41,8 +41,10 @@ nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 4
 .nav-links a.active { color: var(--white); }
 .nav-links a.active::after { width: 100%; }
 .nav-user { display: flex; align-items: center; gap: 12px; }
-.nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gray-dark); border: 2px solid var(--red); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; overflow: hidden; }
+.nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gray-dark); border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; overflow: hidden; box-sizing: border-box; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
 .nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.is-pro { border: 2px solid var(--red) !important; box-shadow: 0 0 0 1px rgba(10,10,10,0.55), 0 0 12px rgba(200,16,46,0.22); }
+.is-booker { border: 1px solid rgba(255,255,255,0.22) !important; box-shadow: none; }
 .nav-signout { font-size: 0.75rem; color: var(--gray); cursor: pointer; transition: color 0.3s; background: none; border: none; font-family: var(--sans); }
 .nav-signout:hover { color: var(--red); }
 
@@ -129,7 +131,7 @@ nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0 4
     <a href="client-bookings.html" class="active">My Bookings</a>
   </div>
   <div class="nav-user">
-    <a href="pro-dashboard.html" class="nav-avatar" id="navAvatar" title="Dashboard"><span id="navInitials">?</span></a>
+    <a href="pro-dashboard.html" class="nav-avatar is-booker" id="navAvatar" title="Dashboard"><span id="navInitials">?</span></a>
     <button class="nav-signout" id="signOutBtn">Sign Out</button>
   </div>
 </nav>

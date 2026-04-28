@@ -203,7 +203,7 @@ nav.scrolled {
   width: 34px; height: 34px;
   border-radius: 50%;
   background: var(--gray-dark);
-  border: 2px solid var(--red);
+  border: 1px solid rgba(255,255,255,0.18);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,8 +211,12 @@ nav.scrolled {
   font-weight: 700;
   color: var(--white);
   overflow: hidden;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.is-pro { border: 2px solid var(--red) !important; box-shadow: 0 0 0 1px rgba(10,10,10,0.55), 0 0 12px rgba(200,16,46,0.22); }
+.is-booker { border: 1px solid rgba(255,255,255,0.22) !important; box-shadow: none; }
 .nav-signout {
   font-size: 0.75rem;
   color: var(--gray);
@@ -1144,7 +1148,7 @@ const craftPhotos = {
 const defaultCraftPhoto = 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop';
 
 // ─── Auth State ───
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
   const navUser = document.getElementById('navUser');
   const navSignIn = document.getElementById('navSignIn');
   if (user) {
@@ -1161,6 +1165,14 @@ auth.onAuthStateChanged(user => {
     } else {
       avatar.textContent = (user.displayName || user.email || '?')[0].toUpperCase();
     }
+    // Role-aware ring
+    try {
+      const uDoc = await db.collection('users').doc(user.uid).get();
+      const role = uDoc.exists ? uDoc.data().role : null;
+      avatar.classList.remove('is-pro', 'is-booker');
+      if (role === 'pro') avatar.classList.add('is-pro');
+      else if (role === 'client') avatar.classList.add('is-booker');
+    } catch (e) {}
   } else {
     navUser.style.display = 'none';
     navSignIn.style.display = 'block';

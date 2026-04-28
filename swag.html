@@ -74,7 +74,9 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 2rem
 .nav-cta-link { color: var(--red) !important; font-weight: 600 !important; }
 .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 1001; }
 .nav-toggle span { width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: var(--transition); }
-.nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gray-dark); background-size: cover; background-position: center; border: 2px solid rgba(255,255,255,0.1); }
+.nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gray-dark); background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.18); box-sizing: border-box; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+.is-pro { border: 2px solid var(--red) !important; box-shadow: 0 0 0 1px rgba(10,10,10,0.55), 0 0 12px rgba(200,16,46,0.22); }
+.is-booker { border: 1px solid rgba(255,255,255,0.22) !important; box-shadow: none; }
 .nav-user { display: flex; align-items: center; gap: 12px; }
 .nav-signout { background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--gray-light); padding: 6px 14px; border-radius: 100px; font-size: 0.72rem; cursor: pointer; transition: var(--transition); font-family: var(--sans); }
 .nav-signout:hover { border-color: var(--red); color: var(--red); }
@@ -370,15 +372,24 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
 // Auth state — show/hide nav elements
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
   if (user) {
     document.getElementById('navSignIn').style.display = 'none';
     document.getElementById('navUser').style.display = 'flex';
     document.getElementById('msgLink').style.display = '';
     document.getElementById('dashLink').style.display = '';
+    const avatar = document.getElementById('navAvatar');
     if (user.photoURL) {
-      document.getElementById('navAvatar').style.backgroundImage = `url(${user.photoURL})`;
+      avatar.style.backgroundImage = `url(${user.photoURL})`;
     }
+    // Role-aware ring
+    try {
+      const uDoc = await db.collection('users').doc(user.uid).get();
+      const role = uDoc.exists ? uDoc.data().role : null;
+      avatar.classList.remove('is-pro', 'is-booker');
+      if (role === 'pro') avatar.classList.add('is-pro');
+      else if (role === 'client') avatar.classList.add('is-booker');
+    } catch (e) {}
   } else {
     document.getElementById('navSignIn').style.display = '';
     document.getElementById('navUser').style.display = 'none';
