@@ -591,16 +591,80 @@ section { padding: 140px 48px; }
   background: rgba(255,255,255,0.02);
   border: 1px solid var(--dark-border);
   border-radius: 16px;
-  padding: 48px 36px;
+  padding: 36px 32px;
   position: relative;
   overflow: hidden;
-  transition: all 0.5s ease;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+  transition: transform 0.7s cubic-bezier(0.2,0.8,0.2,1), border-color 0.45s ease, box-shadow 0.7s cubic-bezier(0.2,0.8,0.2,1);
+  will-change: transform;
+}
+/* Image layer — zooms independently of card */
+.how-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  transform: scale(1.02);
+  filter: saturate(0.9) contrast(1.05);
+  transition: transform 1.4s cubic-bezier(0.2,0.8,0.2,1), filter 0.7s ease;
+}
+/* Gradient overlay */
+.how-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.15) 38%, rgba(10,10,10,0.78) 70%, rgba(10,10,10,0.95) 100%);
+  z-index: 1;
+  transition: background 0.65s ease;
+  pointer-events: none;
+}
+.how-card > * { position: relative; z-index: 2; }
+.how-card-num,
+.how-card-icon,
+.how-card h3,
+.how-card p {
+  transition: transform 0.6s cubic-bezier(0.2,0.8,0.2,1), color 0.5s ease, background 0.4s ease, box-shadow 0.5s ease;
 }
 .how-card:hover {
-  border-color: rgba(200,16,46,0.3);
-  background: rgba(200,16,46,0.04);
-  transform: translateY(-4px);
+  border-color: rgba(200,16,46,0.65);
+  transform: translateY(-10px);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.55), 0 0 50px rgba(200,16,46,0.22);
 }
+.how-card:hover::before {
+  transform: scale(1.14);
+  filter: saturate(1.15) contrast(1.1);
+}
+.how-card:hover::after {
+  background: linear-gradient(to bottom, rgba(10,10,10,0.05) 0%, rgba(10,10,10,0.08) 28%, rgba(200,16,46,0.22) 60%, rgba(10,10,10,0.92) 100%);
+}
+.how-card:hover .how-card-num { color: rgba(200,16,46,0.45); transform: translateY(-3px); }
+.how-card:hover .how-card-icon {
+  transform: rotate(-4deg) scale(1.08);
+  background: rgba(200,16,46,0.22);
+  box-shadow: 0 0 24px rgba(200,16,46,0.4);
+}
+.how-card:hover h3 { transform: translateY(-3px); }
+.how-card:hover p { color: var(--white); }
+/* Animated red sweep along bottom edge on hover */
+.how-card .sweep {
+  position: absolute;
+  left: -60%;
+  bottom: 0;
+  height: 2px;
+  width: 60%;
+  z-index: 3;
+  background: linear-gradient(to right, transparent, var(--red), transparent);
+  filter: drop-shadow(0 0 8px var(--red));
+  transition: left 1s cubic-bezier(0.2,0.8,0.2,1);
+}
+.how-card:hover .sweep { left: 100%; }
 .how-card-num {
   font-family: var(--serif);
   font-size: 4rem;
@@ -1291,29 +1355,32 @@ footer {
     <p class="section-desc reveal" style="margin:0 auto;">No agency markups. No flaky group-text referrals. Just <span class="charleston">Charleston</span>'s best chefs, bartenders, and musicians &mdash; browsed, messaged, and booked directly in minutes.</p>
   </div>
   <div class="how-grid">
-    <div class="how-card reveal reveal-delay-1">
+    <div class="how-card reveal reveal-delay-1" style="--bg:url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80')">
       <div class="how-card-num">01</div>
       <div class="how-card-icon">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       </div>
       <h3>Bespoke Browsing</h3>
       <p>Browse local chefs, bartenders, musicians, and more through a clean, visual grid. Every profile is verified, curated, and ready to book.</p>
+      <div class="sweep"></div>
     </div>
-    <div class="how-card reveal reveal-delay-2">
+    <div class="how-card reveal reveal-delay-2" style="--bg:url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1200&q=80')">
       <div class="how-card-num">02</div>
       <div class="how-card-icon">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </div>
       <h3>Champion Local</h3>
       <p>Book directly with <span class="charleston">Charleston</span> talent. Transparent rates, verified profiles, and real reviews from real bookers. No middlemen.</p>
+      <div class="sweep"></div>
     </div>
-    <div class="how-card reveal reveal-delay-3">
+    <div class="how-card reveal reveal-delay-3" style="--bg:url('https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf?w=1200&q=80')">
       <div class="how-card-num">03</div>
       <div class="how-card-icon">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
       </div>
       <h3>Learn & Connect</h3>
       <p>Host private dinners, workshops, and experiences that feel personal, not generic. Build real connections with the talent behind the craft.</p>
+      <div class="sweep"></div>
     </div>
   </div>
 </section>
