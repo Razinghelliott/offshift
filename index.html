@@ -117,7 +117,8 @@ body:hover .cursor-glow { opacity: 1; }
 .loader-bar-fill {
   width: 0;
   height: 100%;
-  background: var(--red);
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold-glow);
   animation: loaderFill 1.8s ease 0.5s forwards;
 }
 
@@ -955,6 +956,11 @@ section { padding: 140px 48px; }
   border-color: var(--gold);
   box-shadow: 0 4px 14px var(--gold-glow);
 }
+.talent-card-badge.is-top-rated {
+  color: var(--red);
+  border-color: rgba(200,16,46,0.45);
+  background: rgba(10,10,10,0.7);
+}
 .talent-card-rate {
   position: absolute;
   bottom: 16px; right: 16px;
@@ -1700,7 +1706,7 @@ footer {
   <div class="talent-grid">
     <div class="talent-card reveal reveal-delay-1">
       <div class="talent-card-img" style="background-image:url('https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=600&q=80')">
-        <div class="talent-card-badge">&#9733; Top Rated</div>
+        <div class="talent-card-badge is-top-rated">&#9733; Top Rated</div>
         <div class="talent-card-rate">$$</div>
       </div>
       <div class="talent-card-body">
@@ -2059,7 +2065,7 @@ const _signupDb = firebase.firestore();
   <div class="apply-grid">
     <div>
       <div class="section-label reveal">Join the Collective</div>
-      <div class="section-title reveal">Become a Founding<br><em><span class="brand-text">OFFSHIFT</span> Pro</em></div>
+      <div class="section-title reveal">Become a Founding<br><span class="brand-text">OFFSHIFT</span> <em>Pro</em></div>
       <p class="section-desc reveal">Apply now to be considered for our first 50 approved Pros and get your first year free. Lock in founding status today.</p>
       <form class="apply-form reveal" id="applyForm" style="margin-top:40px;" autocomplete="off">
         <div class="form-row">
