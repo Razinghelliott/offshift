@@ -268,9 +268,24 @@ nav.scrolled {
 .nav-cta::after { display: none !important; }
 .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 30px var(--tiffany-glow); background: var(--tiffany) !important; color: var(--black) !important; }
 
-/* Mobile nav */
-.nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
-.nav-toggle span { width: 24px; height: 1.5px; background: var(--white); transition: all 0.3s; }
+/* Mobile nav — logo doubles as the toggle button */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+.nav-toggle img {
+  height: 38px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+.nav-toggle:hover { transform: scale(1.05); }
+.nav-toggle:active { transform: scale(0.95); }
 
 @media (max-width: 900px) {
   nav { padding: 0 24px; }
@@ -1549,9 +1564,7 @@ footer {
 
 <!-- Navigation -->
 <nav id="nav">
-  <a href="#" class="nav-logo">
-    <img src="logo.png" alt="OFFSHIFT Charleston">
-  </a>
+  <a href="#" class="nav-logo">OFFSHIFT<span class="nav-logo-charleston">Charleston</span></a>
   <div class="nav-links" id="navLinks">
     <a href="#how">How It Works</a>
     <a href="browse.html">Browse Pros</a>
@@ -1559,9 +1572,9 @@ footer {
     <a href="#apply">Become a Pro</a>
     <a href="login.html" class="nav-cta">Sign In</a>
   </div>
-  <div class="nav-toggle" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
-    <span></span><span></span><span></span>
-  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <img src="logo.png" alt="Menu">
+  </button>
 </nav>
 
 <!-- Hero -->
@@ -1576,10 +1589,6 @@ footer {
   </div>
   <div class="hero-gradient"></div>
   <div class="hero-overlay"></div>
-  <div class="hero-wordmark">
-    <span class="hero-wordmark-offshift">OFFSHIFT</span>
-    <span class="hero-wordmark-charleston">Charleston</span>
-  </div>
   <div class="hero-content">
     <div class="hero-badge">Now in Beta &mdash; <span class="charleston">Charleston</span>, SC</div>
     <h1><span class="h-book">Book</span> <span class="h-local">Local</span> <span class="h-pros">Professionals.</span></h1>

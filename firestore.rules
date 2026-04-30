@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── User profiles ───
+    // Pros are publicly readable so browse.html and pro.html work for logged-out visitors.
+    // Owners can always read their own doc and create/update it.
+    match /users/{uid} {
+      allow read: if resource == null
+                  || resource.data.role == 'pro'
+                  || (request.auth != null && request.auth.uid == uid);
+      allow create, update: if request.auth != null && request.auth.uid == uid;
+      allow delete: if false;
+    }
+
+    // ─── Bookings ───
+    // Only the pro and client involved can read or modify a booking.
+    match /bookings/{bookingId} {
+      allow read: if request.auth != null && (
+        request.auth.uid == resource.data.proId ||
+        request.auth.uid == resource.data.clientId
+      );
+      allow create: if request.auth != null && (
+        request.auth.uid == request.resource.data.clientId ||
+        request.auth.uid == request.resource.data.proId
+      );
+      allow update: if request.auth != null && (
+        request.auth.uid == resource.data.proId ||
+        request.auth.uid == resource.data.clientId
+      );
+      allow delete: if false;
+
+      // Messages live inside the booking
+      match /messages/{messageId} {
+        allow read, create: if request.auth != null && (
+          request.auth.uid == get(/databases/$(database)/documents/bookings/$(bookingId)).data.proId ||
+          request.auth.uid == get(/databases/$(database)/documents/bookings/$(bookingId)).data.clientId
+        );
+        allow update, delete: if false;
+      }
+    }
+
+    // ─── Notifications ───
+    // The recipient owns the doc; signed-in users can drop a notification for someone.
+    match /notifications/{notifId} {
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.uid;
+      allow create: if request.auth != null;
+    }
+
+    // ─── Public homepage forms ───
+    // Anonymous visitors can submit; nobody can read these from the client (use the Firebase Console).
+    match /signups/{docId} {
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+    match /proApplications/{docId} {
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+
+    // Default deny — anything not explicitly allowed above is rejected.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
