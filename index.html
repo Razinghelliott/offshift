@@ -433,32 +433,9 @@ nav.scrolled {
   opacity: 0;
   animation: fadeUp 1s ease 2.7s forwards;
 }
-.hero h1 em {
-  font-style: italic;
-  background: linear-gradient(
-    100deg,
-    #b89548 0%,
-    #c9a44a 25%,
-    #c9a44a 42%,
-    #f0d98c 49%,
-    #fbeec0 51%,
-    #f0d98c 53%,
-    #c9a44a 60%,
-    #c9a44a 100%
-  );
-  background-size: 280% 100%;
-  background-position: 100% 50%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 3px 14px rgba(0,0,0,0.55));
-  animation: gold-shine 7s ease-in-out infinite;
-}
-@keyframes gold-shine {
-  0%, 100% { background-position: 100% 50%; }
-  50% { background-position: 0% 50%; }
-}
+.hero h1 .h-book   { color: var(--tiffany); }
+.hero h1 .h-local  { color: var(--gold); font-style: italic; }
+.hero h1 .h-pros   { color: var(--red); }
 .hero-sub {
   font-size: clamp(1.05rem, 1.8vw, 1.25rem);
   font-weight: 400;
@@ -1581,7 +1558,7 @@ footer {
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-badge">Now in Beta &mdash; <span class="charleston">Charleston</span>, SC</div>
-    <h1>Curated Talent.<br><em>Exceptional Craft.</em></h1>
+    <h1><span class="h-book">Book</span> <span class="h-local">Local</span><br><span class="h-pros">Professionals.</span></h1>
     <p class="hero-sub">A modern marketplace for <span class="charleston">Charleston</span>'s finest local talent. Private chefs, bartenders, musicians, and beyond &mdash; book directly, transparently, beautifully.</p>
     <div class="hero-buttons">
       <a href="browse.html" class="btn btn-primary">Browse Pros</a>
