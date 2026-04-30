@@ -395,6 +395,15 @@ nav.scrolled {
   max-width: 900px;
   padding: 0 32px;
 }
+.hero-logo {
+  display: block;
+  margin: 0 auto 18px;
+  width: clamp(140px, 18vw, 220px);
+  height: auto;
+  filter: drop-shadow(0 4px 18px rgba(0,0,0,0.55));
+  opacity: 0;
+  animation: fadeUp 0.9s ease 2.3s forwards;
+}
 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -1557,8 +1566,9 @@ footer {
   <div class="hero-gradient"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
+    <img src="logo.png" alt="OFFSHIFT Charleston" class="hero-logo">
     <div class="hero-badge">Now in Beta &mdash; <span class="charleston">Charleston</span>, SC</div>
-    <h1><span class="h-book">Book</span> <span class="h-local">Local</span><br><span class="h-pros">Professionals.</span></h1>
+    <h1><span class="h-book">Book</span> <span class="h-local">Local</span> <span class="h-pros">Professionals.</span></h1>
     <p class="hero-sub">A modern marketplace for <span class="charleston">Charleston</span>'s finest local talent. Private chefs, bartenders, musicians, and beyond &mdash; book directly, transparently, beautifully.</p>
     <div class="hero-buttons">
       <a href="browse.html" class="btn btn-primary">Browse Pros</a>
