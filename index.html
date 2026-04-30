@@ -179,9 +179,11 @@ nav.scrolled {
   z-index: 2;
 }
 .nav-logo img {
-  height: 38px;
+  height: 46px;
   width: auto;
   object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
 }
 .nav-logo span { color: var(--white); }
 .nav-links { display: flex; gap: 28px; align-items: center; }
@@ -273,6 +275,7 @@ nav.scrolled {
 @media (max-width: 900px) {
   nav { padding: 0 24px; }
   .nav-toggle { display: flex; }
+  .nav-logo img { height: 38px; }
   .nav-links {
     position: fixed;
     top: 0; right: -100%;
@@ -281,11 +284,11 @@ nav.scrolled {
     flex-direction: column;
     justify-content: center;
     gap: 32px;
+    z-index: 999;
     transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   }
   .nav-links.open { right: 0; }
   .nav-links a { font-size: 1.1rem; }
-  /* On mobile, skip the icon morph — always show text */
   .nav-icon { display: none; }
   .nav-text { max-width: none; opacity: 1; transform: none; overflow: visible; }
 }
@@ -395,21 +398,46 @@ nav.scrolled {
   max-width: 900px;
   padding: 0 32px;
 }
-.hero-logo {
-  display: block;
-  margin: 0 auto 18px;
-  width: clamp(140px, 18vw, 220px);
-  height: auto;
+.hero-wordmark {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto 22px;
+  padding-bottom: 28px;
   filter: drop-shadow(0 4px 18px rgba(0,0,0,0.55));
   opacity: 0;
   animation: fadeUp 0.9s ease 2.3s forwards;
+}
+.hero-wordmark-offshift {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 1;
+}
+.hero-wordmark-charleston {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-42%) rotate(-6deg);
+  transform-origin: center;
+  font-family: 'Allura', cursive;
+  font-weight: 400;
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  line-height: 1;
+  color: var(--red);
+  white-space: nowrap;
+  text-shadow: 0 0 14px rgba(200,16,46,0.35);
+  pointer-events: none;
 }
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(200,16,46,0.12);
-  border: 1px solid rgba(200,16,46,0.25);
+  background: rgba(200,16,46,0.45);
+  border: 1px solid rgba(200,16,46,0.7);
   padding: 8px 20px;
   border-radius: 100px;
   font-size: 0.72rem;
@@ -491,38 +519,6 @@ nav.scrolled {
   backdrop-filter: blur(10px);
 }
 .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-
-.hero-scroll {
-  position: absolute;
-  bottom: 32px;
-  left: 0;
-  right: 0;
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: var(--gray-light);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  opacity: 0;
-  animation: fadeUp 1s ease 3.4s forwards;
-  pointer-events: none;
-}
-.hero-scroll-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, var(--red), transparent);
-  box-shadow: 0 0 8px rgba(200,16,46,0.4);
-  animation: scrollPulse 2s ease infinite;
-}
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; height: 40px; }
-  50% { opacity: 1; height: 60px; }
-}
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(30px); }
@@ -1539,12 +1535,13 @@ footer {
 
 <!-- Navigation -->
 <nav id="nav">
-  <a href="#" class="nav-logo">OFFSHIFT<span class="nav-logo-charleston">Charleston</span></a>
+  <a href="#" class="nav-logo">
+    <img src="logo.png" alt="OFFSHIFT Charleston">
+  </a>
   <div class="nav-links" id="navLinks">
     <a href="#how">How It Works</a>
     <a href="browse.html">Browse Pros</a>
     <a href="swag.html" style="display:none;">Merch</a>
-    <a href="#experience">The Experience</a>
     <a href="#apply">Become a Pro</a>
     <a href="login.html" class="nav-cta">Sign In</a>
   </div>
@@ -1566,7 +1563,10 @@ footer {
   <div class="hero-gradient"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <img src="logo.png" alt="OFFSHIFT Charleston" class="hero-logo">
+    <div class="hero-wordmark">
+      <span class="hero-wordmark-offshift">OFFSHIFT</span>
+      <span class="hero-wordmark-charleston">Charleston</span>
+    </div>
     <div class="hero-badge">Now in Beta &mdash; <span class="charleston">Charleston</span>, SC</div>
     <h1><span class="h-book">Book</span> <span class="h-local">Local</span> <span class="h-pros">Professionals.</span></h1>
     <p class="hero-sub">A modern marketplace for <span class="charleston">Charleston</span>'s finest local talent. Private chefs, bartenders, musicians, and beyond &mdash; book directly, transparently, beautifully.</p>
@@ -1579,10 +1579,6 @@ footer {
     <div class="hero-dot active" data-slide="0"></div>
     <div class="hero-dot" data-slide="1"></div>
     <div class="hero-dot" data-slide="2"></div>
-  </div>
-  <div class="hero-scroll" aria-hidden="true">
-    <span>How It Works</span>
-    <div class="hero-scroll-line"></div>
   </div>
 </section>
 
