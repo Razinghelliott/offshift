@@ -403,7 +403,7 @@ nav.scrolled {
   display: block;
   width: max-content;
   margin: 0 auto 18px;
-  padding-bottom: 22px;
+  padding-bottom: 14px;
   filter: drop-shadow(0 4px 18px rgba(0,0,0,0.55));
   opacity: 0;
   animation: fadeUp 0.9s ease 2.3s forwards;
@@ -420,7 +420,7 @@ nav.scrolled {
 }
 .hero-wordmark-charleston {
   position: absolute;
-  bottom: 0;
+  bottom: 14px;
   left: 50%;
   transform: translateX(-42%) rotate(-6deg);
   transform-origin: center;
@@ -447,8 +447,17 @@ nav.scrolled {
   text-transform: uppercase;
   color: var(--white);
   margin-bottom: 32px;
+  white-space: nowrap;
+  max-width: calc(100vw - 48px);
   opacity: 0;
   animation: fadeUp 0.8s ease 2.5s forwards;
+}
+@media (max-width: 480px) {
+  .hero-badge {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    padding: 7px 14px;
+  }
 }
 .hero-badge .charleston { color: var(--white); }
 .hero-badge::before {
