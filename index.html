@@ -289,23 +289,42 @@ nav.scrolled {
 
 @media (max-width: 900px) {
   nav { padding: 0 24px; }
-  .nav-toggle { display: flex; }
+  .nav-toggle { display: flex; position: relative; z-index: 1001; }
   .nav-logo img { height: 38px; }
   .nav-links {
     position: fixed;
     top: 0; right: -100%;
-    width: 100%; height: 100vh;
+    width: min(78vw, 320px);
+    height: 100vh;
     background: var(--black);
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
+    padding: 0 32px;
     gap: 32px;
-    z-index: 999;
+    z-index: 1000;
+    box-shadow: -12px 0 40px rgba(0,0,0,0.5);
     transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   }
   .nav-links.open { right: 0; }
   .nav-links a { font-size: 1.1rem; }
   .nav-icon { display: none; }
   .nav-text { max-width: none; opacity: 1; transform: none; overflow: visible; }
+  /* Backdrop — tap outside the menu to dismiss */
+  .nav-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 998;
+  }
+  .nav-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 /* ===== HERO ===== */
@@ -1572,10 +1591,24 @@ footer {
     <a href="#apply">Become a Pro</a>
     <a href="login.html" class="nav-cta">Sign In</a>
   </div>
-  <button class="nav-toggle" id="navToggle" aria-label="Open menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" onclick="toggleMobileNav()">
     <img src="logo.png" alt="Menu">
   </button>
 </nav>
+<div class="nav-backdrop" id="navBackdrop" onclick="toggleMobileNav()"></div>
+<script>
+  function toggleMobileNav() {
+    document.getElementById('navLinks').classList.toggle('open');
+    document.getElementById('navBackdrop').classList.toggle('open');
+  }
+  // Close the drawer when any nav link is tapped
+  document.querySelectorAll('#navLinks a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('open');
+      document.getElementById('navBackdrop').classList.remove('open');
+    });
+  });
+</script>
 
 <!-- Hero -->
 <section class="hero">
