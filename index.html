@@ -399,10 +399,11 @@ nav.scrolled {
   padding: 0 32px;
 }
 .hero-wordmark {
-  position: relative;
-  display: block;
+  position: absolute;
+  top: 100px;
+  left: 48px;
+  z-index: 3;
   width: max-content;
-  margin: 0 auto 18px;
   padding-bottom: 14px;
   filter: drop-shadow(0 4px 18px rgba(0,0,0,0.55));
   opacity: 0;
@@ -412,7 +413,7 @@ nav.scrolled {
   display: block;
   font-family: var(--sans);
   font-weight: 700;
-  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--white);
@@ -420,18 +421,21 @@ nav.scrolled {
 }
 .hero-wordmark-charleston {
   position: absolute;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-42%) rotate(-6deg);
+  bottom: 4px;
+  left: 30%;
+  transform: translateX(-30%) rotate(-6deg);
   transform-origin: center;
   font-family: 'Allura', cursive;
   font-weight: 400;
-  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
   line-height: 1;
   color: var(--red);
   white-space: nowrap;
   text-shadow: 0 0 14px rgba(200,16,46,0.35);
   pointer-events: none;
+}
+@media (max-width: 900px) {
+  .hero-wordmark { top: 92px; left: 24px; }
 }
 .hero-badge {
   display: inline-flex;
@@ -1572,12 +1576,12 @@ footer {
   </div>
   <div class="hero-gradient"></div>
   <div class="hero-overlay"></div>
+  <div class="hero-wordmark">
+    <span class="hero-wordmark-offshift">OFFSHIFT</span>
+    <span class="hero-wordmark-charleston">Charleston</span>
+  </div>
   <div class="hero-content">
     <div class="hero-badge">Now in Beta &mdash; <span class="charleston">Charleston</span>, SC</div>
-    <div class="hero-wordmark">
-      <span class="hero-wordmark-offshift">OFFSHIFT</span>
-      <span class="hero-wordmark-charleston">Charleston</span>
-    </div>
     <h1><span class="h-book">Book</span> <span class="h-local">Local</span> <span class="h-pros">Professionals.</span></h1>
     <p class="hero-sub">A modern marketplace for <span class="charleston">Charleston</span>'s finest local talent. Private chefs, bartenders, musicians, and beyond &mdash; book directly, transparently, beautifully.</p>
     <div class="hero-buttons">
