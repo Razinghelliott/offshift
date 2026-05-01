@@ -998,6 +998,12 @@ section { padding: 140px 48px; }
   background: linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.0) 30%);
   pointer-events: none;
 }
+/* Flip the middle row — image on the left, text on the right */
+.hiw-row:nth-child(2) .hiw-text  { order: 2; }
+.hiw-row:nth-child(2) .hiw-image { order: 1; }
+.hiw-row:nth-child(2) .hiw-image::after {
+  background: linear-gradient(270deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.0) 30%);
+}
 /* Charleston "Real People / Real Reviews" stamp */
 .hiw-stamp {
   position: absolute;
