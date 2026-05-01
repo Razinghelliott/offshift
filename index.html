@@ -884,6 +884,188 @@ section { padding: 140px 48px; }
 }
 .how-card:hover h3 { transform: translateY(-3px); }
 .how-card:hover p { color: var(--white); }
+
+/* ─── Editorial 3-step rows (Better Booking / Champion Talent / Real Connections) ─── */
+.hiw-rows {
+  max-width: 1280px;
+  margin: 80px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.hiw-row {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  background: var(--black);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  overflow: hidden;
+  min-height: 460px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+}
+.hiw-text {
+  padding: 56px 56px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hiw-num-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.hiw-num {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 3.6vw, 3rem);
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.hiw-spark {
+  display: inline-flex;
+  width: 22px; height: 22px;
+  color: var(--gold);
+}
+.hiw-spark svg { width: 100%; height: 100%; }
+.hiw-iconbox {
+  margin: 12px 0 18px;
+  width: 30px; height: 30px;
+  color: var(--gold);
+  opacity: 0.85;
+}
+.hiw-iconbox svg { width: 100%; height: 100%; }
+.hiw-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 4.4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin: 0 0 18px 0;
+}
+.hiw-title-a { color: var(--gold); margin-right: 0.25em; }
+.hiw-title-a.hiw-white { color: var(--white); }
+.hiw-title-b { color: var(--tiffany); font-style: italic; }
+.hiw-row:nth-child(1) .hiw-title-b { color: var(--tiffany); font-style: italic; }
+.hiw-row:nth-child(2) .hiw-title-b { color: var(--gold); font-style: italic; }
+.hiw-row:nth-child(3) .hiw-title-b { color: var(--gold); font-style: italic; }
+.hiw-rule {
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 0 22px 0;
+  opacity: 0.6;
+}
+.hiw-body {
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--gray-light);
+  margin: 0 0 28px 0;
+  max-width: 460px;
+}
+.hiw-em-red { color: var(--red); font-weight: 500; }
+.hiw-em-tif { color: var(--tiffany); font-weight: 500; }
+.hiw-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid currentColor;
+  transition: gap 0.3s ease, opacity 0.3s ease;
+}
+.hiw-cta:hover { gap: 14px; opacity: 0.85; }
+.hiw-cta-gold { color: var(--gold); }
+.hiw-cta-tif  { color: var(--tiffany); }
+.hiw-image {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  min-height: 460px;
+}
+.hiw-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.0) 30%);
+  pointer-events: none;
+}
+/* Charleston "Real People / Real Reviews" stamp */
+.hiw-stamp {
+  position: absolute;
+  top: 36px; right: 36px;
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  border: 1px solid var(--tiffany);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--tiffany);
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 0 30px rgba(63,184,176,0.2);
+  z-index: 2;
+}
+.hiw-stamp-top { padding: 0 8px 6px; border-bottom: 1px solid rgba(63,184,176,0.4); width: 80%; }
+.hiw-stamp-bot { padding: 6px 8px 0; border-top: 1px solid rgba(63,184,176,0.4); width: 80%; }
+.hiw-stamp-spark {
+  font-size: 1.4rem;
+  margin: 4px 0;
+  color: var(--tiffany);
+}
+
+/* Tagline strip below rows */
+.hiw-tagstrip {
+  margin: 64px auto 0;
+  max-width: 1280px;
+  padding: 26px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px 22px;
+  font-family: var(--serif);
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+.hiw-tag-red    { color: var(--red); }
+.hiw-tag-white  { color: var(--white); }
+.hiw-tag-gold   { color: var(--gold); }
+.hiw-tag-tif    { color: var(--tiffany); }
+.hiw-tag-diamond {
+  color: var(--gold);
+  font-size: 0.7em;
+  opacity: 0.8;
+}
+
+@media (max-width: 900px) {
+  .hiw-row {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .hiw-text { padding: 40px 28px 36px; }
+  .hiw-image { min-height: 280px; order: -1; }
+  .hiw-stamp { width: 100px; height: 100px; top: 20px; right: 20px; font-size: 0.58rem; }
+  .hiw-tagstrip { font-size: 0.95rem; gap: 10px 16px; padding: 24px 20px; }
+}
+
 /* Animated red sweep along bottom edge on hover */
 /* Red perimeter trace — rotates around card border on hover (Meet the Collective) */
 @property --offshift-trace-angle {
@@ -1796,47 +1978,104 @@ footer {
   <a href="#apply">Apply Now &rarr;</a>
 </div>
 
-<!-- Editorial: Charleston's Finest, OFFSHIFT -->
-<section class="experience-editorial" id="how">
-  <div class="ee-grid">
-    <div class="ee-text reveal">
-      <h2 class="ee-headline">
-        <span class="ee-h1">Charleston's</span>
-        <span class="ee-h2">Finest,</span>
-        <span class="ee-h3">OFFSHIFT.</span>
-      </h2>
-      <div class="ee-ornament" aria-hidden="true">
-        <span class="ee-ornament-line"></span>
-        <span class="ee-ornament-diamond"></span>
-      </div>
-      <p class="ee-tagline">
-        Curated talent.
-        <span class="ee-real">Real <span class="ee-pros-word">Professionals</span>.</span>
-        <span class="ee-direct">Direct <span class="ee-book-word">Booking</span>.</span>
-      </p>
-      <p class="ee-body">
-        We begin with <span class="charleston">Charleston</span> &mdash; where hospitality, craft, and experience set the standard.
-      </p>
-      <p class="ee-body">
-        Private chefs. Master bartenders. Wedding photographers. Florists, hair stylists, personal trainers, carpenters, musicians, makeup artists, event planners. From here, <strong class="brand-text">OFFSHIFT</strong> expands city by city, connecting you to the people who make every place unforgettable.
-      </p>
-      <div class="ee-locations">
-        <div class="ee-loc">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span class="ee-loc-label">Today:</span>
-          <span class="ee-loc-place ee-loc-red">Charleston.</span>
+<!-- How It Works — Editorial 3-step -->
+<section class="how-it-works" id="how">
+  <div style="text-align:center;">
+    <div class="section-label reveal">The OffShift Experience</div>
+    <div class="section-title reveal">Great hosts deserve<br>a <em>better</em> way to book.</div>
+    <p class="section-desc reveal" style="margin:0 auto;">No agency markups. No flaky group-text referrals. Just <span class="charleston">Charleston</span>'s best chefs, bartenders, and musicians &mdash; browsed, messaged, and booked directly in minutes.</p>
+  </div>
+
+  <div class="hiw-rows">
+
+    <!-- Row 01 -->
+    <article class="hiw-row reveal">
+      <div class="hiw-text">
+        <div class="hiw-num-row">
+          <span class="hiw-num">01</span>
+          <span class="hiw-spark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="13" y2="12"/><polygon points="18 4 22 12 18 20 14 12" fill="currentColor" stroke="none"/></svg>
+          </span>
         </div>
-        <div class="ee-loc">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <span class="ee-loc-label">Tomorrow:</span>
-          <span class="ee-loc-place ee-loc-tif">Everywhere.</span>
+        <div class="hiw-iconbox" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        <h3 class="hiw-title">
+          <span class="hiw-title-a">Better</span>
+          <span class="hiw-title-b">Booking</span>
+        </h3>
+        <span class="hiw-rule"></span>
+        <p class="hiw-body">Discover <span class="hiw-em-red">trusted professionals</span> through a clean, curated marketplace. Verified profiles, transparent rates, and direct access to the people behind the craft.</p>
+        <a href="browse.html" class="hiw-cta hiw-cta-gold">Explore the Marketplace <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="hiw-image" style="background-image:url('https://images.unsplash.com/photo-1556656793-08538906a9f8?w=1400&q=80')"></div>
+    </article>
+
+    <!-- Row 02 -->
+    <article class="hiw-row reveal">
+      <div class="hiw-text">
+        <div class="hiw-num-row">
+          <span class="hiw-num">02</span>
+          <span class="hiw-spark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z"/></svg>
+          </span>
+        </div>
+        <div class="hiw-iconbox" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-8 8-8s8 3.5 8 8"/></svg>
+        </div>
+        <h3 class="hiw-title">
+          <span class="hiw-title-a hiw-white">Champion</span>
+          <span class="hiw-title-b">Talent</span>
+        </h3>
+        <span class="hiw-rule"></span>
+        <p class="hiw-body"><span class="hiw-em-tif">Book</span> directly with the <span class="hiw-em-red">Pros</span>. Transparent rates, verified profiles, and trusted reviews from real bookers&mdash;no middlemen, no markup.</p>
+        <a href="browse.html" class="hiw-cta hiw-cta-tif">Book Local. Build Community. <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="hiw-image hiw-image-charleston" style="background-image:url('https://images.unsplash.com/photo-1605547632408-a98ea2ed7d04?w=1400&q=80')">
+        <div class="hiw-stamp" aria-hidden="true">
+          <span class="hiw-stamp-top">Real People</span>
+          <span class="hiw-stamp-spark">&#x2756;</span>
+          <span class="hiw-stamp-bot">Real Reviews</span>
         </div>
       </div>
-    </div>
-    <div class="ee-image reveal reveal-delay-2" aria-hidden="true">
-      <div class="ee-image-inner"></div>
-      <div class="ee-image-vignette"></div>
-    </div>
+    </article>
+
+    <!-- Row 03 -->
+    <article class="hiw-row reveal">
+      <div class="hiw-text">
+        <div class="hiw-num-row">
+          <span class="hiw-num">03</span>
+          <span class="hiw-spark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><circle cx="17" cy="7" r="3"/><path d="M2 21c0-3.5 3.5-6 7-6s7 2.5 7 6"/><path d="M14 21c0-2.5 2-4 4-4s4 1.5 4 4"/></svg>
+          </span>
+        </div>
+        <div class="hiw-iconbox" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <h3 class="hiw-title">
+          <span class="hiw-title-a hiw-white">Real</span>
+          <span class="hiw-title-b">Connections</span>
+        </h3>
+        <span class="hiw-rule"></span>
+        <p class="hiw-body">Private dinners, curated workshops, and unforgettable experiences built around real people&mdash;not generic transactions.</p>
+        <a href="#apply" class="hiw-cta hiw-cta-gold">Build Something Meaningful <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="hiw-image" style="background-image:url('https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf?w=1400&q=80')"></div>
+    </article>
+
+  </div>
+
+  <!-- Tagline strip -->
+  <div class="hiw-tagstrip reveal">
+    <span class="hiw-tag-red">Better Booking.</span>
+    <span class="hiw-tag-diamond">&#x2756;</span>
+    <span class="hiw-tag-white">Exceptional Events.</span>
+    <span class="hiw-tag-diamond">&#x2756;</span>
+    <span class="hiw-tag-gold">Real People.</span>
+    <span class="hiw-tag-diamond">&#x2756;</span>
+    <span class="hiw-tag-tif">Real Connections.</span>
+    <span class="hiw-tag-diamond">&#x2756;</span>
+    <span class="hiw-tag-white">No Compromises.</span>
   </div>
 </section>
 
