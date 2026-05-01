@@ -49,9 +49,10 @@ service cloud.firestore {
 
     // ─── Public homepage forms ───
     // Anonymous visitors can submit; nobody can read these from the client (use the Firebase Console).
+    // signups uses email-as-doc-id for de-dup, so update must be allowed (set + merge).
     match /signups/{docId} {
-      allow create: if true;
-      allow read, update, delete: if false;
+      allow create, update: if true;
+      allow read, delete: if false;
     }
     match /proApplications/{docId} {
       allow create: if true;
