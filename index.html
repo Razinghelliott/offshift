@@ -644,7 +644,159 @@ section { padding: 140px 48px; }
 .reveal-delay-3 { transition-delay: 0.45s; }
 .reveal-delay-4 { transition-delay: 0.6s; }
 
-/* ===== HOW IT WORKS ===== */
+/* ===== EDITORIAL — CHARLESTON'S FINEST, OFFSHIFT ===== */
+.experience-editorial {
+  background: var(--black);
+  padding: 120px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.experience-editorial::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, var(--red), transparent);
+}
+.ee-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 72px;
+  max-width: 1280px;
+  margin: 0 auto;
+  align-items: center;
+}
+.ee-text { max-width: 580px; }
+.ee-headline {
+  font-family: var(--serif);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  margin: 0 0 28px 0;
+  font-weight: 400;
+}
+.ee-headline span { display: block; }
+.ee-h1 {
+  font-style: italic;
+  color: var(--red);
+  font-size: clamp(3rem, 6.4vw, 5.2rem);
+  text-shadow: 0 2px 18px rgba(200,16,46,0.25);
+}
+.ee-h2 {
+  font-style: italic;
+  color: var(--gold);
+  font-size: clamp(3.2rem, 6.8vw, 5.6rem);
+}
+.ee-h3 {
+  font-family: var(--sans);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--white);
+  font-size: clamp(3.6rem, 7.5vw, 6.4rem);
+  line-height: 0.92;
+}
+.ee-ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 28px 0;
+}
+.ee-ornament-line {
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(to right, var(--gold), transparent);
+}
+.ee-ornament-diamond {
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(201,164,74,0.5);
+}
+.ee-tagline {
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--gray-light);
+  margin: 0 0 28px 0;
+  font-weight: 400;
+}
+.ee-tagline .ee-real,
+.ee-tagline .ee-direct { display: inline; }
+.ee-pros-word { color: var(--red); font-style: italic; }
+.ee-book-word { color: var(--tiffany); font-style: italic; }
+.ee-body {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--gray-light);
+  margin: 0 0 16px 0;
+  max-width: 520px;
+}
+.ee-body strong.brand-text { color: var(--white); letter-spacing: 0.02em; }
+.ee-locations {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.ee-loc {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--gray-light);
+}
+.ee-loc svg {
+  width: 18px; height: 18px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.ee-loc-label { font-weight: 600; color: var(--gray-light); }
+.ee-loc-place { font-weight: 700; }
+.ee-loc-red { color: var(--red); }
+.ee-loc-tif { color: var(--tiffany); }
+/* Right column — Charleston night image */
+.ee-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(200,16,46,0.08);
+}
+.ee-image-inner {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1605547632408-a98ea2ed7d04?w=1600&q=80'),
+                    linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.95) contrast(1.05);
+}
+.ee-image-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 30%, rgba(10,10,10,0.45) 100%),
+    linear-gradient(180deg, rgba(10,10,10,0.0) 60%, rgba(10,10,10,0.55) 100%);
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .experience-editorial { padding: 80px 24px; }
+  .ee-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .ee-text { max-width: 100%; }
+  .ee-image { aspect-ratio: 16 / 11; max-height: 420px; }
+}
+
+/* ===== HOW IT WORKS (legacy 3-card grid — kept for fallback) ===== */
 .how-it-works {
   background: var(--dark);
   position: relative;
@@ -1644,37 +1796,46 @@ footer {
   <a href="#apply">Apply Now &rarr;</a>
 </div>
 
-<!-- How It Works -->
-<section class="how-it-works" id="how">
-  <div style="text-align:center;">
-    <div class="section-label reveal">The OffShift Experience</div>
-    <div class="section-title reveal">Great hosts deserve<br>a <em>better</em> way to book.</div>
-    <p class="section-desc reveal" style="margin:0 auto;">No agency markups. No flaky group-text referrals. Just <span class="charleston">Charleston</span>'s best chefs, bartenders, and musicians &mdash; browsed, messaged, and booked directly in minutes.</p>
-  </div>
-  <div class="how-grid">
-    <div class="how-card reveal reveal-delay-1" style="--bg:url('https://images.unsplash.com/photo-1653762379954-8943c787e78b?w=1200&q=80')">
-      <div class="how-card-num">01</div>
-      <div class="how-card-icon">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+<!-- Editorial: Charleston's Finest, OFFSHIFT -->
+<section class="experience-editorial" id="how">
+  <div class="ee-grid">
+    <div class="ee-text reveal">
+      <h2 class="ee-headline">
+        <span class="ee-h1">Charleston's</span>
+        <span class="ee-h2">Finest,</span>
+        <span class="ee-h3">OFFSHIFT.</span>
+      </h2>
+      <div class="ee-ornament" aria-hidden="true">
+        <span class="ee-ornament-line"></span>
+        <span class="ee-ornament-diamond"></span>
       </div>
-      <h3>Bespoke Browsing</h3>
-      <p>Browse local chefs, bartenders, musicians, and more through a clean, visual grid. Every profile is verified, curated, and ready to book.</p>
+      <p class="ee-tagline">
+        Curated talent.
+        <span class="ee-real">Real <span class="ee-pros-word">Professionals</span>.</span>
+        <span class="ee-direct">Direct <span class="ee-book-word">Booking</span>.</span>
+      </p>
+      <p class="ee-body">
+        We begin with <span class="charleston">Charleston</span> &mdash; where hospitality, craft, and experience set the standard.
+      </p>
+      <p class="ee-body">
+        Private chefs. Master bartenders. Wedding photographers. Florists, hair stylists, personal trainers, carpenters, musicians, makeup artists, event planners. From here, <strong class="brand-text">OFFSHIFT</strong> expands city by city, connecting you to the people who make every place unforgettable.
+      </p>
+      <div class="ee-locations">
+        <div class="ee-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span class="ee-loc-label">Today:</span>
+          <span class="ee-loc-place ee-loc-red">Charleston.</span>
+        </div>
+        <div class="ee-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="ee-loc-label">Tomorrow:</span>
+          <span class="ee-loc-place ee-loc-tif">Everywhere.</span>
+        </div>
+      </div>
     </div>
-    <div class="how-card reveal reveal-delay-2" style="--bg:url('https://images.unsplash.com/photo-1619892127776-08a763bfe34c?w=1200&q=80')">
-      <div class="how-card-num">02</div>
-      <div class="how-card-icon">
-        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </div>
-      <h3>Champion Local</h3>
-      <p>Book directly with <span class="charleston">Charleston</span> talent. Transparent rates, verified profiles, and real reviews from real bookers. No middlemen.</p>
-    </div>
-    <div class="how-card reveal reveal-delay-3" style="--bg:url('https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf?w=1200&q=80')">
-      <div class="how-card-num">03</div>
-      <div class="how-card-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-      </div>
-      <h3>Learn & Connect</h3>
-      <p>Host private dinners, workshops, and experiences that feel personal, not generic. Build real connections with the talent behind the craft.</p>
+    <div class="ee-image reveal reveal-delay-2" aria-hidden="true">
+      <div class="ee-image-inner"></div>
+      <div class="ee-image-vignette"></div>
     </div>
   </div>
 </section>
