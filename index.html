@@ -1173,13 +1173,15 @@ section { padding: 140px 48px; }
 
 .cat-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
   margin-top: 56px;
-  max-width: 980px;
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
 }
+@media (max-width: 1100px) { .cat-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 880px)  { .cat-grid { grid-template-columns: repeat(3, 1fr); } }
 .cat-card {
   position: relative;
   height: 260px;
@@ -1244,20 +1246,20 @@ section { padding: 140px 48px; }
 
 /* Tablet: keep 2x2, slightly smaller */
 @media (max-width: 900px) {
-  .cat-grid { gap: 16px; max-width: 720px; }
-  .cat-card { height: 220px; }
+  .cat-grid { gap: 14px; max-width: 1100px; }
+  .cat-card { height: 200px; }
   .cat-card-content { padding: 18px; }
-  .cat-card h3 { font-size: 1.25rem; }
+  .cat-card h3 { font-size: 1.1rem; }
   .categories { background-attachment: scroll; }
 }
-/* Mobile: 2x2 grid, all 4 cards visible on screen */
+/* Mobile: 2-column grid, smaller cards */
 @media (max-width: 600px) {
   .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 32px; }
-  .cat-card { height: 170px; border-radius: 12px; }
+  .cat-card { height: 160px; border-radius: 12px; }
   .cat-card-content { padding: 14px; }
   .cat-card-tag { font-size: 0.58rem; letter-spacing: 0.12em; margin-bottom: 4px; }
-  .cat-card h3 { font-size: 1.05rem; line-height: 1.15; }
-  .cat-card p { display: none; }
+  .cat-card h3 { font-size: 0.95rem; line-height: 1.15; }
+  .cat-card p { font-size: 0.7rem; opacity: 1; transform: none; }
   .categories { padding: 60px 16px; }
 }
 
@@ -2037,7 +2039,7 @@ footer {
         <p class="hiw-body"><span class="hiw-em-tif">Book</span> directly with the <span class="hiw-em-red">Pros</span>. Transparent rates, verified profiles, and trusted reviews from real bookers&mdash;no middlemen, no markup.</p>
         <a href="browse.html" class="hiw-cta hiw-cta-tif">Book Local. Build Community. <span aria-hidden="true">&rarr;</span></a>
       </div>
-      <div class="hiw-image hiw-image-charleston" style="background-image:url('https://images.unsplash.com/photo-1605547632408-a98ea2ed7d04?w=1400&q=80')">
+      <div class="hiw-image hiw-image-charleston" style="background-image:url('https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=1400&q=80'), url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80')">
         <div class="hiw-stamp" aria-hidden="true">
           <span class="hiw-stamp-top">Real People</span>
           <span class="hiw-stamp-spark">&#x2756;</span>
@@ -2088,43 +2090,127 @@ footer {
 <!-- Talent Categories -->
 <section class="categories" id="talent">
   <div class="section-label reveal">Browse by Category</div>
-  <div class="section-title reveal"><span class="charleston">Charleston</span>'s Finest, <em>Off the Clock</em></div>
-  <p class="section-desc reveal">The best of the best who never have time &mdash; making time in their off shift. Professional talent at a rate that makes sense.</p>
+  <div class="section-title reveal">Skills, Services, Experiences. <em>Opportunity.</em></div>
+  <p class="section-desc reveal">From private chefs to golf lessons &mdash; if someone can <span style="color:var(--tiffany);">Book</span> it, it belongs here.</p>
   <div class="cat-grid">
     <div class="cat-card reveal reveal-delay-1">
-      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&q=80')"></div>
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=80')"></div>
       <div class="cat-card-overlay"></div>
       <div class="cat-card-content">
-        <div class="cat-card-tag">Food</div>
-        <h3>Private Chefs</h3>
-        <p>Intimate dinners, tasting menus & culinary experiences</p>
+        <h3>Hospitality</h3>
+        <p>Bartenders, Servers, Sommeliers, Event Staff</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-1">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Culinary</h3>
+        <p>Private Chefs, Catering, Meal Prep, Pop-Ups</p>
       </div>
     </div>
     <div class="cat-card reveal reveal-delay-2">
-      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80')"></div>
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=600&q=80')"></div>
       <div class="cat-card-overlay"></div>
       <div class="cat-card-content">
-        <div class="cat-card-tag">Drink</div>
-        <h3>Craft Bartenders</h3>
-        <p>Cocktail artisans for private events & gatherings</p>
+        <h3>Entertainment</h3>
+        <p>DJs, Live Music, Hosts, Performers</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-2">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Beauty</h3>
+        <p>Hair, Makeup, Nails, Styling, Grooming</p>
       </div>
     </div>
     <div class="cat-card reveal reveal-delay-3">
-      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=600&q=80')"></div>
-      <div class="cat-card-overlay"></div>
-      <div class="cat-card-content">
-        <div class="cat-card-tag">Music</div>
-        <h3>Live Musicians</h3>
-        <p>Solo artists, duos & ensembles for any occasion</p>
-      </div>
-    </div>
-    <div class="cat-card reveal reveal-delay-4">
       <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80')"></div>
       <div class="cat-card-overlay"></div>
       <div class="cat-card-content">
-        <div class="cat-card-tag">Experiences</div>
-        <h3>Wellness & More</h3>
-        <p>Massage, fire dancers, pet grooming & beyond</p>
+        <h3>Wellness</h3>
+        <p>Massage, Yoga, Pilates, Recovery, Holistic</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-1">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Events</h3>
+        <p>Weddings, Private Parties, Corporate, Pop-Ups</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-2">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Creative</h3>
+        <p>Photography, Content, Design, Branding</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-3">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Fitness</h3>
+        <p>Personal Training, Pickleball, Coaching</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-3">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Home Services</h3>
+        <p>Cleaning, Organization, Staging, Pool, Outdoor</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-4">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Lessons</h3>
+        <p>Golf, Music, Language, Cooking</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-2">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Experiences</h3>
+        <p>Private Dinners, Tastings, Workshops, Classes</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-3">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Skilled Services</h3>
+        <p>Carpentry, Handy Work, Installations, Repairs</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-4">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1487014679447-9f8336841d58?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Lifestyle</h3>
+        <p>Personal Shopping, Concierge, Travel Support</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-4">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1502786129293-79981df4e689?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Outdoor</h3>
+        <p>Surf Lessons, Fishing Guides, Boat Days</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-4">
+      <div class="cat-card-img" style="background-image:url('https://images.unsplash.com/photo-1542683088-aa2a5db14ae5?w=600&q=80')"></div>
+      <div class="cat-card-overlay"></div>
+      <div class="cat-card-content">
+        <h3>Luxury Services</h3>
+        <p>Private Drivers, Yacht Staff, VIP Hosting</p>
       </div>
     </div>
   </div>
